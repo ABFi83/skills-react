@@ -1,0 +1,36 @@
+/* Header.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-left {
+  flex: 1; /* La sezione a sinistra occupa spazio proporzionale */
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spazio tra nome utente e logo */
+}
+
+.header-user {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-logo img {
+  height: 40px; /* Altezza del logo */
+  width: auto;
+}
