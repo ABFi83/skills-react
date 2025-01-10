@@ -2,12 +2,12 @@ import "./Header.css";
 import { User } from "../../Interfaces/User"; // Assicurati che il percorso sia corretto
 
 // Definizione dei tipi delle props
-interface HeaderProps {
-  user: User; // Usa l'interfaccia User come tipo
+interface UserInterface {
+  user: User;
 }
 
 // Componente funzionale
-export default function Header({ user }: HeaderProps) {
+export default function Header({ user }: UserInterface) {
   return (
     <header className="header">
       <div className="header-left">

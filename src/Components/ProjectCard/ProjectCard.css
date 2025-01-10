@@ -1,0 +1,14 @@
+.project-card {
+  display: flex; /* Attiva il layout Flexbox */
+  align-items: center; /* Allinea verticalmente gli elementi al centro */
+  justify-content: space-between; /* Distribuisce lo spazio tra gli elementi, spingendoli ai lati */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 100%;
+}
+
+.project-details {
+  flex-grow: 1; /* Permette alla sezione dettagli di occupare lo spazio disponibile */
+}
