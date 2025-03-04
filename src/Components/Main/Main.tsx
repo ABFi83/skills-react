@@ -12,12 +12,54 @@ interface UserInterface {
 
 const Main = ({ user }: UserInterface) => {
   const projects: Project[] = [
-    { id: "1", projectName: "Test1", evaluation: 6, role: "DEV" },
-    { id: "2", projectName: "Test2", evaluation: 6, role: "DEV" },
-    { id: "3", projectName: "Test3", evaluation: 6, role: "DEV" },
-    { id: "4", projectName: "Test4", evaluation: 6, role: "DEV" },
-    { id: "5", projectName: "Test5", evaluation: 6, role: "DEV" },
-    { id: "6", projectName: "Test7", evaluation: 6, role: "DEV" },
+    {
+      id: "1",
+      projectName: "Test1",
+      ratingAverage: 6,
+      role: "DEV",
+      evaluations: [
+        {
+          id: "1",
+          label: "01/01/2024",
+          values: [
+            { id: "1", skill: "1", value: 10 },
+            { id: "2", skill: "2", value: 3 },
+            { id: "3", skill: "3", value: 6 },
+          ],
+        },
+      ],
+      labelEvaluations: [
+        { id: "1", label: "Java", shortLabel: "J" },
+        { id: "1", label: "React", shortLabel: "Re" },
+        { id: "1", label: "C#", shortLabel: "C" },
+      ],
+    },
+    {
+      id: "2",
+      projectName: "Test2",
+      ratingAverage: 6,
+      role: "DEV",
+      evaluations: [
+        {
+          id: "1",
+          label: "01/01/2024",
+          values: [
+            { id: "1", skill: "1", value: 10 },
+            { id: "2", skill: "2", value: 3 },
+            { id: "3", skill: "3", value: 6 },
+            { id: "4", skill: "4", value: 2 },
+            { id: "5", skill: "5", value: 8 },
+          ],
+        },
+      ],
+      labelEvaluations: [
+        { id: "1", label: "Java", shortLabel: "J" },
+        { id: "1", label: "React", shortLabel: "Re" },
+        { id: "1", label: "C#", shortLabel: "C" },
+        { id: "1", label: "Git", shortLabel: "G" },
+        { id: "1", label: "Angular", shortLabel: "A" },
+      ],
+    },
   ];
 
   return (

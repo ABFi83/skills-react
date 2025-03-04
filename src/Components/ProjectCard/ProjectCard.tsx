@@ -3,6 +3,7 @@ import { Project } from "../../Interfaces/Project";
 import { User } from "../../Interfaces/User";
 import "./ProjectCard.css";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
+import DataExtractorService from "../../Service/DataExtractorService";
 interface UserInterface {
   user: User;
 }
@@ -10,11 +11,16 @@ interface ProjectInterface {
   project: Project;
 }
 const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
+  const { labels, values } = DataExtractorService({
+    labelsData: project.labelEvaluations,
+    valuesData: project.evaluations[0].values,
+  });
+
   return (
     <div className="project-card">
       <div className="project-details">
         <h3>{project.projectName}</h3>
-        <p>Evaluation: {project.evaluation}</p>
+        <p>Evaluation: {project.ratingAverage}</p>
         <p>Role: {project.role}</p>
         <Link
           to={`/project/${project.id}`}
@@ -28,8 +34,9 @@ const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
         </Link>
       </div>
       <PolygonalLevelIndicator
-        levels={[10, 5, 10, 2, 3, 5, 1]}
-        labels={["A", "B", "C", "C", "C", "C", "C"]}
+        levels={values}
+        labels={labels}
+        label={project.evaluations[0].label}
       />
     </div>
   );

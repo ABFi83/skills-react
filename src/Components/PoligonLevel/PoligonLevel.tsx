@@ -3,13 +3,14 @@ import React from "react";
 interface LevelIndicatorProps {
   levels: number[];
   labels?: string[];
+  label?: string;
 }
 
-const LevelIndicator = ({ levels, labels }: LevelIndicatorProps) => {
+const LevelIndicator = ({ levels, labels, label }: LevelIndicatorProps) => {
   const maxOffset = 50;
   const centerX = 60;
   const centerY = 60;
-  const numPoints = levels.length;
+  const numPoints = levels != undefined ? levels.length : 0;
 
   if (numPoints === 0) {
     return null;
@@ -131,16 +132,30 @@ const LevelIndicator = ({ levels, labels }: LevelIndicatorProps) => {
   const foreground = generatePointsAndLines(levels, "blue", []);
 
   return (
-    <svg width="120" height="120" viewBox="0 0 120 120">
-      {/* Punto grigio al centro */}
-      <circle cx={centerX} cy={centerY} r={3} fill="gray" key="center-point" />
-      {background10.lines}
-      {background10.points}
-      {background5.lines}
-      {background5.points}
-      {foreground.lines}
-      {foreground.points}
-    </svg>
+    <div style={{ display: "flex", alignItems: "flex-start" }}>
+      {" "}
+      {/* Use flexbox for layout */}
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle
+          cx={centerX}
+          cy={centerY}
+          r={3}
+          fill="gray"
+          key="center-point"
+        />
+        {background10.lines}
+        {background10.points}
+        {background5.lines}
+        {background5.points}
+        {foreground.lines}
+        {foreground.points}
+      </svg>
+      <div style={{ marginLeft: "10px", alignSelf: "center" }}>
+        {" "}
+        {/* Add margin and center vertically */}
+        <label>{label}</label>
+      </div>
+    </div>
   );
 };
 

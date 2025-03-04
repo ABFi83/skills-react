@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.left {
+  flex: 1;
+  margin-left: 5px;
+}
+.right {
+  flex: 1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+thead th {
+  /* Stile specifico per le celle di intestazione */
+  background-color: #f2f2f2; /* Colore di sfondo leggero */
+  font-weight: bold; /* Grassetto */
+  padding: 10px; /* Padding leggermente maggiore */
+  text-align: center; /* Testo centrato */
+}
