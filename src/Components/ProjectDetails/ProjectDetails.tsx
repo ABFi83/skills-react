@@ -2,72 +2,58 @@ import { useParams } from "react-router-dom";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import { Project } from "../../Interfaces/Project";
 import "./ProjectDetail.css";
-import DataExtractorService from "../../Service/DataExtractorService";
 import { useEffect, useState } from "react";
 import { Evaluation } from "../../Interfaces/Evalutation";
+import ProjectApiService from "../../Service/ProjectApiService";
 
 const ProjectDetails = () => {
-  const { id } = useParams(); // Leggi l'ID del progetto dalla rotta
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const project: Project = {
-    id: "1",
-    projectName: "Test1",
-    ratingAverage: 6,
-    role: "DEV",
-    evaluations: [
-      {
-        id: "1",
-        label: "01/01/2024",
-        values: [
-          { id: "1", skill: "1", value: 10 },
-          { id: "2", skill: "2", value: 3 },
-          { id: "3", skill: "3", value: 6 },
-        ],
-      },
-      {
-        id: "2",
-        label: "01/02/2024",
-        values: [
-          { id: "1", skill: "1", value: 10 },
-          { id: "2", skill: "2", value: 12 },
-          { id: "3", skill: "3", value: 12 },
-        ],
-      },
-      {
-        id: "3",
-        label: "01/03/2024",
-        values: [
-          { id: "1", skill: "1", value: 2 },
-          { id: "2", skill: "2", value: 3 },
-          { id: "3", skill: "3", value: 1 },
-        ],
-      },
-    ],
-    labelEvaluations: [
-      { id: "1", label: "Java", shortLabel: "J" },
-      { id: "2", label: "React", shortLabel: "Re" },
-      { id: "3", label: "C#", shortLabel: "C" },
-    ],
-  };
+  const { id } = useParams(); // ID del progetto dalla rotta
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [labelPoligon, setLabelPoligon] = useState<string>();
   const [labelsPoligon, setLabelsPoligon] = useState<string[]>();
   const [levelsPoligon, setLevelsPoligon] = useState<number[]>();
 
   useEffect(() => {
-    if (project.evaluations && project.evaluations.length > 0) {
-      // Check if evaluations exist
-      // setLabelPoligon(project.evaluations[0].label);
-      // setLevelsPoligon(values);
-      // setLabelsPoligon(labels);
-    }
-  }, [project]); // Add project as a dependency
+    const fetchProject = async () => {
+      try {
+        if (!id) {
+          setError("Errore durante il caricamento del progetto");
+          return;
+        }
+        const response = await ProjectApiService.getProjectDetail(id);
+        setProject(response);
+        setLabelsPoligon(response.labelEvaluations.map((v) => v.shortLabel));
+        setLabelPoligon(response.evaluations[0].label);
+        setLevelsPoligon(response.evaluations[0].values.map((v) => v.value));
+      } catch (error) {
+        setError("Errore durante il caricamento del progetto");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProject();
+  }, [id]);
+
+  if (loading) {
+    return <p>Caricamento...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!project) {
+    return <p>Progetto non trovato</p>;
+  }
 
   const handleHeaderClick = (evaluation: Evaluation) => {
-    // Here you can implement your logic, e.g., filtering, sorting, etc.
-    //setLabelPoligon(evaluation.label);
-    //setLevelsPoligon(evaluation.values);
+    // Logica per aggiornare i dati selezionati
+    setLabelPoligon(evaluation.label);
+    setLevelsPoligon(evaluation.values.map((v) => v.value));
   };
 
   return (
@@ -100,7 +86,7 @@ const ProjectDetails = () => {
             <tr key={labelIndice}>
               <th>{label.label}</th>
               {project.evaluations.map((l, indice) => (
-                <td>{l.values[labelIndice].value}</td>
+                <td key={indice}>{l.values[labelIndice]?.value ?? "-"}</td>
               ))}
             </tr>
           ))}

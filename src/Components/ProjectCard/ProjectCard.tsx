@@ -13,7 +13,7 @@ interface ProjectInterface {
 const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
   const { labels, values } = DataExtractorService({
     labelsData: project.labelEvaluations,
-    valuesData: project.evaluations[0].values,
+    valuesData: project.evaluations ? project.evaluations[0].values : [],
   });
 
   return (
@@ -36,7 +36,7 @@ const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
       <PolygonalLevelIndicator
         levels={values}
         labels={labels}
-        label={project.evaluations[0].label}
+        label={project.evaluations ? project.evaluations[0].label : undefined}
       />
     </div>
   );
