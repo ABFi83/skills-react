@@ -20,8 +20,8 @@ const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
     <div className="project-card">
       <div className="project-details">
         <h3>{project.projectName}</h3>
-        <p>Evaluation: {project.ratingAverage}</p>
-        <p>Role: {project.role}</p>
+        <p>Evaluation: {project.evaluations[0].ratingAverage}</p>
+
         <Link
           to={`/project/${project.id}`}
           style={{
