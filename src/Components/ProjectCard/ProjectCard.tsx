@@ -12,7 +12,7 @@ interface UserInterface {
 interface ProjectInterface {
   project: Project;
 }
-const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
+const ProjectCard = ({ project }: ProjectInterface) => {
   const { labels, values } = DataExtractorService({
     labelsData: project.labelEvaluations,
     valuesData: project.evaluations ? project.evaluations[0].values : [],

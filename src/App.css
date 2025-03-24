@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  height: 100vh; /* Altezze della finestra */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* Layout container */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+}

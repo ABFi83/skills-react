@@ -7,6 +7,8 @@ import { Evaluation } from "../../Interfaces/Evalutation";
 import ProjectApiService from "../../Service/ProjectApiService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { FaArrowLeft } from "react-icons/fa";
 
 const ProjectDetails = () => {
   const { id } = useParams(); // ID del progetto dalla rotta
@@ -18,6 +20,8 @@ const ProjectDetails = () => {
   const [labelPoligon, setLabelPoligon] = useState<string>();
   const [labelsPoligon, setLabelsPoligon] = useState<string[]>();
   const [levelsPoligon, setLevelsPoligon] = useState<number[]>();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     function compareEvaluations(evaluations: Evaluation[]) {
@@ -79,6 +83,9 @@ const ProjectDetails = () => {
     setLevelsPoligon(evaluation.values.map((v) => v.value));
   };
 
+  const handleBackClick = () => {
+    navigate("/"); // Naviga verso la lista dei progetti
+  };
   return (
     <div>
       <div className="container">
@@ -104,7 +111,14 @@ const ProjectDetails = () => {
             label={labelPoligon}
           />
         </div>
+        <div>
+          <FaArrowLeft
+            onClick={handleBackClick}
+            style={{ marginRight: "8px", color: "blue" }}
+          />{" "}
+        </div>
       </div>
+
       <table>
         <thead>
           <tr>

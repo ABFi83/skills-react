@@ -1,26 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import UserApiService from "../../Service/UserApiService"; // Importa il servizio API
-import { User } from "../../Interfaces/User";
-import { Project } from "../../Interfaces/Project";
 import ProjectGrid from "../ProjectGrid/ProjectGrid";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
+import Header from "../Header/Header";
+import ProjectApiService from "../../Service/ProjectApiService";
+import { User } from "../../Interfaces/User";
+import { Project } from "../../Interfaces/Project";
 
-interface UserInterface {
-  user: User;
+interface MainProps {
+  userId: string;
+  user?: User;
 }
 
-const Main = ({ user }: UserInterface) => {
+const Main = ({ userId, user }: MainProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await UserApiService.getUserProjects(1); // Chiamata API con l'ID dell'utente
+        setLoading(true);
+        const data = await ProjectApiService.getUserProjects(userId);
         setProjects(data);
       } catch (err) {
         setError("Errore nel caricamento dei progetti.");
@@ -30,21 +31,22 @@ const Main = ({ user }: UserInterface) => {
     };
 
     fetchProjects();
-  }, [user.id]);
+  }, [userId]);
 
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <Router>
+    <div>
+      <Header user={user} />
+      {/* Definizione delle rotte interne per i progetti */}
       <Routes>
-        <Route
-          path="/"
-          element={<ProjectGrid user={user} projects={projects} />}
-        />
+        {/* La rotta principale per i progetti */}
+        <Route path="/" element={<ProjectGrid projects={projects} />} />
+        {/* La rotta per i dettagli di un progetto */}
         <Route path="/project/:id" element={<ProjectDetails />} />
       </Routes>
-    </Router>
+    </div>
   );
 };
 

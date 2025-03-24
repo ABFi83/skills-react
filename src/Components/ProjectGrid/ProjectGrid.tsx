@@ -8,10 +8,9 @@ import { Project } from "../../Interfaces/Project";
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface ProjectGridProps {
-  user: User;
   projects: Project[]; // Array di oggetti Project
 }
-const ProjectGrid = ({ user, projects }: ProjectGridProps) => {
+const ProjectGrid = ({ projects }: ProjectGridProps) => {
   const columns = 3;
 
   const layouts = {
@@ -48,7 +47,7 @@ const ProjectGrid = ({ user, projects }: ProjectGridProps) => {
             width: "100%", // Assicura che occupi tutta la larghezza disponibile
           }}
         >
-          <ProjectCard user={user} project={project} />
+          <ProjectCard project={project} />
         </div>
       ))}
     </ResponsiveGridLayout>

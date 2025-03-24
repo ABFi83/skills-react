@@ -1,15 +1,21 @@
-import axios from "axios";
-
 // Definisci l'interfaccia per un progetto
 import { Project } from "../Interfaces/Project";
-import { API_BASE_URL } from "../config";
+import api from "./APIService";
 
 const ProjectApiService = {
   getProjectDetail: async (projectId: string): Promise<Project> => {
     try {
-      const response = await axios.get<Project>(
-        `${API_BASE_URL}/project/${projectId}`
-      );
+      const response = await api.get<Project>(`/projects/${projectId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Errore nella chiamata API:", error);
+      throw error;
+    }
+  },
+
+  getUserProjects: async (userId: string): Promise<Project[]> => {
+    try {
+      const response = await api.get<Project[]>(`/projects`);
       return response.data;
     } catch (error) {
       console.error("Errore nella chiamata API:", error);

@@ -8,6 +8,7 @@ const RatingIndicator = ({ value }: RatingIndicatorProps) => {
   return (
     <div className="rating-indicator">
       <span>{value ? value.toFixed(1) : 1}</span>{" "}
+      {/* Mostra il valore con una cifra decimale */}
       {value && value > 6 ? (
         <FaThumbsUp className="positive-icon" />
       ) : (

@@ -1,15 +1,26 @@
-import axios from "axios";
-
-// Definisci l'interfaccia per un progetto
-import { Project } from "../Interfaces/Project";
 import { API_BASE_URL } from "../config";
+import { Project } from "../Interfaces/Project";
+import { User } from "../Interfaces/User";
+import api from "./APIService";
 
 const UserApiService = {
-  getUserProjects: async (userId: number): Promise<Project[]> => {
+  login: async (username: string, password: string) => {
+    const response = await fetch(`${API_BASE_URL}/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!response.ok) {
+      throw new Error("Login failed"); // Puoi gestire questo errore in modo più specifico se vuoi
+    }
+    const data = await response.json();
+    return data.token;
+  },
+  getUser: async () => {
     try {
-      const response = await axios.get<Project[]>(
-        `${API_BASE_URL}/users/${userId}/projects`
-      );
+      const response = await api.get<User>(`/user`);
       return response.data;
     } catch (error) {
       console.error("Errore nella chiamata API:", error);

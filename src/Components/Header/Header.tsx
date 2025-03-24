@@ -3,7 +3,7 @@ import { User } from "../../Interfaces/User"; // Assicurati che il percorso sia 
 
 // Definizione dei tipi delle props
 interface UserInterface {
-  user: User;
+  user?: User;
 }
 
 // Componente funzionale
@@ -15,7 +15,7 @@ export default function Header({ user }: UserInterface) {
         <div className="header-title">SKILL</div>
       </div>
       <div className="header-right">
-        <div className="header-user">Benvenuto {user.username}</div>
+        <div className="header-user">Benvenuto {user ? user.username : ""}</div>
         <div className="header-logo">
           <img src="logo192.png" alt="Logo" />
         </div>

@@ -8,7 +8,7 @@ interface RoleDisplayProps {
 
 const roleData: Record<string, { description: string; image: string }> = {
   ADMIN: { description: "Amministratore", image: "/images/admin.png" },
-  DEV: { description: "Sviluppatore", image: "/images/developer.png" },
+  DEV: { description: "Sviluppatore", image: "/dev.jpg" },
   DESIGNER: { description: "Designer", image: "/images/designer.png" },
   TL: { description: "Designer", image: "/tl.png" },
   PM: { description: "Project Manager", image: "/images/pm.png" },
