@@ -4,6 +4,8 @@ import { User } from "../../Interfaces/User";
 import "./ProjectCard.css";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import DataExtractorService from "../../Service/DataExtractorService";
+import RatingIndicator from "../RatingIndicator/RatingIndicator";
+import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 interface UserInterface {
   user: User;
 }
@@ -17,28 +19,32 @@ const ProjectCard = ({ user, project }: UserInterface & ProjectInterface) => {
   });
 
   return (
-    <div className="project-card">
-      <div className="project-details">
-        <h3>{project.projectName}</h3>
-        <p>Evaluation: {project.evaluations[0].ratingAverage}</p>
-
-        <Link
-          to={`/project/${project.id}`}
-          style={{
-            color: "#007bff",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          View Details
-        </Link>
+    <Link to={`/project/${project.id}`} className="project-card-link">
+      <div className="project-card">
+        <div className="project-details">
+          <h3>{project.projectName}</h3>
+          <p
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: "32%", // Imposta lo spazio tra gli elementi
+            }}
+          >
+            <RoleDisplay roleCode={project.role} />
+            <RatingIndicator value={project.evaluations[0].ratingAverage} />
+          </p>
+        </div>
+        <div className="polygon-container">
+          <PolygonalLevelIndicator
+            levels={values}
+            labels={labels}
+            label={undefined}
+          />
+        </div>
       </div>
-      <PolygonalLevelIndicator
-        levels={values}
-        labels={labels}
-        label={project.evaluations ? project.evaluations[0].label : undefined}
-      />
-    </div>
+    </Link>
   );
 };
 

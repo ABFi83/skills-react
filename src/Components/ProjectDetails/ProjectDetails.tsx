@@ -5,6 +5,8 @@ import "./ProjectDetail.css";
 import { useEffect, useState } from "react";
 import { Evaluation } from "../../Interfaces/Evalutation";
 import ProjectApiService from "../../Service/ProjectApiService";
+import RatingIndicator from "../RatingIndicator/RatingIndicator";
+import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 
 const ProjectDetails = () => {
   const { id } = useParams(); // ID del progetto dalla rotta
@@ -81,8 +83,19 @@ const ProjectDetails = () => {
     <div>
       <div className="container">
         <div className="left">
-          <p>{project.projectName}</p>
-          <p>Evaluation {evaluation}</p>
+          <h3>{project.projectName}</h3>
+          <p
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: "32%", // Imposta lo spazio tra gli elementi
+            }}
+          >
+            <RoleDisplay roleCode={project.role} />
+            <RatingIndicator value={evaluation} />
+          </p>
         </div>
         <div className="right">
           <PolygonalLevelIndicator

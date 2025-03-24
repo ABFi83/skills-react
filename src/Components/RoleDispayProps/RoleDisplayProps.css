@@ -1,0 +1,18 @@
+.role-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.role-text {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap; /* Impedisce che il testo vada a capo */
+  overflow: hidden; /* Aggiungi questa proprietà per gestire eventuali overflow */
+  text-overflow: ellipsis; /* Aggiunge i puntini di sospensione (...) se il testo è troppo lungo */
+}
