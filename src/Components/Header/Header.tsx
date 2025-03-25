@@ -1,23 +1,52 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import { User } from "../../Interfaces/User"; // Assicurati che il percorso sia corretto
+import { User } from "../../Interfaces/User";
 
-// Definizione dei tipi delle props
 interface UserInterface {
   user?: User;
+  onLogout: () => void;
 }
 
-// Componente funzionale
-export default function Header({ user }: UserInterface) {
+export default function Header({ user, onLogout }: UserInterface) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    navigate("/");
+  };
+
   return (
     <header className="header">
       <div className="header-left">
-        {/* Scritta "SKILL" a sinistra */}
         <div className="header-title">SKILL</div>
       </div>
       <div className="header-right">
-        <div className="header-user">Benvenuto {user ? user.username : ""}</div>
-        <div className="header-logo">
+        <div className="header-user" />
+        <div className="header-logo" onClick={toggleMenu}>
           <img src="logo192.png" alt="Logo" />
+          {menuOpen && (
+            <div className="dropdown-menu">
+              <p>Benvenuto, </p>
+              <p>{user ? user.username : "Ospite"}</p>
+              <p
+                className="logout-text"
+                onClick={handleLogout}
+                style={{
+                  cursor: "pointer",
+                  color: "blue",
+                  textDecoration: "underline",
+                }}
+              >
+                Esci
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </header>

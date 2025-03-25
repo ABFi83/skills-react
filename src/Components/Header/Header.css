@@ -34,3 +34,23 @@
   height: 40px; /* Altezza del logo */
   width: auto;
 }
+
+.header-logo {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  width: 120px;
+  top: 120%;
+  left: 10%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 10;
+}

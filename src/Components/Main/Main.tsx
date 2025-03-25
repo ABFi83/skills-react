@@ -17,6 +17,11 @@ const Main = ({ userId, user }: MainProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -38,12 +43,9 @@ const Main = ({ userId, user }: MainProps) => {
 
   return (
     <div>
-      <Header user={user} />
-      {/* Definizione delle rotte interne per i progetti */}
+      <Header user={user} onLogout={handleLogout} />
       <Routes>
-        {/* La rotta principale per i progetti */}
         <Route path="/" element={<ProjectGrid projects={projects} />} />
-        {/* La rotta per i dettagli di un progetto */}
         <Route path="/project/:id" element={<ProjectDetails />} />
       </Routes>
     </div>
