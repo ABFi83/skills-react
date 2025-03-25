@@ -1,9 +1,9 @@
 import React from "react";
 import "./RoleDisplayProps.css"; // File CSS per lo stile
-import { RoleRosponse } from "../../Interfaces/Project";
+import { RoleResponse } from "../../Interfaces/Project";
 
 interface RoleDisplayProps {
-  roleCode: RoleRosponse;
+  roleCode: RoleResponse;
 }
 
 const roleData: Record<string, { description: string; image: string }> = {

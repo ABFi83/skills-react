@@ -15,4 +15,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Interceptor per gestire errori di risposta
+api.interceptors.response.use(
+  (response) => response, // Se la risposta è ok, restituiscila così com'è
+  (error) => {
+    console.log("ERRORE");
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 400)
+    ) {
+      console.error("Errore 401: Token non valido. Effettuo il logout...");
+      localStorage.removeItem("token"); // Rimuove il token
+      window.location.href = "/"; // Reindirizza alla homepage
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

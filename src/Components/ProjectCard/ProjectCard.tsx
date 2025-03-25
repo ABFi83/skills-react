@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Project } from "../../Interfaces/Project";
-import { User } from "../../Interfaces/User";
+import { UserResponse } from "../../Interfaces/User";
 import "./ProjectCard.css";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import DataExtractorService from "../../Service/DataExtractorService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 interface UserInterface {
-  user: User;
+  user: UserResponse;
 }
 interface ProjectInterface {
   project: Project;

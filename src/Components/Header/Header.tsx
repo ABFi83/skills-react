@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import { User } from "../../Interfaces/User";
+import { UserResponse } from "../../Interfaces/User";
 
 interface UserInterface {
-  user?: User;
+  user?: UserResponse;
   onLogout: () => void;
 }
 

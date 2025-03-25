@@ -1,6 +1,5 @@
 import { API_BASE_URL } from "../config";
-import { Project } from "../Interfaces/Project";
-import { User } from "../Interfaces/User";
+import { UserResponse } from "../Interfaces/User";
 import api from "./APIService";
 
 const UserApiService = {
@@ -20,7 +19,7 @@ const UserApiService = {
   },
   getUser: async () => {
     try {
-      const response = await api.get<User>(`/user`);
+      const response = await api.get<UserResponse>(`/user`);
       return response.data;
     } catch (error) {
       console.error("Errore nella chiamata API:", error);

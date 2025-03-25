@@ -13,7 +13,7 @@ const ProjectApiService = {
     }
   },
 
-  getUserProjects: async (userId: string): Promise<Project[]> => {
+  getUserProjects: async (): Promise<Project[]> => {
     try {
       const response = await api.get<Project[]>(`/projects`);
       return response.data;

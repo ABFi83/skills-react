@@ -1,11 +1,15 @@
 import { Evaluation } from "./Evalutation";
+import { UserResponse } from "./User";
 
 export interface Project {
   id: string;
   projectName: string;
-  role: RoleRosponse;
+  description: string;
+  role: RoleResponse;
+  client?: ClientResponse;
   evaluations: Evaluation[];
   labelEvaluations: Label[];
+  users: UserResponse[];
 }
 export interface Label {
   id: string;
@@ -13,7 +17,14 @@ export interface Label {
   shortLabel: string;
 }
 
-export interface RoleRosponse {
+export interface ClientResponse {
+  id: number;
+  code: string;
+  name: string;
+  logo: string;
+}
+
+export interface RoleResponse {
   id: number;
   code: string;
   name: string;

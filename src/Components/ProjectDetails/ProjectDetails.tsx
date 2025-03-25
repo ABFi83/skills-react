@@ -1,14 +1,15 @@
 import { useParams } from "react-router-dom";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import { Project } from "../../Interfaces/Project";
-import "./ProjectDetail.css";
 import { useEffect, useState } from "react";
 import { Evaluation } from "../../Interfaces/Evalutation";
 import ProjectApiService from "../../Service/ProjectApiService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft, FaInfoCircle } from "react-icons/fa"; // Importa icone
+import PopupDetail from "../PopupDetail/PopupDetail"; // Importa il componente Popup
+import "./ProjectDetail.css";
 
 const ProjectDetails = () => {
   const { id } = useParams(); // ID del progetto dalla rotta
@@ -21,6 +22,7 @@ const ProjectDetails = () => {
   const [labelsPoligon, setLabelsPoligon] = useState<string[]>();
   const [levelsPoligon, setLevelsPoligon] = useState<number[]>();
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // Stato per il popup
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,18 +88,34 @@ const ProjectDetails = () => {
   const handleBackClick = () => {
     navigate("/"); // Naviga verso la lista dei progetti
   };
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
   return (
     <div>
       <div className="container">
         <div className="left">
-          <h3>{project.projectName}</h3>
+          <h3>
+            {project.projectName}
+            {/* Icona blu per aprire il popup */}
+            <FaInfoCircle
+              onClick={togglePopup}
+              style={{
+                marginLeft: "10px",
+                cursor: "pointer",
+                color: "blue", // Impostato il colore blu
+              }}
+            />
+          </h3>
           <p
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
-              gap: "32%", // Imposta lo spazio tra gli elementi
+              gap: "32%",
             }}
           >
             <RoleDisplay roleCode={project.role} />
@@ -118,6 +136,13 @@ const ProjectDetails = () => {
           />{" "}
         </div>
       </div>
+
+      {/* Usando il componente Popup */}
+      <PopupDetail
+        isOpen={isPopupOpen}
+        onClose={togglePopup}
+        project={project}
+      />
 
       <table>
         <thead>

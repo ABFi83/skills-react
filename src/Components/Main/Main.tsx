@@ -4,12 +4,12 @@ import ProjectGrid from "../ProjectGrid/ProjectGrid";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import Header from "../Header/Header";
 import ProjectApiService from "../../Service/ProjectApiService";
-import { User } from "../../Interfaces/User";
+import { UserResponse } from "../../Interfaces/User";
 import { Project } from "../../Interfaces/Project";
 
 interface MainProps {
   userId: string;
-  user?: User;
+  user?: UserResponse;
 }
 
 const Main = ({ userId, user }: MainProps) => {
@@ -26,7 +26,7 @@ const Main = ({ userId, user }: MainProps) => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const data = await ProjectApiService.getUserProjects(userId);
+        const data = await ProjectApiService.getUserProjects();
         setProjects(data);
       } catch (err) {
         setError("Errore nel caricamento dei progetti.");
