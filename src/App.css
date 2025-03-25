@@ -45,10 +45,17 @@
   align-items: stretch;
 }
 
-/* Layout container */
+/* Il contenitore che deve prendere tutto lo spazio */
 .layout-container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 100%;
+  flex-grow: 1; /* Questo fa sì che prenda tutto lo spazio disponibile */
+}
+
+/* Imposta altezza al ResponsiveGridLayout */
+.layout .react-grid-layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Questo fa sì che occupi tutto lo spazio */
 }

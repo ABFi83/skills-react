@@ -23,12 +23,6 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(undefined);
-  };
-
   return (
     <Router>
       <div className="app-container">
