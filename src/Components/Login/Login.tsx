@@ -36,22 +36,19 @@ const Login = ({ onLogin }: LoginProps) => {
       <form onSubmit={handleSubmit} className="login-form">
         <input
           type="text"
-          name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
           className="input-field"
-          autoComplete="username"
         />
         <input
           type="password"
-          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           className="input-field"
-          autoComplete="current-password"
         />
+        {error && <p className="error-message">{error}</p>}{" "}
         <button type="submit" className="login-button">
           Login
         </button>
