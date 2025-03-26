@@ -1,0 +1,56 @@
+/* Header.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-left {
+  flex: 1; /* La sezione a sinistra occupa spazio proporzionale */
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spazio tra nome utente e logo */
+}
+
+.header-user {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-logo img {
+  height: 40px; /* Altezza del logo */
+  width: auto;
+}
+
+.header-logo {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  width: 120px;
+  top: 120%;
+  left: 10%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 10;
+}

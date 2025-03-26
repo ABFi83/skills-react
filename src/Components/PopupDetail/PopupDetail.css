@@ -1,0 +1,135 @@
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    230,
+    230,
+    230,
+    0.8
+  ) !important; /* Sfondo più chiaro e con trasparenza */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  height: 600px;
+  text-align: center;
+  position: relative;
+  overflow: auto;
+}
+
+/* Header con titolo e logo cliente */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  padding: 10px;
+  border-radius: 5px; /* Angoli arrotondati */
+}
+.title {
+  font-size: 1.5rem;
+  margin: 0;
+  text-align: left;
+  background: transparent !important;
+}
+
+.client-logo {
+  width: 25%; /* Ridotto da 80px a 50px */
+  height: auto;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #444;
+  text-align: left;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 10px;
+  border-bottom: 2px solid transparent;
+}
+
+.tabs button.active {
+  border-bottom: 2px solid blue;
+  font-weight: bold;
+}
+.tab-content {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.list {
+  margin-top: 10px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+  border-radius: 5px; /* Angoli leggermente arrotondati */
+}
+
+/* Colore azzurro chiaro per le righe dispari */
+.list-item:nth-child(odd) {
+  background-color: #cce5ff; /* Azzurro chiaro */
+}
+
+/* Colore azzurro più scuro per le righe pari */
+.list-item:nth-child(even) {
+  background-color: #99c2ff; /* Azzurro più intenso */
+}
+.list-item:hover {
+  background-color: #66a3ff; /* Un azzurro più evidente */
+  transition: 0.3s;
+}
+.user-name {
+  font-weight: bold;
+}
+
+.role-display {
+  display: flex;
+  align-items: center;
+}
+
+.role-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}

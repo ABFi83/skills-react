@@ -1,0 +1,57 @@
+.project-card-link {
+  text-decoration: none;
+  color: inherit; /* Mantiene il colore del testo */
+}
+
+.project-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px solid #ddd; /* Bordo iniziale sottile */
+  border-radius: 12px; /* Angoli arrotondati */
+  background-color: #fff;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  border-color: #004080; /* Blu scuro */
+  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.3); /* Ombra più evidente */
+  transform: scale(1.02); /* Effetto leggero di ingrandimento */
+}
+
+.project-details {
+  flex-grow: 1;
+  min-width: 200px; /* Evita che il testo diventi troppo stretto */
+}
+
+.project-details h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.project-details p {
+  margin: 15px 0;
+}
+
+.project-card a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.project-card a:hover {
+  text-decoration: underline;
+}
+.polygon-container {
+  width: 150px; /* Aumenta la dimensione del contenitore */
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,72 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column; /* Allinea il contenuto in colonna */
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Distanza tra il nome e il simbolo */
+  font-size: 24px;
+  margin-bottom: 20px; /* Spazio tra l'header e il modulo */
+}
+
+.app-name {
+  font-weight: bold;
+  color: #4c87af;
+}
+
+.app-symbol {
+  font-size: 28px;
+}
+
+.header-logo img {
+  height: 40px; /* Altezza del logo */
+  width: auto;
+  margin-top: 10px;
+}
+
+.login-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.input-field {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.login-button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: #4c87af;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #45a049;
+}
+
+/* Stile per il messaggio di errore */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px; /* Distanza dal campo password */
+}

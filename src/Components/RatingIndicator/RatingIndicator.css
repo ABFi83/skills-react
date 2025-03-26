@@ -1,0 +1,15 @@
+.rating-indicator {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.positive-icon {
+  color: green;
+}
+
+.negative-icon {
+  color: red;
+}
