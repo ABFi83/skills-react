@@ -23,7 +23,7 @@
 
 3. Install the project dependencies with npm:
    ```bash
-   npm install
+    npm install --legacy-peer-deps
    ```
 
 ## Running the Project
