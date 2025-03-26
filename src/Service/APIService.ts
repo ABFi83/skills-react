@@ -19,7 +19,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response, // Se la risposta è ok, restituiscila così com'è
   (error) => {
-    console.log("ERRORE");
     if (
       error.response &&
       (error.response.status === 401 || error.response.status === 400)

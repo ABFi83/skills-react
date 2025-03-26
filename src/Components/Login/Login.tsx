@@ -15,7 +15,6 @@ const Login = ({ onLogin }: LoginProps) => {
     e.preventDefault();
     try {
       const token = await UserApiService.login(username, password);
-      console.log(token);
       onLogin(token);
       setError(null); // Resetta l'errore se il login è riuscito
     } catch (error) {
