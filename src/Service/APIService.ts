@@ -2,10 +2,9 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 
 const api = axios.create({
-  baseURL: API_BASE_URL, // Cambia con il tuo URL backend
+  baseURL: API_BASE_URL,
 });
 
-// Interceptor per aggiungere il token ad ogni richiesta
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
@@ -15,17 +14,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor per gestire errori di risposta
 api.interceptors.response.use(
-  (response) => response, // Se la risposta è ok, restituiscila così com'è
+  (response) => response,
   (error) => {
     if (
       error.response &&
       (error.response.status === 401 || error.response.status === 400)
     ) {
       console.error("Errore 401: Token non valido. Effettuo il logout...");
-      localStorage.removeItem("token"); // Rimuove il token
-      window.location.href = "/"; // Reindirizza alla homepage
+      localStorage.removeItem("token");
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }
