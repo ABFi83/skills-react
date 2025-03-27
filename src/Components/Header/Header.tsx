@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { UserResponse } from "../../Interfaces/User";
 import UserProfile from "../UserProfile/UserProfile";
+import Breadcrumb from "../Breadcrumb/Breadcrumb";
+import UserApiService from "../../Service/UserApiService";
 
 interface UserInterface {
   user?: UserResponse;
@@ -10,8 +12,22 @@ interface UserInterface {
 }
 
 export default function Header({ user, onLogout }: UserInterface) {
+  const [currentUser, setCurrentUser] = useState<UserResponse | undefined>(
+    user
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser) {
+      UserApiService.getUser()
+        .then((res) => res)
+        .then((data) => setCurrentUser(data))
+        .catch((error) =>
+          console.error("Errore nel recupero dell'utente:", error)
+        );
+    }
+  }, [currentUser]);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
@@ -19,6 +35,7 @@ export default function Header({ user, onLogout }: UserInterface) {
 
   const handleLogout = () => {
     onLogout();
+    setCurrentUser(undefined);
     navigate("/");
   };
 
@@ -26,6 +43,9 @@ export default function Header({ user, onLogout }: UserInterface) {
     <header className="header">
       <div className="header-left">
         <div className="header-title">SKILL</div>
+        <div className="breadcrumb-container">
+          <Breadcrumb />
+        </div>
       </div>
       <div className="header-right">
         <div className="header-user" />
@@ -34,8 +54,11 @@ export default function Header({ user, onLogout }: UserInterface) {
           {menuOpen && (
             <div className="dropdown-menu">
               <p>Benvenuto,</p>
-              {user ? (
-                <UserProfile username={user.username} clientId={user.code} />
+              {currentUser ? (
+                <UserProfile
+                  username={currentUser.username}
+                  clientId={currentUser.code}
+                />
               ) : (
                 <p>Ospite</p>
               )}

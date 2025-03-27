@@ -129,12 +129,6 @@ const ProjectDetails = () => {
             label={labelPoligon}
           />
         </div>
-        <div>
-          <FaArrowLeft
-            onClick={handleBackClick}
-            style={{ marginRight: "8px", color: "blue" }}
-          />{" "}
-        </div>
       </div>
 
       {/* Usando il componente Popup */}
