@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { UserResponse } from "../../Interfaces/User";
+import UserProfile from "../UserProfile/UserProfile";
 
 interface UserInterface {
   user?: UserResponse;
@@ -32,8 +33,13 @@ export default function Header({ user, onLogout }: UserInterface) {
           <img src="logo192.png" alt="Logo" />
           {menuOpen && (
             <div className="dropdown-menu">
-              <p>Benvenuto, </p>
-              <p>{user ? user.username : "Ospite"}</p>
+              <p>Benvenuto,</p>
+              {user ? (
+                <UserProfile username={user.username} clientId={user.code} />
+              ) : (
+                <p>Ospite</p>
+              )}
+
               <p
                 className="logout-text"
                 onClick={handleLogout}

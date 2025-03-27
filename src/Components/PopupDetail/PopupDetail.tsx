@@ -3,6 +3,7 @@ import "./PopupDetail.css";
 import { Project } from "../../Interfaces/Project";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import { getClientLogoUrl } from "../../Service/ClientService";
+import UserProfile from "../UserProfile/UserProfile";
 
 interface PopupProps {
   isOpen: boolean;
@@ -68,7 +69,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
             <div className="list">
               {project.users.map((user, index) => (
                 <div key={index} className="list-item">
-                  <span className="user-name">{user.name}</span>
+                  <UserProfile username={user.username} clientId={user.code} />
                   {user.role && <RoleDisplay roleCode={user.role} />}
                 </div>
               ))}
