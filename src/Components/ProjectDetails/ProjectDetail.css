@@ -14,21 +14,33 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th,
 td {
   border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+  padding: 12px;
+  text-align: center;
 }
 
 thead th {
-  /* Stile specifico per le celle di intestazione */
-  background-color: #f2f2f2; /* Colore di sfondo leggero */
-  font-weight: bold; /* Grassetto */
-  padding: 10px; /* Padding leggermente maggiore */
-  text-align: center; /* Testo centrato */
+  background-color: #f2f2f2;
+  font-weight: bold;
+  padding: 15px;
+  text-align: center;
+}
+
+input {
+  transition: all 0.3s ease-in-out;
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .popup {

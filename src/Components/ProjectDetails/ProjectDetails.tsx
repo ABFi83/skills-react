@@ -1,16 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
-import { Project } from "../../Interfaces/Project";
+import { Project, Label } from "../../Interfaces/Project";
 import { useEffect, useState } from "react";
 import { Evaluation } from "../../Interfaces/Evalutation";
 import ProjectApiService from "../../Service/ProjectApiService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-import { FaDoorOpen, FaInfoCircle } from "react-icons/fa"; // Importa icone
+import { FaDoorOpen, FaInfoCircle, FaVirus } from "react-icons/fa"; // Importa icone
 import PopupDetail from "../PopupDetail/PopupDetail"; // Importa il componente Popup
 import "./ProjectDetail.css";
 import { Tooltip } from "react-tooltip";
 import { FaBook } from "react-icons/fa";
+import ConfirmationPopup from "../ConfirmationPopup/ConfirmationPopup";
 const ProjectDetails = () => {
   const { id } = useParams(); // ID del progetto dalla rotta
   const [project, setProject] = useState<Project | null>(null);
@@ -23,6 +24,14 @@ const ProjectDetails = () => {
   const [levelsPoligon, setLevelsPoligon] = useState<number[]>();
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false); // Stato per il popup
+
+  const [missingValues, setMissingValues] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+  const [evaluationToSave, setEvaluationToSave] = useState<Evaluation | null>(
+    null
+  );
 
   useEffect(() => {
     function compareEvaluations(evaluations: Evaluation[]) {
@@ -52,12 +61,9 @@ const ProjectDetails = () => {
         compareEvaluations(response.evaluations);
         setProject(response);
         setLabelsPoligon(response.labelEvaluations.map((v) => v.shortLabel));
-        const today = new Date(); // Data odierna
 
-        // Trova la prima valutazione con endDate minore della data odierna
         const firstClosedEvaluation = response.evaluations.find(
-          (evaluation) =>
-            evaluation.endDate && new Date(evaluation.endDate) < today
+          (evaluation) => evaluation.close
         );
         if (firstClosedEvaluation) {
           setEvaluation(firstClosedEvaluation.ratingAverage);
@@ -87,27 +93,64 @@ const ProjectDetails = () => {
   }
 
   const handleHeaderClick = (evaluation: Evaluation) => {
-    if (evaluation.endDate && new Date(evaluation.endDate) < new Date()) {
+    if (evaluation.close) {
       setEvaluation(evaluation.ratingAverage);
       setLabelPoligon(evaluation.label);
       setLevelsPoligon(evaluation.values.map((v) => v.value));
     }
   };
+  const handleHeaderSaveClick = (evaluation: Evaluation) => {
+    const missing: { [key: string]: boolean } = {};
 
-  const handleHeaderSaveClick = async (evaluation: Evaluation) => {
-    try {
-      const response = await ProjectApiService.saveValuesEvalutation(
-        evaluation,
-        id
-      );
-      console.log(response);
-      if (response) {
-        navigate(0);
-      } else {
-        console.error("Errore nel salvataggio dei valori");
+    // Inizializza missing con tutti i campi a true
+    project.labelEvaluations.forEach((value, index) => {
+      missing[index] = true; // Impostiamo tutti i valori come mancanti
+    });
+
+    let allValuesPresent = true;
+
+    // Verifica ogni valore in evaluation.values
+    evaluation.values.forEach((value, index) => {
+      if (
+        value.value !== undefined &&
+        value.value !== null &&
+        !isNaN(value.value)
+      ) {
+        missing[index] = false;
       }
-    } catch (error) {
-      console.error("Errore nella chiamata API:", error);
+    });
+    Object.values(missing).forEach((m) => {
+      if (m) {
+        allValuesPresent = false; // Se uno è ancora true, significa che un valore è mancante
+      }
+    });
+    // Salva le informazioni sui valori mancanti
+    setMissingValues(missing);
+
+    // Se tutti i valori sono presenti, mostra il popup di conferma
+    if (allValuesPresent) {
+      setEvaluationToSave(evaluation);
+      setIsConfirmPopupOpen(true);
+    }
+  };
+
+  const confirmSave = async () => {
+    if (evaluationToSave) {
+      try {
+        const response = await ProjectApiService.saveValuesEvalutation(
+          evaluationToSave,
+          id
+        );
+        if (response) {
+          navigate(0);
+        } else {
+          console.error("Errore nel salvataggio dei valori");
+        }
+      } catch (error) {
+        console.error("Errore nella chiamata API:", error);
+      } finally {
+        setIsConfirmPopupOpen(false);
+      }
     }
   };
 
@@ -123,25 +166,16 @@ const ProjectDetails = () => {
       if (!prevProject) return null;
 
       const updatedEvaluations = [...prevProject.evaluations];
+      updatedEvaluations[evalIndex].values[labelIndex] = {
+        id: "0",
+        skill: project.labelEvaluations[labelIndex].id,
+        value: newValue,
+      };
 
-      if (!updatedEvaluations[evalIndex].values) {
-        updatedEvaluations[evalIndex].values = [];
-      }
-
-      // Assicuriamoci che esista l'elemento values[labelIndex]
-      if (!updatedEvaluations[evalIndex].values[labelIndex]) {
-        updatedEvaluations[evalIndex].values[labelIndex] = {
-          id: "0", // Puoi cambiare se necessario
-          skill: project.labelEvaluations[labelIndex].id, // Imposta l'id della skill corrispondente
-          value: newValue,
-        };
-      } else {
-        updatedEvaluations[evalIndex].values[labelIndex].value = newValue;
-        updatedEvaluations[evalIndex].values[labelIndex].skill =
-          project.labelEvaluations[labelIndex].id; // Aggiorna la skill se già esistente
-      }
       return { ...prevProject, evaluations: updatedEvaluations };
     });
+
+    setMissingValues((prev) => ({ ...prev, [labelIndex]: false }));
   };
 
   const formatDate = (dateString: Date | undefined) => {
@@ -199,6 +233,12 @@ const ProjectDetails = () => {
         onClose={togglePopup}
         project={project}
       />
+      <ConfirmationPopup
+        isOpen={isConfirmPopupOpen}
+        onConfirm={confirmSave}
+        onCancel={() => setIsConfirmPopupOpen(false)}
+        message="Vuoi salvare la valutazione?"
+      />
 
       <table>
         <thead>
@@ -206,30 +246,33 @@ const ProjectDetails = () => {
             <th>Skill</th>
             {project.evaluations.map((l) => (
               <th key={l.label} onClick={() => handleHeaderClick(l)}>
-                {l.label}
-                {l.endDate && new Date(l.endDate) > new Date() && (
+                {!l.close && (
                   <>
-                    <FaDoorOpen
+                    <FaVirus
                       data-tooltip-id="tooltip"
                       data-tooltip-content={`Valutazione aperta dal ${formatDate(
                         l.startDate
                       )} al ${formatDate(l.endDate)}`}
                       style={{
-                        marginLeft: "5px",
+                        marginRight: "5px",
                         color: "blue",
-                        width: "25px",
-                        height: "25px",
                         cursor: "pointer",
                       }}
                     />
-
                     <Tooltip id="tooltip" place="top" />
+                  </>
+                )}
+
+                {l.label}
+                {!l.close && (
+                  <>
                     <FaBook
-                      size={20}
+                      size={15}
                       color="blue"
                       data-tooltip-id="tooltipSave"
-                      data-tooltip-content={"Salva"}
+                      data-tooltip-content="Salva"
                       onClick={() => handleHeaderSaveClick(l)}
+                      style={{ marginLeft: "10px", cursor: "pointer" }}
                     />
                     <Tooltip id="tooltipSave" place="top" />
                   </>
@@ -243,17 +286,19 @@ const ProjectDetails = () => {
             <tr key={labelIndice}>
               <th>{label.label}</th>
               {project.evaluations.map((l, indice) => (
-                <td key={indice}>
-                  <p
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginLeft: "20px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    {l.endDate && new Date(l.endDate) > new Date() ? (
+                <td
+                  key={indice}
+                  style={{ textAlign: "center", padding: "12px" }}
+                >
+                  {!l.close ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%",
+                      }}
+                    >
                       <input
                         type="number"
                         value={l.values[labelIndice]?.value ?? ""}
@@ -261,45 +306,56 @@ const ProjectDetails = () => {
                           handleValueChange(e, indice, labelIndice)
                         }
                         style={{
-                          width: "50px",
-                          padding: "5px",
+                          width: "80%",
+                          padding: "8px",
                           fontSize: "14px",
                           textAlign: "center",
+                          borderRadius: "5px",
+                          border: missingValues[labelIndice]
+                            ? "2px solid red"
+                            : "1px solid #ccc",
+                          outline: "none",
                         }}
                       />
-                    ) : (
-                      <span>{l.values[labelIndice]?.value ?? "-"}</span>
-                    )}
-                    <span>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
                       {l.values[labelIndice]?.improve === 1 && (
                         <img
                           src="/increase.png"
                           alt="Arrow Up"
-                          height="35px"
-                          width="35px"
-                          style={{ verticalAlign: "middle" }}
+                          height="30px"
+                          width="30px"
                         />
                       )}
                       {l.values[labelIndice]?.improve === 0 && (
                         <img
                           src="/equal.png"
                           alt="Horizontal Line"
-                          height="35px"
-                          width="35px"
-                          style={{ verticalAlign: "middle" }}
+                          height="30px"
+                          width="30px"
                         />
                       )}
                       {l.values[labelIndice]?.improve === -1 && (
                         <img
                           src="/decrease.png"
                           alt="Arrow Down"
-                          height="35px"
-                          width="35px"
-                          style={{ verticalAlign: "middle" }}
+                          height="30px"
+                          width="30px"
                         />
                       )}
-                    </span>
-                  </p>
+                      <span style={{ fontSize: "16px", fontWeight: "bold" }}>
+                        {l.values[labelIndice]?.value ?? "-"}
+                      </span>
+                    </div>
+                  )}
                 </td>
               ))}
             </tr>

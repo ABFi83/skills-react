@@ -6,6 +6,7 @@ export interface Evaluation {
   values: Value[];
   startDate: Date;
   endDate: Date;
+  close: boolean;
   ratingAverage: number;
 }
 export interface ValueRequest {
