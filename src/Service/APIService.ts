@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import { handleError } from "./errorHandler";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -25,6 +26,7 @@ api.interceptors.response.use(
       localStorage.removeItem("token");
       window.location.href = "/";
     }
+    handleError(error); // Chiamata alla gestione centralizzata degli errori
     return Promise.reject(error);
   }
 );
