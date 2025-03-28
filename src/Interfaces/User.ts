@@ -7,4 +7,6 @@ export interface UserResponse {
   surname?: string;
   role?: RoleResponse;
   code: string;
+  isAdmin: boolean;
+  ratingAverage?: number;
 }

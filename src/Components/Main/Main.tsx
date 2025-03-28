@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProjectGrid from "../ProjectGrid/ProjectGrid";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
@@ -26,7 +26,8 @@ const Main = ({ userId, user }: MainProps) => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const data = await ProjectApiService.getUserProjects();
+        let data: Project[] = [];
+        data = await ProjectApiService.getUserProjects();
         setProjects(data);
       } catch (err) {
         setError("Errore nel caricamento dei progetti.");
@@ -40,12 +41,16 @@ const Main = ({ userId, user }: MainProps) => {
 
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
+  console.log(user);
 
   return (
     <div>
       <Header user={user} onLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<ProjectGrid projects={projects} />} />
+        <Route
+          path="/"
+          element={<ProjectGrid projects={projects} user={user} />}
+        />
         <Route path="/project/:id" element={<ProjectDetails />} />
       </Routes>
     </div>

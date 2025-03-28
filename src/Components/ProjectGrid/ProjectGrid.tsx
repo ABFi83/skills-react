@@ -3,14 +3,17 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ProjectCard from "../ProjectCard/ProjectCard";
 import { Project } from "../../Interfaces/Project";
+import { UserResponse } from "../../Interfaces/User";
+import ProjectCardLM from "../ProjectCardLM/ProjectCardLM";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface ProjectGridProps {
-  projects: Project[]; // Array di oggetti Project
+  projects: Project[];
+  user?: UserResponse;
 }
 
-const ProjectGrid = ({ projects }: ProjectGridProps) => {
+const ProjectGrid = ({ projects, user }: ProjectGridProps) => {
   const columns = 3;
 
   const layouts = {
@@ -49,7 +52,11 @@ const ProjectGrid = ({ projects }: ProjectGridProps) => {
               width: "100%", // Assicura che occupi tutta la larghezza disponibile
             }}
           >
-            <ProjectCard project={project} />
+            {user && !user.isAdmin ? (
+              <ProjectCard project={project} />
+            ) : (
+              <ProjectCardLM project={project} />
+            )}
           </div>
         ))}
       </ResponsiveGridLayout>

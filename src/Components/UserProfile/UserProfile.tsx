@@ -4,9 +4,14 @@ import { getClientLogoUrl } from "../../Service/ClientService";
 interface UserProfileProps {
   username: string;
   clientId: string;
+  viewName?: boolean;
 }
 
-export default function UserProfile({ username, clientId }: UserProfileProps) {
+export default function UserProfile({
+  username,
+  clientId,
+  viewName = true,
+}: UserProfileProps) {
   const [logoUrl, setLogoUrl] = useState<string>("");
 
   useEffect(() => {
@@ -33,7 +38,7 @@ export default function UserProfile({ username, clientId }: UserProfileProps) {
           style={{ width: "30px", height: "30px", borderRadius: "50%" }}
         />
       )}
-      <span>{username}</span>
+      {viewName ? <span>{username}</span> : ""}
     </div>
   );
 }
