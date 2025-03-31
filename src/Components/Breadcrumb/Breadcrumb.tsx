@@ -5,7 +5,8 @@ export default function Breadcrumb() {
   const location = useLocation();
   const pathnames = location.pathname
     .split("/")
-    .filter((x) => x && x !== "main"); // 🔥 Rimuove "main"
+    .filter((x) => x && x !== "main" && x !== "lm");
+
   const { getProjectById } = useProject();
 
   return (

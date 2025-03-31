@@ -8,7 +8,6 @@ const ProjectCardADD = () => {
       <div className="project-card project-card-add">
         <div className="icon-container">
           <FaPlus size={50} color="white" />{" "}
-          {/* Riduci l'icona per l'armonia */}
         </div>
       </div>
     </Link>

@@ -22,25 +22,20 @@ export const useProject = () => {
   return context;
 };
 
-// Provider del contesto
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // Funzione per ottenere lo stato iniziale dal localStorage
   const getInitialProjects = (): Project[] => {
     const savedProjects = localStorage.getItem("projects");
     return savedProjects ? JSON.parse(savedProjects) : [];
   };
 
-  // Stato dei progetti
   const [projects, setProjects] = useState<Project[]>(getInitialProjects);
 
-  // Effetto per salvare lo stato nel localStorage ad ogni modifica
   useEffect(() => {
     localStorage.setItem("projects", JSON.stringify(projects));
   }, [projects]);
 
-  // Funzione per ottenere un progetto per ID
   const getProjectById = (id: string): Project | undefined => {
     return projects.find((project) => Number(project.id) === Number(id));
   };

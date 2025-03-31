@@ -1,0 +1,102 @@
+.project-details {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+}
+
+.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.edit-icon {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.edit-icon:hover {
+  color: #0056b3;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 80px; /* Distanza sufficiente per l'icona in alto */
+  width: 100%;
+}
+
+.left {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.left input,
+.left textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.left h3 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.left p {
+  font-size: 16px;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 150px;
+  width: 150px;
+}
+
+.client-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.file-input {
+  display: none;
+}

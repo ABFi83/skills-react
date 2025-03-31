@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext"; // Aggiungi useAuth
 import "./Header.css";
@@ -10,8 +10,20 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Recupera lo stato del menu dal localStorage (se presente)
+  useEffect(() => {
+    const storedMenuState = localStorage.getItem("menuOpen");
+    if (storedMenuState) {
+      setMenuOpen(JSON.parse(storedMenuState));
+    }
+  }, []);
+
   const toggleMenu = () => {
-    setMenuOpen((prev) => !prev);
+    setMenuOpen((prev) => {
+      const newState = !prev;
+      localStorage.setItem("menuOpen", JSON.stringify(newState)); // Salva lo stato nel localStorage
+      return newState;
+    });
   };
 
   const handleLogout = () => {
@@ -29,7 +41,7 @@ export default function Header() {
       </div>
       <div className="header-right">
         <div className="header-logo" onClick={toggleMenu}>
-          <img src="logo192.png" alt="Logo" />
+          <img src="/logo192.png" alt="Logo" />
           {menuOpen && (
             <div className="dropdown-menu">
               <p>Benvenuto,</p>

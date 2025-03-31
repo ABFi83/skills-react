@@ -27,7 +27,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
           <h2 className="title">{project.projectName}</h2>
           {project.client?.code && (
             <img
-              src={getClientLogoUrl(project.client.code)} // Usa la funzione del service
+              src={getClientLogoUrl(project.client.code)}
               alt="Client Logo"
               className="client-logo"
               onError={(e) =>

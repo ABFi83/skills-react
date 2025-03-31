@@ -62,11 +62,11 @@ const ProjectGrid = ({ projects }: ProjectGridProps) => {
           <div
             key={project.id}
             style={{
-              display: "flex", // Mantiene il layout flessibile
-              justifyContent: "flex-start", // Allinea il contenuto a sinistra
-              alignItems: "flex-start", // Allinea verticalmente a sinistra
-              padding: "10px", // Spaziatura attorno al ProjectCard
-              width: "100%", // Assicura che occupi tutta la larghezza disponibile
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              padding: "10px",
+              width: "100%",
             }}
           >
             {user && !user.isAdmin ? (

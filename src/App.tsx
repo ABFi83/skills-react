@@ -7,6 +7,7 @@ import { AuthProvider } from "./Context/AuthContext";
 import ProjectDetails from "./Components/ProjectDetails/ProjectDetails"; // Importa il componente dei dettagli del progetto
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import { ProjectProvider } from "./Context/ProjectContext";
+import ProjectDetailsLM from "./Components/ProjectDetailsLM/ProjectDetailsLM";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,6 +39,8 @@ function App() {
                 {/* Aggiungi Header fuori dalla rotta */}
                 <Route path="/main/*" element={<Main />} />
                 <Route path="/project/:id" element={<ProjectDetails />} />
+                <Route path="/project/:id/lm" element={<ProjectDetailsLM />} />
+                <Route path="/project/new" element={<span />} />
               </Route>
 
               {/* Rotta di fallback per gli utenti non autenticati */}
