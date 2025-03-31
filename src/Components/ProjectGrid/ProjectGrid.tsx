@@ -3,18 +3,35 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import ProjectCard from "../ProjectCard/ProjectCard";
 import { Project } from "../../Interfaces/Project";
-import { UserResponse } from "../../Interfaces/User";
 import ProjectCardLM from "../ProjectCardLM/ProjectCardLM";
+import { useAuth } from "../../Context/AuthContext";
+import ProjectCardADD from "../ProjectCardADD/ProjectCardADD";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface ProjectGridProps {
   projects: Project[];
-  user?: UserResponse;
 }
 
-const ProjectGrid = ({ projects, user }: ProjectGridProps) => {
+const ProjectGrid = ({ projects }: ProjectGridProps) => {
   const columns = 3;
+  const { user } = useAuth();
+
+  // Verifica se il progetto "ADD" esiste già nella lista
+  const addProjectExists = projects.some((project) => project.id === "ADD");
+
+  // Se l'utente è amministratore e il progetto "ADD" non esiste, aggiungilo
+  if (user?.isAdmin && !addProjectExists) {
+    let add: Project = {
+      id: "ADD", // ID unico per il progetto "ADD"
+      projectName: "Add New Project",
+      description: "",
+      evaluations: [],
+      labelEvaluations: [],
+      users: [],
+    };
+    projects.push(add); // Aggiungi il progetto "ADD" alla lista
+  }
 
   const layouts = {
     lg: projects.map((project, index) => ({
@@ -54,8 +71,10 @@ const ProjectGrid = ({ projects, user }: ProjectGridProps) => {
           >
             {user && !user.isAdmin ? (
               <ProjectCard project={project} />
-            ) : (
+            ) : project.id !== "ADD" ? (
               <ProjectCardLM project={project} />
+            ) : (
+              <ProjectCardADD />
             )}
           </div>
         ))}

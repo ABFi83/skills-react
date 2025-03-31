@@ -5,7 +5,7 @@ export interface Project {
   id: string;
   projectName: string;
   description: string;
-  role: RoleResponse;
+  role?: RoleResponse;
   client?: ClientResponse;
   evaluations: Evaluation[];
   labelEvaluations: Label[];

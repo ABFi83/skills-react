@@ -1,42 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext"; // Aggiungi useAuth
 import "./Header.css";
-import { UserResponse } from "../../Interfaces/User";
 import UserProfile from "../UserProfile/UserProfile";
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
-import UserApiService from "../../Service/UserApiService";
 
 interface UserInterface {
-  user?: UserResponse;
   onLogout: () => void;
 }
 
-export default function Header({ user, onLogout }: UserInterface) {
-  const [currentUser, setCurrentUser] = useState<UserResponse | undefined>(
-    user
-  );
+export default function Header({ onLogout }: UserInterface) {
+  const { user, logout } = useAuth(); // Usa il contesto per ottenere l'utente e la funzione logout
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!currentUser) {
-      UserApiService.getUser()
-        .then((res) => res)
-        .then((data) => setCurrentUser(data))
-        .catch((error) =>
-          console.error("Errore nel recupero dell'utente:", error)
-        );
-    }
-  }, [currentUser]);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
 
   const handleLogout = () => {
-    onLogout();
-    setCurrentUser(undefined);
-    navigate("/");
+    logout(); // Usa la funzione logout dal contesto
+    navigate("/"); // Naviga alla pagina di login
   };
 
   return (
@@ -48,17 +32,13 @@ export default function Header({ user, onLogout }: UserInterface) {
         </div>
       </div>
       <div className="header-right">
-        <div className="header-user" />
         <div className="header-logo" onClick={toggleMenu}>
           <img src="logo192.png" alt="Logo" />
           {menuOpen && (
             <div className="dropdown-menu">
               <p>Benvenuto,</p>
-              {currentUser ? (
-                <UserProfile
-                  username={currentUser.username}
-                  clientId={currentUser.code}
-                />
+              {user ? (
+                <UserProfile username={user.username} clientId={user.code} />
               ) : (
                 <p>Ospite</p>
               )}
