@@ -5,11 +5,7 @@ import "./Header.css";
 import UserProfile from "../UserProfile/UserProfile";
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
 
-interface UserInterface {
-  onLogout: () => void;
-}
-
-export default function Header({ onLogout }: UserInterface) {
+export default function Header() {
   const { user, logout } = useAuth(); // Usa il contesto per ottenere l'utente e la funzione logout
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();

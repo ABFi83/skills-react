@@ -28,7 +28,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [token]);
 
-  // Modifica la funzione login per accettare username e password
   const login = async (username: string, password: string) => {
     try {
       const token = await UserApiService.login(username, password);

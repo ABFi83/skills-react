@@ -15,9 +15,8 @@ const PrivateRoute = () => {
 
   return (
     <div>
-      {/* Qui inserisci il tuo header, che sarà visibile per tutte le rotte protette */}
-      <Header onLogout={() => {}} />
-      <Outlet /> {/* Renderizza le rotte figlie */}
+      <Header />
+      <Outlet />
     </div>
   );
 };

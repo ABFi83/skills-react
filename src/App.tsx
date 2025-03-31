@@ -6,6 +6,7 @@ import ErrorBanner from "./Components/ErrorBanner/ErrorBanner";
 import { AuthProvider } from "./Context/AuthContext";
 import ProjectDetails from "./Components/ProjectDetails/ProjectDetails"; // Importa il componente dei dettagli del progetto
 import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import { ProjectProvider } from "./Context/ProjectContext";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -22,28 +23,30 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app-container">
-          {showBanner && errorMessage && (
-            <ErrorBanner message={errorMessage} onClose={closeBanner} />
-          )}
-          <Routes>
-            <Route path="/login" element={<Login />} />
+    <ProjectProvider>
+      <AuthProvider>
+        <Router>
+          <div className="app-container">
+            {showBanner && errorMessage && (
+              <ErrorBanner message={errorMessage} onClose={closeBanner} />
+            )}
+            <Routes>
+              <Route path="/login" element={<Login />} />
 
-            {/* Proteggi la rotta principale e la rotta del progetto */}
-            <Route element={<PrivateRoute />}>
-              {/* Aggiungi Header fuori dalla rotta */}
-              <Route path="/main" element={<Main />} />
-              <Route path="/project/:id" element={<ProjectDetails />} />
-            </Route>
+              {/* Proteggi la rotta principale e la rotta del progetto */}
+              <Route element={<PrivateRoute />}>
+                {/* Aggiungi Header fuori dalla rotta */}
+                <Route path="/main/*" element={<Main />} />
+                <Route path="/project/:id" element={<ProjectDetails />} />
+              </Route>
 
-            {/* Rotta di fallback per gli utenti non autenticati */}
-            <Route path="*" element={<Login />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+              {/* Rotta di fallback per gli utenti non autenticati */}
+              <Route path="*" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </AuthProvider>
+    </ProjectProvider>
   );
 }
 

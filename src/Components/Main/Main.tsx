@@ -1,8 +1,7 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProjectGrid from "../ProjectGrid/ProjectGrid";
-import ProjectDetails from "../ProjectDetails/ProjectDetails";
-import Header from "../Header/Header";
+
 import ProjectApiService from "../../Service/ProjectApiService";
 import { Project } from "../../Interfaces/Project";
 
@@ -10,11 +9,6 @@ const Main = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/"; // Redirige a login
-  };
 
   useEffect(() => {
     const fetchProjects = async () => {

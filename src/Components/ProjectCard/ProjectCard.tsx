@@ -1,25 +1,42 @@
 import { Link } from "react-router-dom";
 import { Project } from "../../Interfaces/Project";
-import { UserResponse } from "../../Interfaces/User";
 import "./ProjectCard.css";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import DataExtractorService from "../../Service/DataExtractorService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-interface UserInterface {
-  user: UserResponse;
-}
+import { useProject } from "../../Context/ProjectContext"; // Importa il contesto
+
 interface ProjectInterface {
   project: Project;
 }
+
 const ProjectCard = ({ project }: ProjectInterface) => {
+  const { setProjects } = useProject(); // Usa il contesto per aggiornare il progetto selezionato
+
   const { labels, values } = DataExtractorService({
     labelsData: project.labelEvaluations,
     valuesData: project.evaluations ? project.evaluations[0].values : [],
   });
 
+  const handleProjectClick = () => {
+    setProjects((prevProjects) => {
+      const projectExists = prevProjects.some((p) => p.id === project.id);
+
+      if (projectExists) {
+        return prevProjects.map((p) => (p.id === project.id ? project : p));
+      } else {
+        return [...prevProjects, project];
+      }
+    });
+  };
+
   return (
-    <Link to={`/project/${project.id}`} className="project-card-link">
+    <Link
+      to={`/project/${project.id}`}
+      className="project-card-link"
+      onClick={handleProjectClick}
+    >
       <div className="project-card">
         <div className="project-details">
           <h3>{project.projectName}</h3>
@@ -29,7 +46,7 @@ const ProjectCard = ({ project }: ProjectInterface) => {
               alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
-              gap: "32%", // Imposta lo spazio tra gli elementi
+              gap: "32%",
             }}
           >
             <RoleDisplay roleCode={project.role} />
