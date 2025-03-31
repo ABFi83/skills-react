@@ -50,7 +50,6 @@ export default function Header() {
               ) : (
                 <p>Ospite</p>
               )}
-
               <p
                 className="logout-text"
                 onClick={handleLogout}
