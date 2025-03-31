@@ -100,3 +100,33 @@
 .file-input {
   display: none;
 }
+.image-preview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.upload-container {
+  margin-top: 20px;
+}
+
+.upload-btn {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.file-input {
+  display: none;
+}

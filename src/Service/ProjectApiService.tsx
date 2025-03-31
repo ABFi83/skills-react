@@ -42,6 +42,38 @@ const ProjectApiService = {
       throw error;
     }
   },
+
+  updateProjectDetail: async (id: string, updatedProject: any) => {
+    const response = await api.put(`/projects/${id}`, updatedProject);
+    return response.data;
+  },
+
+  // Funzione per caricare un file
+  uploadProjectFile: async (id: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await api.post(`/projects/${id}/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  },
+
+  async createProject(projectData: {
+    projectName: string;
+    description: string;
+    clientCode: string;
+  }) {
+    try {
+      const response = await api.post("/projects", projectData);
+      return response.data;
+    } catch (error) {
+      throw new Error("Errore nella creazione del progetto");
+    }
+  },
 };
 
 export default ProjectApiService;

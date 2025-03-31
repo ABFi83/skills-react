@@ -40,7 +40,7 @@ function App() {
                 <Route path="/main/*" element={<Main />} />
                 <Route path="/project/:id" element={<ProjectDetails />} />
                 <Route path="/project/:id/lm" element={<ProjectDetailsLM />} />
-                <Route path="/project/new" element={<span />} />
+                <Route path="/project/new" element={<ProjectDetailsLM />} />
               </Route>
 
               {/* Rotta di fallback per gli utenti non autenticati */}
