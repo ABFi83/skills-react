@@ -5,24 +5,29 @@ import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
 import { Project } from "../../Interfaces/Project";
+import ClientSearch from "../ClientSearch/ClienteSearch";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Usato per la navigazione in caso di creazione del progetto
+  const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
-  const [isEditing, setIsEditing] = useState(true); // Impostato su true per essere sempre in modalità edit
+  const [isEditing, setIsEditing] = useState(false); // Impostato su false per la modalità read-only di default
   const [editedProject, setEditedProject] = useState({
     projectName: "",
     description: "",
     clientCode: "",
+    clientName: "",
   });
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  // Effetto per caricare il progetto esistente se id è presente
+  // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
     const fetchProject = async () => {
-      if (!id) return; // Non fare nulla se non c'è un id (per la creazione)
+      if (!id) {
+        setIsEditing(true);
+        return;
+      }
       try {
         const response = await ProjectApiService.getProjectDetail(id);
         setProject(response);
@@ -30,9 +35,11 @@ const ProjectDetailsLM = () => {
           projectName: response.projectName,
           description: response.description,
           clientCode: response.client?.code || "",
+          clientName: response.client?.name || "",
         });
+        setIsEditing(false);
       } catch (error) {
-        console.error("Errore nel caricamento:", error);
+        console.error("Errore nel caricamento del progetto:", error);
       }
     };
 
@@ -41,34 +48,24 @@ const ProjectDetailsLM = () => {
 
   const handleEditClick = () => setIsEditing(true);
 
-  // Funzione per creare un nuovo progetto
   const handleSaveClick = async () => {
     try {
       if (project || !id) {
         const updatedProject = { ...editedProject };
-
         let response;
-
         if (id) {
-          // Se c'è un id, aggiornare il progetto
           response = await ProjectApiService.updateProjectDetail(
             id,
             updatedProject
           );
         } else {
-          // Se non c'è un id, creare un nuovo progetto
           response = await ProjectApiService.createProject(updatedProject);
         }
-
         if (file) {
-          // Se c'è un file, caricarlo
           await ProjectApiService.uploadProjectFile(response.id, file);
         }
-
         setProject(response);
         setIsEditing(false);
-
-        // Navigare verso la pagina del progetto (o dashboard) dopo la creazione
         if (!id) navigate(`/projects/${response.id}`);
       }
     } catch (error) {
@@ -80,11 +77,17 @@ const ProjectDetailsLM = () => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
       setFile(selectedFile);
-
-      // Crea un URL temporaneo per l'anteprima dell'immagine
       const objectUrl = URL.createObjectURL(selectedFile);
       setPreviewUrl(objectUrl);
     }
+  };
+
+  // Callback per gestire la selezione del cliente
+  const handleClientSelect = (clientCode: string) => {
+    setEditedProject({
+      ...editedProject,
+      clientCode: clientCode,
+    });
   };
 
   return (
@@ -99,47 +102,68 @@ const ProjectDetailsLM = () => {
 
       <div className="container">
         <div className="left">
-          <input
-            type="text"
-            value={editedProject.projectName}
-            onChange={(e) =>
-              setEditedProject({
-                ...editedProject,
-                projectName: e.target.value,
-              })
-            }
-            placeholder="Nome del progetto"
-          />
+          <div className="left-section">
+            <input
+              type="text"
+              value={editedProject.projectName}
+              onChange={(e) =>
+                setEditedProject({
+                  ...editedProject,
+                  projectName: e.target.value,
+                })
+              }
+              placeholder="Nome del progetto"
+              readOnly={!isEditing} // Aggiungi la condizione readOnly
+              disabled={!isEditing} // Disabilita il campo quando non in modalità edit
+            />
+          </div>
 
-          <textarea
-            value={editedProject.description}
-            onChange={(e) =>
-              setEditedProject({
-                ...editedProject,
-                description: e.target.value,
-              })
-            }
-            placeholder="Descrizione del progetto"
-          />
+          <div className="left-section">
+            <textarea
+              value={editedProject.description}
+              onChange={(e) =>
+                setEditedProject({
+                  ...editedProject,
+                  description: e.target.value,
+                })
+              }
+              placeholder="Descrizione del progetto"
+              readOnly={!isEditing} // Aggiungi la condizione readOnly
+              disabled={!isEditing} // Disabilita il campo quando non in modalità edit
+            />
+          </div>
+
+          <div className="left-section">
+            <ClientSearch
+              value={editedProject.clientCode}
+              name={editedProject.clientName}
+              onChange={(value: any) =>
+                setEditedProject({ ...editedProject, clientCode: value })
+              }
+              onClientSelect={handleClientSelect}
+              readOnly={!isEditing} // Passa la condizione di readOnly anche al ClientSearch
+            />
+          </div>
         </div>
 
-        <div className="image-container">
-          {/* Mostra l'anteprima dell'immagine se è stata caricata */}
-          {previewUrl ? (
-            <img
-              src={previewUrl}
-              alt="Anteprima immagine"
-              className="image-preview"
-            />
-          ) : (
-            project?.client && (
+        <div className="right">
+          <div className="image-container">
+            {previewUrl ? (
               <img
-                src={getClientLogoUrl(project.client.code)}
-                alt="Client Logo"
-                className="client-logo"
+                src={previewUrl}
+                alt="Anteprima immagine"
+                className="image-preview"
               />
-            )
-          )}
+            ) : (
+              project?.client && (
+                <img
+                  src={getClientLogoUrl(project.client.code)}
+                  alt="Client Logo"
+                  className="client-logo"
+                />
+              )
+            )}
+          </div>
 
           {isEditing && (
             <div className="upload-container">
