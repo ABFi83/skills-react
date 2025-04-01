@@ -346,3 +346,70 @@ table-header {
 .delete-button:hover {
   background-color: #d32f2f;
 }
+
+/* Contenitore delle skill */
+.skills-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento del dropdown */
+  overflow: visible; /* Assicura che il dropdown non venga tagliato */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista delle skill */
+.skills-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Dropdown delle skill */
+.skills-container .skill-search-dropdown {
+  flex: 0; /* Non occupa spazio di default */
+  width: 0; /* Larghezza iniziale 0 */
+  overflow: hidden; /* Nasconde il contenuto quando non visibile */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Quando il dropdown è visibile */
+.skills-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.skills-container.dropdown-visible .skill-search-dropdown {
+  flex: 0.3; /* Il dropdown occupa il 30% */
+  width: auto; /* Permette al dropdown di occupare spazio */
+}
+
+/* Dropdown list */
+.dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Dropdown item */
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* No results message */
+.dropdown-no-results {
+  padding: 10px;
+  text-align: center;
+  color: #999;
+}

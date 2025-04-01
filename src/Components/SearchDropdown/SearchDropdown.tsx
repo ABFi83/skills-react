@@ -31,6 +31,7 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({
       setIsLoading(true);
       try {
         const response = await fetchItems(searchQuery); // Chiamata API
+        console.log("Risposta API:", response); // Log della risposta
         setItems(response);
       } catch (error) {
         console.error("Errore nel caricamento degli elementi:", error);

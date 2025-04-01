@@ -21,26 +21,30 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+/* Contenitore del dropdown */
+.skill-search-dropdown {
+  position: relative; /* Assicura che il dropdown sia posizionato rispetto al contenitore */
+  z-index: 1; /* Imposta un livello superiore rispetto agli altri elementi */
+}
+
 /* Stile per la lista dropdown */
 .dropdown-list {
-  position: absolute;
-  top: 100%;
+  position: absolute; /* Posiziona il dropdown sopra gli altri elementi */
+  top: 100%; /* Posiziona il dropdown sotto l'input */
   left: 0;
   right: 0;
-  background: #fff;
+  background: white;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 5px;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra per visibilità */
+  z-index: 10; /* Assicura che il dropdown sia sopra altri elementi */
+  max-height: 200px; /* Limita l'altezza del dropdown */
+  overflow-y: auto; /* Aggiunge lo scroll se necessario */
 }
 
 /* Stile per gli elementi della dropdown */
 .dropdown-item {
-  padding: 10px 15px;
-  font-size: 14px;
+  padding: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -51,10 +55,9 @@
 
 /* Stile per il messaggio "Nessun risultato trovato" */
 .dropdown-no-results {
-  padding: 10px 15px;
-  font-size: 14px;
-  color: #999;
+  padding: 10px;
   text-align: center;
+  color: #999;
 }
 
 /* Stile per il messaggio di caricamento */

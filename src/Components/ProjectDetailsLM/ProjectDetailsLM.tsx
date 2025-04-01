@@ -7,8 +7,8 @@ import "./ProjectDetailsLM.css";
 import { Project } from "../../Interfaces/Project";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-import SkillSearch from "../SkillSearch/SkillSearch"; // Importa il componente SkillSearch
 import SearchDropdown from "../SearchDropdown/SearchDropdown";
+import { getSkills } from "../../Service/SkillService";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -222,20 +222,6 @@ const ProjectDetailsLM = () => {
               )
             )}
           </div>
-
-          {isEditing && (
-            <div className="upload-container">
-              <label htmlFor="file-upload" className="upload-btn">
-                Carica File
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                className="file-input"
-                onChange={handleFileChange}
-              />
-            </div>
-          )}
         </div>
       </div>
 
@@ -317,7 +303,6 @@ const ProjectDetailsLM = () => {
 
       {activeTab === "tab2" && isEditing && (
         <div className="tab2-content">
-          {/* Sezione Skill */}
           <div className="skills-section">
             <div className="table-header">
               <h3>Lista delle Skill</h3>
@@ -325,18 +310,36 @@ const ProjectDetailsLM = () => {
                 +
               </button>
             </div>
-            <div className="list">
-              {project?.labelEvaluations.map((label, index) => (
-                <div key={index} className="list-item">
-                  {label.label}
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteSkill(index)}
-                  >
-                    -
-                  </button>
+            <div
+              className={`skills-container ${
+                isSkillSearchVisible ? "dropdown-visible" : ""
+              }`}
+            >
+              <div className="list">
+                {project?.labelEvaluations.map((label, index) => (
+                  <div key={index} className="list-item">
+                    {label.label}
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteSkill(index)}
+                    >
+                      -
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Mostra il componente SearchDropdown accanto alla lista */}
+              {isSkillSearchVisible && (
+                <div className="skill-search-dropdown">
+                  <SearchDropdown
+                    placeholder="Cerca skill"
+                    fetchItems={getSkills}
+                    onItemSelect={handleSkillSelect}
+                    initialValue=""
+                  />
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
