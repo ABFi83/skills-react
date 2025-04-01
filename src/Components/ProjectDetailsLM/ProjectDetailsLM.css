@@ -130,3 +130,123 @@
 .read-only-icon:hover {
   color: #0056b3;
 }
+
+.tabs-container {
+  margin-top: 20px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tab-button.active {
+  border-bottom: 2px solid #007bff;
+  font-weight: bold;
+}
+
+.tab-button:hover {
+  background-color: #f0f0f0;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.tab1-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tab1-content th,
+.tab1-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.tab1-content th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.tab1-content td {
+  background-color: #fff;
+}
+
+.tab2-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tab1-content th,
+.tab1-content td,
+.tab2-content th,
+.tab2-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.skills-table,
+.users-table {
+  margin-bottom: 20px;
+}
+
+.tab2-content {
+  display: flex; /* Dispone gli elementi in orizzontale */
+  flex-wrap: wrap; /* Permette di andare su più righe se lo spazio è insufficiente */
+  gap: 20px; /* Spaziatura tra le tabelle */
+  margin-top: 20px;
+}
+
+.skills-section,
+.users-section {
+  flex: 1 1 calc(50% - 20px); /* Ogni tabella occupa il 50% dello spazio disponibile meno il gap */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.skills-section h3,
+.users-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}

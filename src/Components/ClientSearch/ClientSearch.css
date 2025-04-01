@@ -4,31 +4,38 @@
 }
 
 .client-input {
-  width: 100%;
+  width: 100%; /* L'input occupa tutta la larghezza del contenitore */
+  box-sizing: border-box; /* Include padding e bordi nella larghezza totale */
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
+.client-search {
+  position: relative; /* Necessario per posizionare la lista rispetto all'input */
+}
+
 .client-list {
-  position: absolute;
-  top: 100%;
+  position: absolute; /* Posiziona la lista sotto l'input */
+  top: 100%; /* Posiziona la lista immediatamente sotto l'input */
   left: 0;
-  right: 0;
+  width: calc(
+    100% - 2px
+  ); /* La lista avrà la stessa larghezza dell'input, considerando i bordi */
   background-color: white;
   border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  border-radius: 5px;
+  max-height: 200px; /* Limita l'altezza della lista */
+  overflow-y: auto; /* Aggiunge lo scroll se necessario */
+  z-index: 10; /* Assicura che la lista sia sopra altri elementi */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+  box-sizing: border-box; /* Include padding e bordi nella larghezza totale */
 }
 
 .client-item {
   padding: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .client-item:hover {

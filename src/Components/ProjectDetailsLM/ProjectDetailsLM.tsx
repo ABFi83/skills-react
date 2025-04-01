@@ -6,6 +6,8 @@ import { getClientLogoUrl } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
 import { Project } from "../../Interfaces/Project";
 import ClientSearch from "../ClientSearch/ClienteSearch";
+import UserProfile from "../UserProfile/UserProfile";
+import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -20,6 +22,7 @@ const ProjectDetailsLM = () => {
   });
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -88,6 +91,10 @@ const ProjectDetailsLM = () => {
       ...editedProject,
       clientCode: clientCode,
     });
+  };
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
   };
 
   return (
@@ -187,6 +194,84 @@ const ProjectDetailsLM = () => {
           )}
         </div>
       </div>
+
+      {!isEditing && (
+        <div className="tabs-container">
+          <div className="tabs">
+            <button
+              className={`tab-button ${activeTab === "tab1" ? "active" : ""}`}
+              onClick={() => handleTabClick("tab1")}
+            >
+              Andamento
+            </button>
+            <button
+              className={`tab-button ${activeTab === "tab2" ? "active" : ""}`}
+              onClick={() => handleTabClick("tab2")}
+            >
+              Skill e Utenti
+            </button>
+          </div>
+
+          <div className="tab-content">
+            {activeTab === "tab1" && (
+              <div className="tab1-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Skill</th>
+                      {Array.from({ length: 10 }, (_, index) => (
+                        <th key={index + 1}>{index + 1}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Genera una riga per ogni skill */}
+                    {project?.labelEvaluations.map((label, index) => (
+                      <tr key={index}>
+                        <td>{label.label}</td>
+                        {/* Genera 10 celle vuote per ogni skill */}
+                        {Array.from({ length: 10 }, (_, colIndex) => (
+                          <td key={colIndex}></td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === "tab2" && (
+              <div className="tab2-content">
+                <div className="skills-section">
+                  <h3>Lista delle Skill</h3>
+                  <div className="list">
+                    {project?.labelEvaluations.map((label, index) => (
+                      <div key={index} className="list-item">
+                        {label.label}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="users-section">
+                  <h3>Lista degli Utenti</h3>
+                  <div className="list">
+                    {project?.users.map((user, index) => (
+                      <div key={index} className="list-item">
+                        <UserProfile
+                          username={user.username}
+                          clientId={user.code}
+                        />
+                        {user.role && <RoleDisplay roleCode={user.role} />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
