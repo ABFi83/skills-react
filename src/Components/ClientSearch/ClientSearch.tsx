@@ -19,12 +19,14 @@ const ClientSearch = ({
   readOnly,
 }: ClientSearchProps) => {
   const [clients, setClients] = useState<any[]>([]); // Array di clienti
-  const [searchQuery, setSearchQuery] = useState<string>(name); // Query di ricerca
+  const [searchQuery, setSearchQuery] = useState<string>(name); // Mostra il vecchio valore
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Controlla la visibilità della dropdown
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!readOnly) {
-      setSearchQuery(name);
+      setSearchQuery(name); // Mostra il vecchio valore quando entri in modalità edit
+      setIsDropdownVisible(false); // Nascondi la dropdown inizialmente
     }
   }, [name, readOnly]);
 
@@ -41,22 +43,31 @@ const ClientSearch = ({
       }
     };
 
-    if (!readOnly && searchQuery) {
+    // Effettua la chiamata API solo se c'è un valore nel campo di ricerca
+    if (!readOnly && searchQuery.trim().length > 0) {
       fetchClients();
+    } else {
+      setClients([]); // Svuota la lista se l'input è vuoto
     }
   }, [searchQuery, readOnly]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setIsDropdownVisible(value.trim().length > 0); // Mostra la dropdown solo se c'è testo
+  };
 
   const handleClientSelect = (clientCode: string, clientName: string) => {
     onClientSelect(clientCode); // Chiama la callback con il codice del cliente
     setSearchQuery(clientName); // Imposta il nome del cliente nell'input
-    setClients([]); // Nasconde la lista dei clienti
+    setIsDropdownVisible(false); // Nasconde la dropdown dopo la selezione
+    setClients([]); // Svuota la lista dei clienti
   };
 
   return (
     <div className="client-search">
       {readOnly ? (
         <div className="client-display">
-          {/* In modalità readOnly, mostriamo solo il nome del cliente */}
           <span>{name || "Seleziona un cliente"}</span>
         </div>
       ) : (
@@ -64,12 +75,12 @@ const ClientSearch = ({
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Cerca cliente"
             disabled={readOnly} // Disabilita la ricerca in modalità readOnly
           />
           {isLoading && <div>Loading...</div>}
-          {clients.length > 0 && !isLoading && (
+          {isDropdownVisible && clients.length > 0 && !isLoading && (
             <div className="client-list">
               {clients.map((client) => (
                 <div

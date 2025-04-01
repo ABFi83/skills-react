@@ -5,9 +5,10 @@ import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
 import { Project } from "../../Interfaces/Project";
-import ClientSearch from "../ClientSearch/ClienteSearch";
+import ClientSearch from "../ClientSearch/ClientSearch";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
+import SkillSearch from "../SkillSearch/SkillSearch"; // Importa il componente SkillSearch
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -23,6 +24,7 @@ const ProjectDetailsLM = () => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
+  const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -98,13 +100,18 @@ const ProjectDetailsLM = () => {
   };
 
   const handleAddSkill = () => {
+    setIsSkillSearchVisible(true); // Mostra il componente SkillSearch
+  };
+
+  const handleSkillSelect = (selectedSkill: { label: string }) => {
     if (project) {
-      const newSkill = { label: "Nuova Skill" }; // Valore predefinito
+      const newSkill = { id: "0", label: selectedSkill.label, shortLabel: "" };
       setProject({
         ...project,
-        //labelEvaluations: [...project.labelEvaluations, newSkill],
+        labelEvaluations: [...project.labelEvaluations, newSkill],
       });
     }
+    setIsSkillSearchVisible(false); // Nascondi il componente SkillSearch dopo la selezione
   };
 
   const handleDeleteSkill = (index: number) => {
@@ -314,11 +321,10 @@ const ProjectDetailsLM = () => {
 
       {activeTab === "tab2" && isEditing && (
         <div className="tab2-content">
-          {/* Sezione Skill */}
           <div className="skills-section">
             <div className="table-header">
               <h3>Lista delle Skill</h3>
-              <button className="add-button" onClick={() => handleAddSkill()}>
+              <button className="add-button" onClick={handleAddSkill}>
                 +
               </button>
             </div>
@@ -336,8 +342,10 @@ const ProjectDetailsLM = () => {
               ))}
             </div>
           </div>
+          {isSkillSearchVisible && (
+            <SkillSearch onSkillSelect={handleSkillSelect} />
+          )}
 
-          {/* Sezione Utenti */}
           <div className="users-section">
             <div className="table-header">
               <h3>Lista degli Utenti</h3>
