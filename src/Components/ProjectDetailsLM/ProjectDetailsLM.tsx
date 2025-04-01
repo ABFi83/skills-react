@@ -103,9 +103,14 @@ const ProjectDetailsLM = () => {
     setIsSkillSearchVisible(true); // Mostra il componente SkillSearch
   };
 
-  const handleSkillSelect = (selectedSkill: { label: string }) => {
+  const handleSkillSelect = (selectedSkill: any) => {
     if (project) {
-      const newSkill = { id: "0", label: selectedSkill.label, shortLabel: "" };
+      console.log("Skill selezionata:", selectedSkill);
+      const newSkill = {
+        id: selectedSkill.id,
+        label: selectedSkill.name,
+        shortLabel: selectedSkill.shortLabel,
+      };
       setProject({
         ...project,
         labelEvaluations: [...project.labelEvaluations, newSkill],

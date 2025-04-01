@@ -8,6 +8,7 @@
   width: 100%;
   height: auto;
   padding: 20px;
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
 }
 
 .top-right {
@@ -368,7 +369,7 @@ table-header {
 .skills-container .skill-search-dropdown {
   flex: 0; /* Non occupa spazio di default */
   width: 0; /* Larghezza iniziale 0 */
-  overflow: hidden; /* Nasconde il contenuto quando non visibile */
+  overflow: visible; /* Nasconde il contenuto quando non visibile */
   transition: all 0.3s ease; /* Transizione fluida */
 }
 

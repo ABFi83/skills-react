@@ -23,11 +23,11 @@
 
 /* Contenitore del dropdown */
 .skill-search-dropdown {
-  position: relative; /* Assicura che il dropdown sia posizionato rispetto al contenitore */
+  position: relative; /* Mantieni il contenitore relativo */
   z-index: 1; /* Imposta un livello superiore rispetto agli altri elementi */
 }
 
-/* Stile per la lista dropdown */
+/* Lista del dropdown */
 .dropdown-list {
   position: absolute; /* Posiziona il dropdown sopra gli altri elementi */
   top: 100%; /* Posiziona il dropdown sotto l'input */
@@ -37,9 +37,10 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra per visibilità */
-  z-index: 10; /* Assicura che il dropdown sia sopra altri elementi */
+  z-index: 1500; /* Assicura che il dropdown sia sopra altri elementi */
   max-height: 200px; /* Limita l'altezza del dropdown */
   overflow-y: auto; /* Aggiunge lo scroll se necessario */
+  pointer-events: auto; /* Assicura che il dropdown sia cliccabile */
 }
 
 /* Stile per gli elementi della dropdown */
