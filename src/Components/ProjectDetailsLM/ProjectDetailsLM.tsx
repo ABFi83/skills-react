@@ -9,6 +9,9 @@ import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import SearchDropdown from "../SearchDropdown/SearchDropdown";
 import { getSkills } from "../../Service/SkillService";
+import { UserResponse } from "../../Interfaces/User";
+import UserApiService from "../../Service/UserApiService";
+import { getRoles } from "../../Service/RoleApiService";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -25,6 +28,8 @@ const ProjectDetailsLM = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
   const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
+  const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
+  const [isRoleSearchVisible, setIsRoleSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per i ruoli
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -129,14 +134,25 @@ const ProjectDetailsLM = () => {
   };
 
   const handleAddUser = () => {
+    setIsUserSearchVisible(true); // Mostra il componente SearchDropdown per gli utenti
+  };
+
+  const handleUserSelect = (selectedUser: any) => {
     if (project) {
-      const newUser = {
-        username: "Nuovo Utente",
-        code: `user-${Date.now()}`, // Genera un codice unico
-        role: "Nuovo Ruolo",
+      console.log("Utente selezionato:", selectedUser);
+      const newUser: UserResponse = {
+        id: selectedUser.id,
+        isAdmin: false,
+        username: selectedUser.username,
+        code: selectedUser.code,
+        role: selectedUser.role || "Nuovo Ruolo",
       };
-      //setProject({ ...project, users: [...project.users, newUser] });
+      setProject({
+        ...project,
+        users: [...project.users, newUser],
+      });
     }
+    setIsUserSearchVisible(false); // Nascondi il componente SearchDropdown dopo la selezione
   };
 
   const handleDeleteUser = (index: number) => {
@@ -146,6 +162,23 @@ const ProjectDetailsLM = () => {
       );
       setProject({ ...project, users: updatedUsers });
     }
+  };
+
+  const fetchUsers = async (query: string): Promise<any[]> => {
+    try {
+      const users = await UserApiService.getUsers(query);
+      console.log("Utenti trovati:", users);
+      return users;
+    } catch (error) {
+      console.error("Errore durante il recupero degli utenti:", error);
+      return [];
+    }
+  };
+
+  const handleRoleSelect = (selectedRole: any) => {
+    console.log("Ruolo selezionato:", selectedRole);
+    // Puoi aggiungere logica per associare il ruolo a un utente o altro
+    setIsRoleSearchVisible(false); // Nascondi il dropdown dopo la selezione
   };
 
   return (
@@ -288,17 +321,34 @@ const ProjectDetailsLM = () => {
               </div>
 
               <div className="users-section">
-                <h3>Lista degli Utenti</h3>
-                <div className="list">
-                  {project?.users.map((user, index) => (
-                    <div key={index} className="list-item">
-                      <UserProfile
-                        username={user.username}
-                        clientId={user.code}
-                      />
-                      {user.role && <RoleDisplay roleCode={user.role} />}
-                    </div>
-                  ))}
+                <div className="table-header">
+                  <h3>Lista degli Utenti</h3>
+                </div>
+                <div
+                  className={`users-container ${
+                    isUserSearchVisible || isRoleSearchVisible
+                      ? "dropdown-visible"
+                      : ""
+                  }`}
+                >
+                  {/* Lista degli utenti */}
+                  <div className="list">
+                    {project?.users.map((user, index) => (
+                      <div key={index} className="list-item">
+                        <UserProfile
+                          username={user.username}
+                          clientId={user.code}
+                        />
+                        {user.role && <RoleDisplay roleCode={user.role} />}
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteUser(index)}
+                        >
+                          -
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -351,23 +401,62 @@ const ProjectDetailsLM = () => {
           <div className="users-section">
             <div className="table-header">
               <h3>Lista degli Utenti</h3>
-              <button className="add-button" onClick={() => handleAddUser()}>
+              <button
+                className="add-button"
+                onClick={() => {
+                  setIsUserSearchVisible(true);
+                  setIsRoleSearchVisible(true); // Mostra entrambi i dropdown
+                }}
+              >
                 +
               </button>
             </div>
-            <div className="list">
-              {project?.users.map((user, index) => (
-                <div key={index} className="list-item">
-                  <UserProfile username={user.username} clientId={user.code} />
-                  {user.role && <RoleDisplay roleCode={user.role} />}
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteUser(index)}
-                  >
-                    -
-                  </button>
+            <div
+              className={`users-container ${
+                isUserSearchVisible ? "dropdown-visible" : ""
+              }`}
+            >
+              {/* Lista degli utenti */}
+              <div className="list">
+                {project?.users.map((user, index) => (
+                  <div key={index} className="list-item">
+                    <UserProfile
+                      username={user.username}
+                      clientId={user.code}
+                    />
+                    {user.role && <RoleDisplay roleCode={user.role} />}
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteUser(index)}
+                    >
+                      -
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Dropdowns per utenti e ruoli */}
+              {isUserSearchVisible && (
+                <div className="dropdowns-container">
+                  <div className="user-search-dropdown">
+                    <SearchDropdown
+                      placeholder="Cerca utente"
+                      fetchItems={fetchUsers}
+                      onItemSelect={handleUserSelect}
+                      initialValue=""
+                    />
+                  </div>
+
+                  <div className="role-search-dropdown">
+                    <SearchDropdown
+                      placeholder="Cerca ruolo"
+                      fetchItems={getRoles}
+                      onItemSelect={handleRoleSelect}
+                      initialValue=""
+                    />
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

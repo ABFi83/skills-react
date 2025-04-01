@@ -414,3 +414,83 @@ table-header {
   text-align: center;
   color: #999;
 }
+
+/* Contenitore degli utenti */
+.users-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Spaziatura tra la lista e i dropdown */
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento dei dropdown */
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista degli utenti */
+.users-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Contenitore dei dropdown */
+.users-container .dropdowns-container {
+  display: flex;
+  flex-direction: column; /* Dispone i dropdown uno sotto l'altro */
+  gap: 10px; /* Spaziatura tra i dropdown */
+  flex: 0; /* Non occupa spazio di default */
+  width: 0; /* Larghezza iniziale 0 */
+  overflow: hidden; /* Nasconde il contenuto quando non visibile */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Dropdown degli utenti */
+.users-container .user-search-dropdown,
+.users-container .role-search-dropdown {
+  width: 100%; /* I dropdown occupano tutta la larghezza */
+  z-index: 1000; /* Assicura che i dropdown siano sopra altri elementi */
+}
+
+/* Quando i dropdown sono visibili */
+.users-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.users-container.dropdown-visible .dropdowns-container {
+  flex: 0.3; /* I dropdown occupano il 30% */
+  width: auto; /* Permette ai dropdown di occupare spazio */
+}
+
+/* Contenitore dei ruoli */
+.roles-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Spaziatura tra la lista e il dropdown */
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento del dropdown */
+  overflow: visible; /* Assicura che il dropdown non venga tagliato */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista dei ruoli */
+.roles-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Dropdown dei ruoli */
+.roles-container .role-search-dropdown {
+  flex: 0; /* Non occupa spazio di default */
+  width: 0; /* Larghezza iniziale 0 */
+  overflow: hidden; /* Nasconde il contenuto quando non visibile */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Quando il dropdown è visibile */
+.roles-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.roles-container.dropdown-visible .role-search-dropdown {
+  flex: 0.3; /* Il dropdown occupa il 30% */
+  width: auto; /* Permette al dropdown di occupare spazio */
+}
