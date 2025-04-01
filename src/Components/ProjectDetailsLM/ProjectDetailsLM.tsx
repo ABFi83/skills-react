@@ -97,6 +97,45 @@ const ProjectDetailsLM = () => {
     setActiveTab(tab);
   };
 
+  const handleAddSkill = () => {
+    if (project) {
+      const newSkill = { label: "Nuova Skill" }; // Valore predefinito
+      setProject({
+        ...project,
+        //labelEvaluations: [...project.labelEvaluations, newSkill],
+      });
+    }
+  };
+
+  const handleDeleteSkill = (index: number) => {
+    if (project) {
+      const updatedSkills = project.labelEvaluations.filter(
+        (_, skillIndex) => skillIndex !== index
+      );
+      setProject({ ...project, labelEvaluations: updatedSkills });
+    }
+  };
+
+  const handleAddUser = () => {
+    if (project) {
+      const newUser = {
+        username: "Nuovo Utente",
+        code: `user-${Date.now()}`, // Genera un codice unico
+        role: "Nuovo Ruolo",
+      };
+      //setProject({ ...project, users: [...project.users, newUser] });
+    }
+  };
+
+  const handleDeleteUser = (index: number) => {
+    if (project) {
+      const updatedUsers = project.users.filter(
+        (_, userIndex) => userIndex !== index
+      );
+      setProject({ ...project, users: updatedUsers });
+    }
+  };
+
   return (
     <div className="project-details">
       <div className="top-right">
@@ -269,6 +308,57 @@ const ProjectDetailsLM = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "tab2" && isEditing && (
+        <div className="tab2-content">
+          {/* Sezione Skill */}
+          <div className="skills-section">
+            <div className="table-header">
+              <h3>Lista delle Skill</h3>
+              <button className="add-button" onClick={() => handleAddSkill()}>
+                +
+              </button>
+            </div>
+            <div className="list">
+              {project?.labelEvaluations.map((label, index) => (
+                <div key={index} className="list-item">
+                  {label.label}
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteSkill(index)}
+                  >
+                    -
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sezione Utenti */}
+          <div className="users-section">
+            <div className="table-header">
+              <h3>Lista degli Utenti</h3>
+              <button className="add-button" onClick={() => handleAddUser()}>
+                +
+              </button>
+            </div>
+            <div className="list">
+              {project?.users.map((user, index) => (
+                <div key={index} className="list-item">
+                  <UserProfile username={user.username} clientId={user.code} />
+                  {user.role && <RoleDisplay roleCode={user.role} />}
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteUser(index)}
+                  >
+                    -
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
