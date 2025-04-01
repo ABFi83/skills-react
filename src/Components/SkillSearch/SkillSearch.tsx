@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface SkillSearchProps {
-  onSkillSelect: (selectedSkill: { label: string }) => void; // Definizione della prop
+  onSkillSelect: (selectedSkill: { label: string }) => void;
 }
 
 const SkillSearch: React.FC<SkillSearchProps> = ({ onSkillSelect }) => {
+  const [searchQuery, setSearchQuery] = useState(""); // Stato per il valore dell'input
   const skills = [
     { label: "JavaScript" },
     { label: "React" },
     { label: "TypeScript" },
     { label: "Node.js" },
-  ]; // Esempio di skill disponibili
+    { label: "Python" },
+  ]; // Lista di skill disponibili
+
+  // Filtra le skill in base al testo digitato
+  const filteredSkills = skills.filter((skill) =>
+    skill.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSkillClick = (skill: { label: string }) => {
     onSkillSelect(skill); // Chiama la funzione di callback con la skill selezionata
@@ -18,14 +25,24 @@ const SkillSearch: React.FC<SkillSearchProps> = ({ onSkillSelect }) => {
 
   return (
     <div className="skill-search">
-      <h3>Seleziona una Skill</h3>
-      <ul>
-        {skills.map((skill, index) => (
-          <li key={index} onClick={() => handleSkillClick(skill)}>
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Cerca skill"
+      />
+      <div className="skill-list">
+        {filteredSkills.map((skill, index) => (
+          <div
+            key={index}
+            className="skill-item"
+            onClick={() => handleSkillClick(skill)}
+          >
             {skill.label}
-          </li>
+          </div>
         ))}
-      </ul>
+        {filteredSkills.length === 0 && <div>Nessuna skill trovata</div>}
+      </div>
     </div>
   );
 };

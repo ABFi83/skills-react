@@ -2,13 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
-import { getClientLogoUrl } from "../../Service/ClientService";
+import { getClientLogoUrl, getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
 import { Project } from "../../Interfaces/Project";
-import ClientSearch from "../ClientSearch/ClientSearch";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import SkillSearch from "../SkillSearch/SkillSearch"; // Importa il componente SkillSearch
+import SearchDropdown from "../SearchDropdown/SearchDropdown";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -173,8 +173,8 @@ const ProjectDetailsLM = () => {
                 })
               }
               placeholder="Nome del progetto"
-              readOnly={!isEditing} // Aggiungi la condizione readOnly
-              disabled={!isEditing} // Disabilita il campo quando non in modalità edit
+              readOnly={!isEditing}
+              disabled={!isEditing}
             />
           </div>
 
@@ -188,20 +188,18 @@ const ProjectDetailsLM = () => {
                 })
               }
               placeholder="Descrizione del progetto"
-              readOnly={!isEditing} // Aggiungi la condizione readOnly
-              disabled={!isEditing} // Disabilita il campo quando non in modalità edit
+              readOnly={!isEditing}
+              disabled={!isEditing}
             />
           </div>
 
           <div className="left-section">
-            <ClientSearch
-              value={editedProject.clientCode}
-              name={editedProject.clientName}
-              onChange={(value: any) =>
-                setEditedProject({ ...editedProject, clientCode: value })
-              }
-              onClientSelect={handleClientSelect}
-              readOnly={!isEditing} // Passa la condizione di readOnly anche al ClientSearch
+            <SearchDropdown
+              readOnly={!isEditing}
+              placeholder="Cerca cliente"
+              fetchItems={getClients}
+              onItemSelect={(client) => handleClientSelect(client.code)}
+              initialValue={editedProject.clientName}
             />
           </div>
         </div>
@@ -241,90 +239,89 @@ const ProjectDetailsLM = () => {
         </div>
       </div>
 
-      {!isEditing && (
-        <div className="tabs-container">
-          <div className="tabs">
-            <button
-              className={`tab-button ${activeTab === "tab1" ? "active" : ""}`}
-              onClick={() => handleTabClick("tab1")}
-            >
-              Andamento
-            </button>
-            <button
-              className={`tab-button ${activeTab === "tab2" ? "active" : ""}`}
-              onClick={() => handleTabClick("tab2")}
-            >
-              Skill e Utenti
-            </button>
-          </div>
+      <div className="tabs-container">
+        <div className="tabs">
+          <button
+            className={`tab-button ${activeTab === "tab1" ? "active" : ""}`}
+            onClick={() => handleTabClick("tab1")}
+          >
+            Andamento
+          </button>
+          <button
+            className={`tab-button ${activeTab === "tab2" ? "active" : ""}`}
+            onClick={() => handleTabClick("tab2")}
+          >
+            Skill e Utenti
+          </button>
+        </div>
 
-          <div className="tab-content">
-            {activeTab === "tab1" && (
-              <div className="tab1-content">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Skill</th>
-                      {Array.from({ length: 10 }, (_, index) => (
-                        <th key={index + 1}>{index + 1}</th>
+        <div className="tab-content">
+          {activeTab === "tab1" && (
+            <div className="tab1-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Skill</th>
+                    {Array.from({ length: 10 }, (_, index) => (
+                      <th key={index + 1}>{index + 1}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Genera una riga per ogni skill */}
+                  {project?.labelEvaluations.map((label, index) => (
+                    <tr key={index}>
+                      <td>{label.label}</td>
+                      {/* Genera 10 celle vuote per ogni skill */}
+                      {Array.from({ length: 10 }, (_, colIndex) => (
+                        <td key={colIndex}></td>
                       ))}
                     </tr>
-                  </thead>
-                  <tbody>
-                    {/* Genera una riga per ogni skill */}
-                    {project?.labelEvaluations.map((label, index) => (
-                      <tr key={index}>
-                        <td>{label.label}</td>
-                        {/* Genera 10 celle vuote per ogni skill */}
-                        {Array.from({ length: 10 }, (_, colIndex) => (
-                          <td key={colIndex}></td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-            {activeTab === "tab2" && (
-              <div className="tab2-content">
-                <div className="skills-section">
-                  <h3>Lista delle Skill</h3>
-                  <div className="list">
-                    {project?.labelEvaluations.map((label, index) => (
-                      <div key={index} className="list-item">
-                        {label.label}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="users-section">
-                  <h3>Lista degli Utenti</h3>
-                  <div className="list">
-                    {project?.users.map((user, index) => (
-                      <div key={index} className="list-item">
-                        <UserProfile
-                          username={user.username}
-                          clientId={user.code}
-                        />
-                        {user.role && <RoleDisplay roleCode={user.role} />}
-                      </div>
-                    ))}
-                  </div>
+          {activeTab === "tab2" && !isEditing && (
+            <div className="tab2-content">
+              <div className="skills-section">
+                <h3>Lista delle Skill</h3>
+                <div className="list">
+                  {project?.labelEvaluations.map((label, index) => (
+                    <div key={index} className="list-item">
+                      {label.label}
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
-          </div>
+
+              <div className="users-section">
+                <h3>Lista degli Utenti</h3>
+                <div className="list">
+                  {project?.users.map((user, index) => (
+                    <div key={index} className="list-item">
+                      <UserProfile
+                        username={user.username}
+                        clientId={user.code}
+                      />
+                      {user.role && <RoleDisplay roleCode={user.role} />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {activeTab === "tab2" && isEditing && (
         <div className="tab2-content">
+          {/* Sezione Skill */}
           <div className="skills-section">
             <div className="table-header">
               <h3>Lista delle Skill</h3>
-              <button className="add-button" onClick={handleAddSkill}>
+              <button className="add-button" onClick={() => handleAddSkill()}>
                 +
               </button>
             </div>
@@ -342,9 +339,6 @@ const ProjectDetailsLM = () => {
               ))}
             </div>
           </div>
-          {isSkillSearchVisible && (
-            <SkillSearch onSkillSelect={handleSkillSelect} />
-          )}
 
           <div className="users-section">
             <div className="table-header">

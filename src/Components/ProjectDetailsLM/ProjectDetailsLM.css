@@ -1,11 +1,13 @@
 .project-details {
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Allinea tutto a sinistra */
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   height: auto;
+  padding: 20px;
 }
 
 .top-right {
@@ -28,36 +30,40 @@
 
 .container {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
   margin-top: 80px;
   width: 100%;
+  gap: 20px;
 }
 
 .left {
   flex: 1;
-  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .right {
   flex: 0 0 200px; /* Impostiamo una larghezza fissa per la colonna di destra */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Allinea tutto a sinistra */
 }
 
 .left-section {
   margin-bottom: 20px;
 }
 
-.left input,
-.left textarea {
+.left-section input,
+.left-section textarea {
   width: 100%;
-  padding: 12px;
-  margin-top: 15px;
+  padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  outline: none;
 }
 
 .image-container {
@@ -65,6 +71,12 @@
   flex-direction: column;
   align-items: center;
   width: 150px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
 }
 
 .client-logo {
@@ -84,13 +96,14 @@
 }
 
 .upload-btn {
+  display: inline-block;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
-  padding: 10px 20px;
+  text-align: center;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 10px;
+  text-decoration: none;
 }
 
 .upload-btn:hover {
@@ -131,31 +144,43 @@
   color: #0056b3;
 }
 
+/* Contenitore delle tab */
 .tabs-container {
+  width: 100%; /* Occupa tutta la larghezza */
   margin-top: 20px;
 }
 
+/* Contenitore dei pulsanti delle tab */
 .tabs {
   display: flex;
-  border-bottom: 1px solid #ccc;
+  justify-content: space-between; /* Distribuisce uniformemente i pulsanti */
+  border-bottom: 2px solid #ccc; /* Linea di separazione sotto le tab */
 }
 
+/* Pulsanti delle tab */
 .tab-button {
-  padding: 10px 20px;
+  flex: 1; /* Ogni tab occupa lo stesso spazio */
+  padding: 10px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
   background-color: #f9f9f9;
   border: none;
-  border-bottom: 2px solid transparent;
   cursor: pointer;
-  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Tab attiva */
 .tab-button.active {
-  border-bottom: 2px solid #007bff;
-  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border-bottom: 2px solid #007bff; /* Linea di separazione per la tab attiva */
 }
 
+/* Hover sulle tab */
 .tab-button:hover {
-  background-color: #f0f0f0;
+  background-color: #e6e6e6;
 }
 
 .tab-content {
@@ -165,18 +190,6 @@
 .tab1-content table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.tab1-content th,
-.tab1-content td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
-
-.tab1-content th {
-  background-color: #f9f9f9;
   font-weight: bold;
 }
 
@@ -208,6 +221,7 @@
   flex-wrap: wrap; /* Permette di andare su più righe se lo spazio è insufficiente */
   gap: 20px; /* Spaziatura tra le tabelle */
   margin-top: 20px;
+  width: 100%;
 }
 
 .skills-section,
@@ -252,6 +266,47 @@ h3 {
 }
 
 .table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
