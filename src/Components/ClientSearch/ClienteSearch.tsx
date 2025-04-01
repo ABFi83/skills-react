@@ -46,9 +46,10 @@ const ClientSearch = ({
     }
   }, [searchQuery, readOnly]);
 
-  const handleClientSelect = (clientCode: string) => {
-    onClientSelect(clientCode); // Chiama la callback onClientSelect con il codice del cliente
-    setSearchQuery(""); // Pulisce la barra di ricerca
+  const handleClientSelect = (clientCode: string, clientName: string) => {
+    onClientSelect(clientCode); // Chiama la callback con il codice del cliente
+    setSearchQuery(clientName); // Imposta il nome del cliente nell'input
+    setClients([]); // Nasconde la lista dei clienti
   };
 
   return (
@@ -74,7 +75,7 @@ const ClientSearch = ({
                 <div
                   key={client.code}
                   className="client-item"
-                  onClick={() => handleClientSelect(client.code)}
+                  onClick={() => handleClientSelect(client.code, client.name)}
                 >
                   <span>{client.name}</span>
                 </div>

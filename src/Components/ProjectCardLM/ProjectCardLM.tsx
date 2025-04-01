@@ -15,12 +15,11 @@ const ProjectCardLM = ({ project }: ProjectInterface) => {
         <div className="project-details">
           <h3>{project.projectName}</h3>
 
-          {/* Contenitore per gli utenti */}
           <div
             style={{
               display: "flex",
-              flexWrap: "wrap", // Avvolge gli utenti se non c'è abbastanza spazio
-              gap: "10px", // Distanza tra gli utenti
+              flexWrap: "wrap",
+              gap: "10px",
               marginTop: "8px",
             }}
           >

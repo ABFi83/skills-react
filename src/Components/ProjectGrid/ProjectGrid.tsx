@@ -1,6 +1,7 @@
 import { Responsive, WidthProvider } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import "./ProjectGrid.css";
 import ProjectCard from "../ProjectCard/ProjectCard";
 import { Project } from "../../Interfaces/Project";
 import ProjectCardLM from "../ProjectCardLM/ProjectCardLM";
@@ -36,49 +37,27 @@ const ProjectGrid = ({ projects }: ProjectGridProps) => {
   const layouts = {
     lg: projects.map((project, index) => ({
       i: project.id.toString(),
-      x: (index % columns) * 4,
-      y: Math.floor(index / columns),
-      w: 4,
-      h: 2,
+      x: (index % columns) * (12 / columns), // Divide lo spazio in 3 colonne
+      y: Math.floor(index / columns), // Posiziona ogni progetto su una nuova riga ogni 3 elementi
+      w: 12 / columns, // Ogni progetto occupa 1/3 della larghezza
+      h: 2, // Altezza del progetto
       static: true,
     })),
   };
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-      <ResponsiveGridLayout
-        className="layout"
-        layouts={layouts}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 12, sm: 6, xs: 4, xxs: 2 }}
-        rowHeight={100}
-        isResizable={false}
-        isDraggable={false}
-        margin={[10, 10]}
-        containerPadding={[0, 0]}
-        style={{ flex: 1 }}
-      >
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              padding: "10px",
-              width: "100%",
-            }}
-          >
-            {user && !user.isAdmin ? (
-              <ProjectCard project={project} />
-            ) : project.id !== "ADD" ? (
-              <ProjectCardLM project={project} />
-            ) : (
-              <ProjectCardADD />
-            )}
-          </div>
-        ))}
-      </ResponsiveGridLayout>
+    <div className="project-grid-container">
+      {projects.map((project) => (
+        <div key={project.id} className="project-grid-item">
+          {user && !user.isAdmin ? (
+            <ProjectCard project={project} />
+          ) : project.id !== "ADD" ? (
+            <ProjectCardLM project={project} />
+          ) : (
+            <ProjectCardADD />
+          )}
+        </div>
+      ))}
     </div>
   );
 };

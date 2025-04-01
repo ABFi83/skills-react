@@ -1,0 +1,44 @@
+.layout {
+  display: flex;
+  flex-wrap: wrap; /* Permette di andare su più righe */
+  justify-content: space-between; /* Spaziatura uniforme tra gli elementi */
+}
+
+.layout > div {
+  flex: 0 0 calc(33.33% - 20px); /* Ogni elemento occupa 1/3 della larghezza meno il margine */
+  margin: 10px; /* Margine tra gli elementi */
+}
+
+.project-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonne di larghezza uguale */
+  gap: 20px; /* Spaziatura tra gli elementi */
+  padding: 20px; /* Padding interno del contenitore */
+}
+
+.project-grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* Sfondo bianco per ogni elemento */
+  border: none; /* Rimuove il bordo */
+
+  padding: 10px;
+}
+
+.project-card-lm {
+  width: 300px; /* Larghezza fissa */
+  height: 200px; /* Altezza fissa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* Sfondo bianco */
+  border-radius: 8px; /* Angoli arrotondati */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+}
+
+@media (max-width: 1200px) {
+  .project-grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonne per schermi medi */
+  }
+}

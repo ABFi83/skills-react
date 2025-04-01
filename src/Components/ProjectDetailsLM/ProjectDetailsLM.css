@@ -13,9 +13,7 @@
   top: 20px;
   right: 20px;
   background: white;
-  padding: 8px;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   cursor: pointer;
 }
 
@@ -110,4 +108,25 @@
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.read-only-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.read-only-icon:hover {
+  color: #0056b3;
+}
+
+.read-only-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 20px; /* Aumenta la dimensione dell'icona */
+}
+
+.read-only-icon:hover {
+  color: #0056b3;
 }

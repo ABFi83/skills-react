@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaEdit, FaSave } from "react-icons/fa";
+import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
@@ -66,7 +66,7 @@ const ProjectDetailsLM = () => {
         }
         setProject(response);
         setIsEditing(false);
-        if (!id) navigate(`/projects/${response.id}`);
+        if (!id) navigate(`/project/${response.id}/LM`);
       }
     } catch (error) {
       console.error("Errore nel salvataggio:", error);
@@ -94,7 +94,14 @@ const ProjectDetailsLM = () => {
     <div className="project-details">
       <div className="top-right">
         {isEditing ? (
-          <FaSave className="edit-icon" onClick={handleSaveClick} />
+          <>
+            <FaSave className="edit-icon" onClick={handleSaveClick} />
+            <FaTimes
+              className="read-only-icon"
+              onClick={() => setIsEditing(false)}
+              title="Imposta modalità sola lettura"
+            />
+          </>
         ) : (
           <FaEdit className="edit-icon" onClick={handleEditClick} />
         )}

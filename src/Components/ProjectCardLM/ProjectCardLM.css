@@ -4,17 +4,17 @@
 }
 
 .project-card {
+  width: 300px; /* Larghezza fissa */
+  height: 100px; /* Altezza fissa */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border: 2px solid #ddd; /* Bordo iniziale sottile */
-  border-radius: 12px; /* Angoli arrotondati */
-  background-color: #fff;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente il contenuto */
+  align-items: center; /* Centra orizzontalmente il contenuto */
+  background-color: #fff; /* Sfondo bianco */
+  border-radius: 8px; /* Angoli arrotondati */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+  overflow: hidden; /* Nasconde il contenuto che eccede */
+  text-align: center; /* Centra il testo */
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   cursor: pointer;
 }
@@ -28,6 +28,8 @@
 .project-details {
   flex-grow: 1;
   min-width: 200px; /* Evita che il testo diventi troppo stretto */
+  text-align: left; /* Allinea il testo a sinistra */
+  padding: 10px; /* Aggiungi un po' di padding per distanziare il testo dai bordi */
 }
 
 .project-details h3 {
