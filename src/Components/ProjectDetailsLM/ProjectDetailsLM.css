@@ -437,17 +437,29 @@ table-header {
   display: flex;
   flex-direction: column; /* Dispone i dropdown uno sotto l'altro */
   gap: 10px; /* Spaziatura tra i dropdown */
-  flex: 0; /* Non occupa spazio di default */
-  width: 0; /* Larghezza iniziale 0 */
-  overflow: hidden; /* Nasconde il contenuto quando non visibile */
-  transition: all 0.3s ease; /* Transizione fluida */
+  flex: 0.3; /* I dropdown occupano il 30% */
+  width: 100%; /* I dropdown occupano tutta la larghezza */
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
+  position: relative; /* Rende il contenitore il riferimento per i dropdown */
+  z-index: 1000; /* Assicura che i dropdown siano sopra altri elementi */
 }
 
 /* Dropdown degli utenti */
-.users-container .user-search-dropdown,
+.users-container .user-search-dropdown {
+  position: absolute; /* Posiziona i dropdown in modo assoluto */
+  top: 100%; /* Posiziona il dropdown sotto l'input */
+  left: 0;
+  width: 100%; /* Assicura che il dropdown occupi tutta la larghezza */
+  z-index: 1000; /* Assicura che il dropdown sia sopra gli altri elementi */
+  margin-bottom: 10px; /* Aggiunge spazio sotto il dropdown "Cerca utente" */
+}
+
 .users-container .role-search-dropdown {
-  width: 100%; /* I dropdown occupano tutta la larghezza */
-  z-index: 1000; /* Assicura che i dropdown siano sopra altri elementi */
+  position: relative; /* Posiziona i dropdown in modo assoluto */
+  top: 100%; /* Posiziona il dropdown sotto l'input */
+  left: 0;
+  width: 100%; /* Assicura che il dropdown occupi tutta la larghezza */
+  z-index: 1000; /* Assicura che il dropdown sia sopra gli altri elementi */
 }
 
 /* Quando i dropdown sono visibili */

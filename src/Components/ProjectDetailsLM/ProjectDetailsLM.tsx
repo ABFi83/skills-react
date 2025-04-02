@@ -29,7 +29,6 @@ const ProjectDetailsLM = () => {
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
   const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
   const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
-  const [isRoleSearchVisible, setIsRoleSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per i ruoli
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -178,7 +177,6 @@ const ProjectDetailsLM = () => {
   const handleRoleSelect = (selectedRole: any) => {
     console.log("Ruolo selezionato:", selectedRole);
     // Puoi aggiungere logica per associare il ruolo a un utente o altro
-    setIsRoleSearchVisible(false); // Nascondi il dropdown dopo la selezione
   };
 
   return (
@@ -326,9 +324,7 @@ const ProjectDetailsLM = () => {
                 </div>
                 <div
                   className={`users-container ${
-                    isUserSearchVisible || isRoleSearchVisible
-                      ? "dropdown-visible"
-                      : ""
+                    isUserSearchVisible ? "dropdown-visible" : ""
                   }`}
                 >
                   {/* Lista degli utenti */}
@@ -340,12 +336,6 @@ const ProjectDetailsLM = () => {
                           clientId={user.code}
                         />
                         {user.role && <RoleDisplay roleCode={user.role} />}
-                        <button
-                          className="delete-button"
-                          onClick={() => handleDeleteUser(index)}
-                        >
-                          -
-                        </button>
                       </div>
                     ))}
                   </div>
@@ -405,7 +395,6 @@ const ProjectDetailsLM = () => {
                 className="add-button"
                 onClick={() => {
                   setIsUserSearchVisible(true);
-                  setIsRoleSearchVisible(true); // Mostra entrambi i dropdown
                 }}
               >
                 +
@@ -446,7 +435,6 @@ const ProjectDetailsLM = () => {
                       initialValue=""
                     />
                   </div>
-
                   <div className="role-search-dropdown">
                     <SearchDropdown
                       placeholder="Cerca ruolo"

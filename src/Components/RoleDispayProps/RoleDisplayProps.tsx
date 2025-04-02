@@ -13,6 +13,7 @@ const roleData: Record<string, { description: string; image: string }> = {
   TL: { description: "Designer", image: "/tl.png" },
   PM: { description: "Project Manager", image: "/images/pm.png" },
   QA: { description: "Quality Assurance", image: "/images/qa.png" },
+  LM: { description: "Line Manager", image: "/LM.png" },
 };
 
 const RoleDisplay: React.FC<RoleDisplayProps> = ({ roleCode }) => {
