@@ -4,7 +4,7 @@ import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl, getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
-import { Project } from "../../Interfaces/Project";
+import { Project, RoleResponse } from "../../Interfaces/Project";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import SearchDropdown from "../SearchDropdown/SearchDropdown";
@@ -29,6 +29,8 @@ const ProjectDetailsLM = () => {
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
   const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
   const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
+  const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null); // Stato per l'utente selezionato
+  const [selectedRole, setSelectedRole] = useState<RoleResponse | null>(null); // Stato per il ruolo selezionato
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -132,26 +134,41 @@ const ProjectDetailsLM = () => {
     }
   };
 
-  const handleAddUser = () => {
-    setIsUserSearchVisible(true); // Mostra il componente SearchDropdown per gli utenti
+  const handleUserSelect = (user: any) => {
+    setSelectedUser(user); // Memorizza l'utente selezionato
+    if (selectedRole) {
+      // Aggiungi l'utente solo se il ruolo è già stato selezionato
+      addUserToProject(user, selectedRole);
+    }
   };
 
-  const handleUserSelect = (selectedUser: any) => {
+  const handleRoleSelect = (role: any) => {
+    setSelectedRole(role); // Memorizza il ruolo selezionato
+    if (selectedUser) {
+      // Aggiungi l'utente solo se l'utente è già stato selezionato
+      addUserToProject(selectedUser, role);
+    }
+  };
+
+  const addUserToProject = (user: any, role: RoleResponse) => {
     if (project) {
-      console.log("Utente selezionato:", selectedUser);
+      console.log("Aggiunta utente:", user, "con ruolo:", role);
       const newUser: UserResponse = {
-        id: selectedUser.id,
+        id: user.id,
         isAdmin: false,
-        username: selectedUser.username,
-        code: selectedUser.code,
-        role: selectedUser.role || "Nuovo Ruolo",
+        username: user.username,
+        code: user.code,
+        role: role,
       };
       setProject({
         ...project,
         users: [...project.users, newUser],
       });
+      // Resetta gli stati temporanei
+      setSelectedUser(null);
+      setSelectedRole(null);
+      setIsUserSearchVisible(false); // Nascondi il dropdown
     }
-    setIsUserSearchVisible(false); // Nascondi il componente SearchDropdown dopo la selezione
   };
 
   const handleDeleteUser = (index: number) => {
@@ -174,9 +191,10 @@ const ProjectDetailsLM = () => {
     }
   };
 
-  const handleRoleSelect = (selectedRole: any) => {
-    console.log("Ruolo selezionato:", selectedRole);
-    // Puoi aggiungere logica per associare il ruolo a un utente o altro
+  const close = () => {
+    setIsEditing(false);
+    setIsUserSearchVisible(false);
+    setIsSkillSearchVisible(false);
   };
 
   return (
@@ -187,7 +205,7 @@ const ProjectDetailsLM = () => {
             <FaSave className="edit-icon" onClick={handleSaveClick} />
             <FaTimes
               className="read-only-icon"
-              onClick={() => setIsEditing(false)}
+              onClick={() => close()}
               title="Imposta modalità sola lettura"
             />
           </>
