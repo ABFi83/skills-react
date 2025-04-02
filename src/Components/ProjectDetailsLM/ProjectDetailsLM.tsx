@@ -29,6 +29,7 @@ const ProjectDetailsLM = () => {
   const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
   const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null); // Stato per l'utente selezionato
   const [selectedRole, setSelectedRole] = useState<RoleResponse | null>(null); // Stato per il ruolo selezionato
+
   const [clientLogoCode, setClientLogoCode] = useState<string | null>(null);
 
   // Caricamento del progetto quando l'ID è presente
