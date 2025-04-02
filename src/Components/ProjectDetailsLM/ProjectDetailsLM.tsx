@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
+import { FaEdit, FaEye, FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl, getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
@@ -49,6 +49,7 @@ const ProjectDetailsLM = () => {
     null
   ); // Evaluations for the table
   const [evaluationDates, setEvaluationDates] = useState<string[]>([]); // State for evaluation dates
+  const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false);
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -149,6 +150,17 @@ const ProjectDetailsLM = () => {
       }
     } catch (error) {
       console.error("Errore nel salvataggio:", error);
+    }
+  };
+
+  const handleDeleteProject = async () => {
+    if (id) {
+      try {
+        await ProjectApiService.deleteProject(id); // Chiama l'API di eliminazione
+        navigate("/main"); // Reindirizza alla lista dei progetti
+      } catch (error) {
+        console.error("Errore durante l'eliminazione del progetto:", error);
+      }
     }
   };
 
@@ -267,7 +279,14 @@ const ProjectDetailsLM = () => {
             />
           </>
         ) : (
-          <FaEdit className="edit-icon" onClick={handleEditClick} />
+          <>
+            <FaEdit className="edit-icon" onClick={handleEditClick} />
+            <FaTrash
+              className="delete-icon"
+              onClick={() => setIsDeletePopupVisible(true)}
+              title="Elimina progetto"
+            />
+          </>
         )}
       </div>
 
@@ -550,6 +569,23 @@ const ProjectDetailsLM = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {isDeletePopupVisible && (
+        <div className="delete-popup">
+          <div className="popup-content">
+            <p>Sei sicuro di voler eliminare questo progetto?</p>
+            <button className="confirm-button" onClick={handleDeleteProject}>
+              Sì, elimina
+            </button>
+            <button
+              className="cancel-button"
+              onClick={() => setIsDeletePopupVisible(false)}
+            >
+              Annulla
+            </button>
           </div>
         </div>
       )}

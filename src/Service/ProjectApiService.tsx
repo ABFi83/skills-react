@@ -48,6 +48,16 @@ const ProjectApiService = {
     return response.data;
   },
 
+  deleteProject: async (projectId: string): Promise<Project> => {
+    try {
+      const response = await api.delete<Project>(`/projects/${projectId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Errore nella chiamata API:", error);
+      throw error;
+    }
+  },
+
   // Funzione per caricare un file
   uploadProjectFile: async (id: string, file: File) => {
     const formData = new FormData();

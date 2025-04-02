@@ -29,6 +29,20 @@
   color: #0056b3;
 }
 
+.edit-icon,
+.delete-icon {
+  font-size: 20px; /* Stessa dimensione per entrambe */
+  color: #007bff; /* Colore blu */
+  cursor: pointer;
+  margin: 0 8px; /* Spaziatura tra le icone */
+  transition: color 0.3s ease; /* Transizione per l'hover */
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  color: #0056b3; /* Blu più scuro al passaggio del mouse */
+}
+
 .container {
   display: flex;
   flex-direction: row;
@@ -565,4 +579,62 @@ table-header {
 
 .user-profile-container > * {
   box-sizing: border-box; /* Per includere padding e bordo nella larghezza */
+}
+
+/* Popup di eliminazione */
+.delete-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  height: 120px; /* Altezza fissa per il popup */
+  width: 400px; /* Larghezza fissa per il popup */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-button,
+.cancel-button {
+  background-color: #007bff; /* Colore di default per il pulsante di conferma */
+  color: white;
+  border: none;
+  padding: 5px 10px; /* Riduce l'altezza e larghezza */
+  font-size: 14px; /* Testo più piccolo */
+  cursor: pointer;
+  border-radius: 4px;
+  height: 32px; /* Altezza uniforme */
+  min-width: 80px; /* Larghezza minima per entrambi */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  margin: 0 8px; /* Spaziatura orizzontale tra i pulsanti */
+}
+
+.confirm-button {
+  background-color: #007bff; /* Azzurro */
+}
+
+.confirm-button:hover {
+  background-color: #0056b3; /* Azzurro più scuro al passaggio del mouse */
+}
+
+.cancel-button {
+  background-color: gray; /* Grigio per il pulsante di annullamento */
+}
+
+.cancel-button:hover {
+  background-color: #555; /* Grigio più scuro al passaggio del mouse */
 }
