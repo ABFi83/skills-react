@@ -506,3 +506,19 @@ table-header {
   flex: 0.3; /* Il dropdown occupa il 30% */
   width: auto; /* Permette al dropdown di occupare spazio */
 }
+
+/* Contenitore per la ricerca cliente e l'immagine */
+.client-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spaziatura tra il campo di ricerca e l'immagine */
+}
+
+/* Stile per l'immagine del cliente */
+.client-logo-small {
+  width: 50px; /* Ridimensiona l'immagine */
+  height: 50px;
+  border-radius: 5px; /* Opzionale: angoli arrotondati */
+  object-fit: cover; /* Assicura che l'immagine mantenga le proporzioni */
+  margin-left: 40px;
+}

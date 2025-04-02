@@ -4,7 +4,7 @@ import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl, getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
-import { Project } from "../../Interfaces/Project";
+import { Project, RoleResponse } from "../../Interfaces/Project";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import SearchDropdown from "../SearchDropdown/SearchDropdown";
@@ -24,11 +24,12 @@ const ProjectDetailsLM = () => {
     clientCode: "",
     clientName: "",
   });
-  const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
   const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
   const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
+  const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null); // Stato per l'utente selezionato
+  const [selectedRole, setSelectedRole] = useState<RoleResponse | null>(null); // Stato per il ruolo selezionato
+  const [clientLogoCode, setClientLogoCode] = useState<string | null>(null);
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -46,6 +47,7 @@ const ProjectDetailsLM = () => {
           clientCode: response.client?.code || "",
           clientName: response.client?.name || "",
         });
+        setClientLogoCode(response.client?.code || null); // Inizializza il codice del logo
         setIsEditing(false);
       } catch (error) {
         console.error("Errore nel caricamento del progetto:", error);
@@ -63,15 +65,13 @@ const ProjectDetailsLM = () => {
         const updatedProject = { ...editedProject };
         let response;
         if (id) {
+          console.log("Aggiornamento progetto:", updatedProject);
           response = await ProjectApiService.updateProjectDetail(
             id,
             updatedProject
           );
         } else {
           response = await ProjectApiService.createProject(updatedProject);
-        }
-        if (file) {
-          await ProjectApiService.uploadProjectFile(response.id, file);
         }
         setProject(response);
         setIsEditing(false);
@@ -82,21 +82,13 @@ const ProjectDetailsLM = () => {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const selectedFile = event.target.files[0];
-      setFile(selectedFile);
-      const objectUrl = URL.createObjectURL(selectedFile);
-      setPreviewUrl(objectUrl);
-    }
-  };
-
   // Callback per gestire la selezione del cliente
   const handleClientSelect = (clientCode: string) => {
     setEditedProject({
       ...editedProject,
       clientCode: clientCode,
     });
+    setClientLogoCode(clientCode); // Aggiorna il codice del logo
   };
 
   const handleTabClick = (tab: string) => {
@@ -132,26 +124,41 @@ const ProjectDetailsLM = () => {
     }
   };
 
-  const handleAddUser = () => {
-    setIsUserSearchVisible(true); // Mostra il componente SearchDropdown per gli utenti
+  const handleUserSelect = (user: any) => {
+    setSelectedUser(user); // Memorizza l'utente selezionato
+    if (selectedRole) {
+      // Aggiungi l'utente solo se il ruolo è già stato selezionato
+      addUserToProject(user, selectedRole);
+    }
   };
 
-  const handleUserSelect = (selectedUser: any) => {
+  const handleRoleSelect = (role: any) => {
+    setSelectedRole(role); // Memorizza il ruolo selezionato
+    if (selectedUser) {
+      // Aggiungi l'utente solo se l'utente è già stato selezionato
+      addUserToProject(selectedUser, role);
+    }
+  };
+
+  const addUserToProject = (user: any, role: RoleResponse) => {
     if (project) {
-      console.log("Utente selezionato:", selectedUser);
+      console.log("Aggiunta utente:", user, "con ruolo:", role);
       const newUser: UserResponse = {
-        id: selectedUser.id,
+        id: user.id,
         isAdmin: false,
-        username: selectedUser.username,
-        code: selectedUser.code,
-        role: selectedUser.role || "Nuovo Ruolo",
+        username: user.username,
+        code: user.code,
+        role: role,
       };
       setProject({
         ...project,
         users: [...project.users, newUser],
       });
+      // Resetta gli stati temporanei
+      setSelectedUser(null);
+      setSelectedRole(null);
+      setIsUserSearchVisible(false); // Nascondi il dropdown
     }
-    setIsUserSearchVisible(false); // Nascondi il componente SearchDropdown dopo la selezione
   };
 
   const handleDeleteUser = (index: number) => {
@@ -174,9 +181,10 @@ const ProjectDetailsLM = () => {
     }
   };
 
-  const handleRoleSelect = (selectedRole: any) => {
-    console.log("Ruolo selezionato:", selectedRole);
-    // Puoi aggiungere logica per associare il ruolo a un utente o altro
+  const close = () => {
+    setIsEditing(false);
+    setIsUserSearchVisible(false);
+    setIsSkillSearchVisible(false);
   };
 
   return (
@@ -187,7 +195,7 @@ const ProjectDetailsLM = () => {
             <FaSave className="edit-icon" onClick={handleSaveClick} />
             <FaTimes
               className="read-only-icon"
-              onClick={() => setIsEditing(false)}
+              onClick={() => close()}
               title="Imposta modalità sola lettura"
             />
           </>
@@ -229,7 +237,7 @@ const ProjectDetailsLM = () => {
             />
           </div>
 
-          <div className="left-section">
+          <div className="left-section client-search-container">
             <SearchDropdown
               readOnly={!isEditing}
               placeholder="Cerca cliente"
@@ -237,25 +245,12 @@ const ProjectDetailsLM = () => {
               onItemSelect={(client) => handleClientSelect(client.code)}
               initialValue={editedProject.clientName}
             />
-          </div>
-        </div>
-
-        <div className="right">
-          <div className="image-container">
-            {previewUrl ? (
+            {clientLogoCode && (
               <img
-                src={previewUrl}
-                alt="Anteprima immagine"
-                className="image-preview"
+                src={getClientLogoUrl(clientLogoCode)}
+                alt="Client Logo"
+                className="client-logo-small"
               />
-            ) : (
-              project?.client && (
-                <img
-                  src={getClientLogoUrl(project.client.code)}
-                  alt="Client Logo"
-                  className="client-logo"
-                />
-              )
             )}
           </div>
         </div>
