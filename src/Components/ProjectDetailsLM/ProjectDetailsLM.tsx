@@ -17,6 +17,11 @@ import { getSkills } from "../../Service/SkillService";
 import { UserResponse } from "../../Interfaces/User";
 import UserApiService from "../../Service/UserApiService";
 import { getRoles } from "../../Service/RoleApiService";
+import {
+  getEvaluationsByDate,
+  getEvaluationDates,
+} from "../../Service/EvaluationService"; // Import the updated service
+import { EvaluationLM, Evaluation } from "../../Interfaces/Evalutation";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -36,8 +41,14 @@ const ProjectDetailsLM = () => {
   const [isUserSearchVisible, setIsUserSearchVisible] = useState(false); // Stato per la visibilità del SearchDropdown per gli utenti
   const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null); // Stato per l'utente selezionato
   const [selectedRole, setSelectedRole] = useState<RoleResponse | null>(null); // Stato per il ruolo selezionato
-
   const [clientLogoCode, setClientLogoCode] = useState<string | null>(null);
+  const [selectedEvaluationDate, setSelectedEvaluationDate] = useState<
+    string | null
+  >(null); // Selected evaluation date
+  const [evaluationsLM, setEvaluationsLM] = useState<EvaluationLM[] | null>(
+    null
+  ); // Evaluations for the table
+  const [evaluationDates, setEvaluationDates] = useState<string[]>([]); // State for evaluation dates
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -47,7 +58,7 @@ const ProjectDetailsLM = () => {
         return;
       }
       try {
-        const response = await ProjectApiService.getProjectDetail(id);
+        const response = await ProjectApiService.getProjectDetail(id!);
         setProject(response);
         setEditedProject({
           projectName: response.projectName,
@@ -66,6 +77,55 @@ const ProjectDetailsLM = () => {
 
     fetchProject();
   }, [id]);
+
+  // Fetch evaluation dates when the project is loaded
+  useEffect(() => {
+    const fetchEvaluationDates = async () => {
+      if (id) {
+        try {
+          const dates = await getEvaluationDates(id!);
+          setEvaluationDates(dates);
+        } catch (error) {
+          console.error(
+            "Errore nel caricamento delle date delle valutazioni:",
+            error
+          );
+        }
+      }
+    };
+    fetchEvaluationDates();
+  }, [id]);
+
+  // Fetch evaluations when a date is selected
+  useEffect(() => {
+    const fetchEvaluations = async () => {
+      if (selectedEvaluationDate) {
+        try {
+          if (id && selectedEvaluationDate) {
+            const response = await getEvaluationsByDate(
+              id!,
+              selectedEvaluationDate
+            );
+
+            // Aggiorna le skill e le valutazioni
+            const { evaluation, skill } = response;
+            setEvaluationsLM(evaluation);
+            setEditedProject((prev) => ({
+              ...prev,
+              skills: skill.map((s) => ({
+                id: s.id,
+                label: s.label,
+                shortLabel: s.shortLabel,
+              })),
+            }));
+          }
+        } catch (error) {
+          console.error("Errore nel caricamento delle valutazioni:", error);
+        }
+      }
+    };
+    fetchEvaluations();
+  }, [id, selectedEvaluationDate]);
 
   const handleEditClick = () => setIsEditing(true);
 
@@ -269,41 +329,83 @@ const ProjectDetailsLM = () => {
             className={`tab-button ${activeTab === "tab1" ? "active" : ""}`}
             onClick={() => handleTabClick("tab1")}
           >
-            Andamento
+            Evaluations
           </button>
           <button
             className={`tab-button ${activeTab === "tab2" ? "active" : ""}`}
             onClick={() => handleTabClick("tab2")}
           >
-            Skill e Utenti
+            Skills & Users
           </button>
         </div>
 
         <div className="tab-content">
           {activeTab === "tab1" && (
             <div className="tab1-content">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Skill</th>
-                    {Array.from({ length: 10 }, (_, index) => (
-                      <th key={index + 1}>{index + 1}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Genera una riga per ogni skill */}
-                  {editedProject.skills.map((label, index) => (
-                    <tr key={index}>
-                      <td>{label.label}</td>
-                      {/* Genera 10 celle vuote per ogni skill */}
-                      {Array.from({ length: 10 }, (_, colIndex) => (
-                        <td key={colIndex}></td>
+              <div className="table-container">
+                <div className="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Skill</th>
+                        {Array.from({ length: 10 }, (_, index) => (
+                          <th key={index + 1}>{index + 1}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {editedProject.skills.map((skill, skillIndex) => (
+                        <tr key={skill.id}>
+                          <td>{skill.label}</td>
+                          {Array.from({ length: 10 }, (_, colIndex) => {
+                            const evaluationsForCell = evaluationsLM?.filter(
+                              (evaluation) =>
+                                evaluation.skillId == skill.id &&
+                                evaluation.score == colIndex + 1
+                            );
+                            return (
+                              <td key={colIndex}>
+                                <div className="user-profile-container">
+                                  {evaluationsForCell?.map(
+                                    (evaluation, evalIndex) => (
+                                      <UserProfile
+                                        key={evalIndex}
+                                        username={evaluation.user.username}
+                                        clientId={evaluation.user.code}
+                                        viewName={false}
+                                      />
+                                    )
+                                  )}
+                                </div>
+                              </td>
+                            );
+                          })}
+                        </tr>
                       ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="evaluation-dropdown-container">
+                  <label htmlFor="evaluation-select" className="dropdown-label">
+                    Seleziona Valutazione:
+                  </label>
+                  <select
+                    id="evaluation-select"
+                    className="evaluation-dropdown"
+                    onChange={(e) => setSelectedEvaluationDate(e.target.value)}
+                    value={selectedEvaluationDate || ""}
+                  >
+                    <option value="" disabled>
+                      Seleziona una data
+                    </option>
+                    {evaluationDates.map((date) => (
+                      <option key={date} value={date}>
+                        {date}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
           )}
 

@@ -18,10 +18,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (
-      error.response &&
-      (error.response.status === 401 || error.response.status === 400)
-    ) {
+    if (error.response && error.response.status === 401) {
       console.error("Errore 401: Token non valido. Effettuo il logout...");
       localStorage.removeItem("token");
       window.location.href = "/";

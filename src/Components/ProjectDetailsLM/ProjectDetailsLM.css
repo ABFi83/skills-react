@@ -522,3 +522,47 @@ table-header {
   object-fit: cover; /* Assicura che l'immagine mantenga le proporzioni */
   margin-left: 40px;
 }
+
+/* Contenitore della tabella e del dropdown */
+.table-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.table-wrapper {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.evaluation-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 200px;
+}
+
+.dropdown-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.evaluation-dropdown {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.user-profile-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user-profile-container > * {
+  box-sizing: border-box; /* Per includere padding e bordo nella larghezza */
+}

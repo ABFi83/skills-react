@@ -11,6 +11,7 @@ export interface Project {
   labelEvaluations: Label[];
   users: UserResponse[];
 }
+
 export interface Label {
   id: string;
   label: string;
