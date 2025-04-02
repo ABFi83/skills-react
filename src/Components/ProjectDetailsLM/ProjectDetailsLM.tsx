@@ -4,7 +4,12 @@ import { FaEdit, FaEye, FaSave, FaTimes } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
 import { getClientLogoUrl, getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
-import { Project, RoleResponse } from "../../Interfaces/Project";
+import {
+  Label,
+  Project,
+  RoleResponse,
+  ProjectRequest,
+} from "../../Interfaces/Project";
 import UserProfile from "../UserProfile/UserProfile";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import SearchDropdown from "../SearchDropdown/SearchDropdown";
@@ -18,11 +23,13 @@ const ProjectDetailsLM = () => {
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [isEditing, setIsEditing] = useState(false); // Impostato su false per la modalità read-only di default
-  const [editedProject, setEditedProject] = useState({
+  const [editedProject, setEditedProject] = useState<ProjectRequest>({
     projectName: "",
     description: "",
     clientCode: "",
     clientName: "",
+    users: [],
+    skills: [],
   });
   const [activeTab, setActiveTab] = useState("tab1"); // Stato per la tab attiva
   const [isSkillSearchVisible, setIsSkillSearchVisible] = useState(false); // Stato per la visibilità di SkillSearch
@@ -47,7 +54,9 @@ const ProjectDetailsLM = () => {
           description: response.description,
           clientCode: response.client?.code || "",
           clientName: response.client?.name || "",
-        });
+          users: response.users || [],
+          skills: response.labelEvaluations || [],
+        } as ProjectRequest);
         setClientLogoCode(response.client?.code || null); // Inizializza il codice del logo
         setIsEditing(false);
       } catch (error) {
@@ -101,28 +110,27 @@ const ProjectDetailsLM = () => {
   };
 
   const handleSkillSelect = (selectedSkill: any) => {
-    if (project) {
-      console.log("Skill selezionata:", selectedSkill);
-      const newSkill = {
-        id: selectedSkill.id,
-        label: selectedSkill.name,
-        shortLabel: selectedSkill.shortLabel,
-      };
-      setProject({
-        ...project,
-        labelEvaluations: [...project.labelEvaluations, newSkill],
-      });
-    }
+    const newSkill = {
+      id: selectedSkill.id,
+      label: selectedSkill.name,
+      shortLabel: selectedSkill.shortLabel,
+    };
+    setEditedProject({
+      ...editedProject,
+      skills: [...editedProject.skills, newSkill],
+    });
     setIsSkillSearchVisible(false); // Nascondi il componente SkillSearch dopo la selezione
   };
 
   const handleDeleteSkill = (index: number) => {
-    if (project) {
-      const updatedSkills = project.labelEvaluations.filter(
-        (_, skillIndex) => skillIndex !== index
-      );
-      setProject({ ...project, labelEvaluations: updatedSkills });
-    }
+    const updatedSkills = editedProject.skills.filter(
+      (_, skillIndex) => skillIndex !== index
+    );
+    setEditedProject({
+      ...editedProject,
+      skills: updatedSkills,
+    });
+    console.log("Skill eliminata:", updatedSkills);
   };
 
   const handleUserSelect = (user: any) => {
@@ -142,33 +150,31 @@ const ProjectDetailsLM = () => {
   };
 
   const addUserToProject = (user: any, role: RoleResponse) => {
-    if (project) {
-      console.log("Aggiunta utente:", user, "con ruolo:", role);
-      const newUser: UserResponse = {
-        id: user.id,
-        isAdmin: false,
-        username: user.username,
-        code: user.code,
-        role: role,
-      };
-      setProject({
-        ...project,
-        users: [...project.users, newUser],
-      });
-      // Resetta gli stati temporanei
-      setSelectedUser(null);
-      setSelectedRole(null);
-      setIsUserSearchVisible(false); // Nascondi il dropdown
-    }
+    const newUser: UserResponse = {
+      id: user.id,
+      isAdmin: false,
+      username: user.username,
+      code: user.code,
+      role: role,
+    };
+    setEditedProject({
+      ...editedProject,
+      users: [...editedProject.users, newUser],
+    });
+    // Resetta gli stati temporanei
+    setSelectedUser(null);
+    setSelectedRole(null);
+    setIsUserSearchVisible(false); // Nascondi il dropdown
   };
 
   const handleDeleteUser = (index: number) => {
-    if (project) {
-      const updatedUsers = project.users.filter(
-        (_, userIndex) => userIndex !== index
-      );
-      setProject({ ...project, users: updatedUsers });
-    }
+    const updatedUsers = editedProject.users.filter(
+      (_, userIndex) => userIndex !== index
+    );
+    setEditedProject({
+      ...editedProject,
+      users: updatedUsers,
+    });
   };
 
   const fetchUsers = async (query: string): Promise<any[]> => {
@@ -287,7 +293,7 @@ const ProjectDetailsLM = () => {
                 </thead>
                 <tbody>
                   {/* Genera una riga per ogni skill */}
-                  {project?.labelEvaluations.map((label, index) => (
+                  {editedProject.skills.map((label, index) => (
                     <tr key={index}>
                       <td>{label.label}</td>
                       {/* Genera 10 celle vuote per ogni skill */}
@@ -304,9 +310,9 @@ const ProjectDetailsLM = () => {
           {activeTab === "tab2" && !isEditing && (
             <div className="tab2-content">
               <div className="skills-section">
-                <h3>Lista delle Skill</h3>
+                <h3>Skills</h3>
                 <div className="list">
-                  {project?.labelEvaluations.map((label, index) => (
+                  {editedProject.skills.map((label, index) => (
                     <div key={index} className="list-item">
                       {label.label}
                     </div>
@@ -316,7 +322,7 @@ const ProjectDetailsLM = () => {
 
               <div className="users-section">
                 <div className="table-header">
-                  <h3>Lista degli Utenti</h3>
+                  <h3>Users</h3>
                 </div>
                 <div
                   className={`users-container ${
@@ -325,7 +331,7 @@ const ProjectDetailsLM = () => {
                 >
                   {/* Lista degli utenti */}
                   <div className="list">
-                    {project?.users.map((user, index) => (
+                    {editedProject.users.map((user, index) => (
                       <div key={index} className="list-item">
                         <UserProfile
                           username={user.username}
@@ -346,7 +352,7 @@ const ProjectDetailsLM = () => {
         <div className="tab2-content">
           <div className="skills-section">
             <div className="table-header">
-              <h3>Lista delle Skill</h3>
+              <h3>LSkills</h3>
               <button className="add-button" onClick={() => handleAddSkill()}>
                 +
               </button>
@@ -357,7 +363,7 @@ const ProjectDetailsLM = () => {
               }`}
             >
               <div className="list">
-                {project?.labelEvaluations.map((label, index) => (
+                {editedProject.skills.map((label, index) => (
                   <div key={index} className="list-item">
                     {label.label}
                     <button
@@ -386,7 +392,7 @@ const ProjectDetailsLM = () => {
 
           <div className="users-section">
             <div className="table-header">
-              <h3>Lista degli Utenti</h3>
+              <h3>Users</h3>
               <button
                 className="add-button"
                 onClick={() => {
@@ -403,7 +409,7 @@ const ProjectDetailsLM = () => {
             >
               {/* Lista degli utenti */}
               <div className="list">
-                {project?.users.map((user, index) => (
+                {editedProject.users.map((user, index) => (
                   <div key={index} className="list-item">
                     <UserProfile
                       username={user.username}

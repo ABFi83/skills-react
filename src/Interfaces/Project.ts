@@ -36,3 +36,12 @@ export interface Value {
   value: number;
   improve?: number;
 }
+
+export interface ProjectRequest {
+  projectName: string;
+  description: string;
+  clientCode: string;
+  clientName: string;
+  users: UserResponse[];
+  skills: Label[];
+}
