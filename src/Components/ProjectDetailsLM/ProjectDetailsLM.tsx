@@ -94,6 +94,11 @@ const ProjectDetailsLM = () => {
         try {
           const dates = await getEvaluationDates(id!);
           setEvaluationDates(dates);
+
+          // Imposta automaticamente la prima data disponibile
+          if (dates.length > 0 && !selectedEvaluationDate) {
+            setSelectedEvaluationDate(dates[0]);
+          }
         } catch (error) {
           console.error(
             "Errore nel caricamento delle date delle valutazioni:",
@@ -103,7 +108,7 @@ const ProjectDetailsLM = () => {
       }
     };
     fetchEvaluationDates();
-  }, [id]);
+  }, [id, selectedEvaluationDate]);
 
   // Fetch evaluations when a date is selected
   useEffect(() => {
@@ -276,11 +281,7 @@ const ProjectDetailsLM = () => {
 
   const handleCreateEvaluation = async () => {
     try {
-      const response = await ProjectApiService.createEvaluation(
-        id!,
-        newEvaluation
-      );
-      console.log("Valutazione creata:", response);
+      await ProjectApiService.createEvaluation(id!, newEvaluation);
 
       setEvaluationDates((prevDates) => [
         ...prevDates,
@@ -442,7 +443,7 @@ const ProjectDetailsLM = () => {
                 </div>
                 <div className="evaluation-dropdown-container">
                   <label htmlFor="evaluation-select" className="dropdown-label">
-                    Seleziona Valutazione:
+                    Select Rating:
                   </label>
                   <select
                     id="evaluation-select"
