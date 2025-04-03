@@ -50,6 +50,7 @@ You can log in using the following predefined users:
 
 - **Username**: `Zoro` / **Password**: `Zoro`
 - **Username**: `Sanji` / **Password**: `Sanji`
+- **Username**: `Nami` / **Password**: `Nami` (LM)
 
 ## Project Structure
 
