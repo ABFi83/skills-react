@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.popup-content {
+.popup .popup-content {
   padding: 20px;
   border-radius: 8px;
   width: 500px;
@@ -68,23 +68,40 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
-
-  border-radius: 5px;
-  padding: 5px;
 }
 
 .tabs button {
-  background: none;
-  border: none;
-  padding: 10px;
+  background: #f0f0f0; /* Sfondo chiaro */
+  border: 2px solid transparent;
+  padding: 10px 20px;
   cursor: pointer;
   font-size: 16px;
-  margin: 0 10px;
-  border-bottom: 2px solid transparent;
+  font-weight: bold;
+  transition: all 0.3s ease; /* Transizione fluida */
+  color: #555;
+  border-radius: 0; /* Rimuove gli angoli arrotondati */
+  flex: 1; /* I pulsanti occupano lo stesso spazio */
+}
+
+.tabs button:first-child {
+  border-top-left-radius: 8px; /* Arrotonda solo l'angolo sinistro del primo pulsante */
+  border-bottom-left-radius: 8px;
+}
+
+.tabs button:last-child {
+  border-top-right-radius: 8px; /* Arrotonda solo l'angolo destro dell'ultimo pulsante */
+  border-bottom-right-radius: 8px;
+}
+
+.tabs button:hover {
+  background: #e0e0e0; /* Sfondo più scuro al passaggio del mouse */
+  color: #007bff; /* Colore del testo blu */
 }
 
 .tabs button.active {
-  border-bottom: 2px solid blue;
+  background: #007bff; /* Sfondo blu per il tab attivo */
+  color: white; /* Testo bianco */
+  border: 2px solid #0056b3; /* Bordo blu scuro */
   font-weight: bold;
 }
 .tab-content {

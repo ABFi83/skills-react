@@ -26,6 +26,19 @@ const UserApiService = {
       throw error;
     }
   },
+  getUsers: async (searchQuery: string) => {
+    try {
+      const response = await api.get("/users", {
+        params: {
+          search: searchQuery, // Aggiungi il parametro di ricerca
+        },
+      });
+      return response.data; // Restituisce i dati degli utenti
+    } catch (error) {
+      console.error("Errore durante il recupero degli utenti:", error);
+      throw error;
+    }
+  },
 };
 
 export default UserApiService;

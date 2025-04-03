@@ -1,0 +1,117 @@
+.project-card-link {
+  text-decoration: none;
+  color: inherit; /* Mantiene il colore del testo */
+}
+
+.project-card {
+  width: 300px; /* Larghezza fissa */
+  height: 100px; /* Altezza fissa */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente il contenuto */
+  align-items: center; /* Centra orizzontalmente il contenuto */
+  background-color: #fff; /* Sfondo bianco */
+  border-radius: 8px; /* Angoli arrotondati */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+  overflow: hidden; /* Nasconde il contenuto che eccede */
+  text-align: center; /* Centra il testo */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  border-color: #004080; /* Blu scuro */
+  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.3); /* Ombra più evidente */
+  transform: scale(1.02); /* Effetto leggero di ingrandimento */
+}
+
+.project-details {
+  flex-grow: 1;
+  min-width: 200px; /* Evita che il testo diventi troppo stretto */
+  text-align: left; /* Allinea il testo a sinistra */
+  padding: 10px; /* Aggiungi un po' di padding per distanziare il testo dai bordi */
+}
+
+.project-details h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.project-details p {
+  margin: 15px 0;
+}
+
+.project-card a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.project-card a:hover {
+  text-decoration: underline;
+}
+
+.polygon-container {
+  width: 150px; /* Aumenta la dimensione del contenitore */
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card-lm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card-lm:hover {
+  border-color: #008000;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.3);
+  transform: scale(1.02);
+}
+
+.project-card-lm .project-details {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.project-card-lm .project-details h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.project-card-lm .project-details p {
+  margin: 15px 0;
+}
+
+.project-card-lm .polygon-container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card-lm .project-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-card-lm .client-logo-small {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  object-fit: cover;
+}

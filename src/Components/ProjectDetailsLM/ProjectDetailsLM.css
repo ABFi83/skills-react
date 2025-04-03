@@ -1,0 +1,772 @@
+.project-details-lm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Allinea tutto a sinistra */
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
+}
+
+.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+
+  cursor: pointer;
+}
+
+.edit-icon {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.edit-icon:hover {
+  color: #0056b3;
+}
+
+.edit-icon,
+.delete-icon {
+  font-size: 20px; /* Stessa dimensione per entrambe */
+  color: #007bff; /* Colore blu */
+  cursor: pointer;
+  margin: 0 8px; /* Spaziatura tra le icone */
+  transition: color 0.3s ease; /* Transizione per l'hover */
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  color: #0056b3; /* Blu più scuro al passaggio del mouse */
+}
+
+.project-details-lm .container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 80px;
+  width: 100%;
+  gap: 20px;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.right {
+  flex: 0 0 200px; /* Impostiamo una larghezza fissa per la colonna di destra */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Allinea tutto a sinistra */
+}
+
+.left-section {
+  margin-bottom: 20px;
+}
+
+.left-section input,
+.left-section textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.client-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.file-input {
+  display: none;
+}
+
+.image-preview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.read-only-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.read-only-icon:hover {
+  color: #0056b3;
+}
+
+.read-only-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 20px; /* Aumenta la dimensione dell'icona */
+}
+
+.read-only-icon:hover {
+  color: #0056b3;
+}
+
+/* Contenitore delle tab */
+.tabs-container {
+  width: 100%; /* Occupa tutta la larghezza */
+  margin-top: 20px;
+}
+
+/* Contenitore dei pulsanti delle tab */
+.tabs {
+  display: flex;
+  justify-content: space-between; /* Distribuisce uniformemente i pulsanti */
+  border-bottom: 2px solid #ccc; /* Linea di separazione sotto le tab */
+}
+
+/* Pulsanti delle tab */
+.tab-button {
+  flex: 1; /* Ogni tab occupa lo stesso spazio */
+  padding: 10px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f9f9f9;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Tab attiva */
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+  border-bottom: 2px solid #007bff; /* Linea di separazione per la tab attiva */
+}
+
+/* Hover sulle tab */
+.tab-button:hover {
+  background-color: #e6e6e6;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.tab1-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: bold;
+}
+
+.tab1-content td {
+  background-color: #fff;
+}
+
+.tab2-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tab1-content th,
+.tab1-content td,
+.tab2-content th,
+.tab2-content td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.skills-table,
+.users-table {
+  margin-bottom: 20px;
+}
+
+.tab2-content {
+  display: flex; /* Dispone gli elementi in orizzontale */
+  flex-wrap: wrap; /* Permette di andare su più righe se lo spazio è insufficiente */
+  gap: 20px; /* Spaziatura tra le tabelle */
+  margin-top: 20px;
+  width: 100%;
+}
+
+.skills-section,
+.users-section {
+  flex: 1 1 calc(50% - 20px); /* Ogni tabella occupa il 50% dello spazio disponibile meno il gap */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.skills-section h3,
+.users-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.add-button.active {
+  background-color: red; /* Cambia colore quando è attivo */
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Contenitore delle skill */
+.skills-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento del dropdown */
+  overflow: visible; /* Assicura che il dropdown non venga tagliato */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista delle skill */
+.skills-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Dropdown delle skill */
+.skills-container .skill-search-dropdown {
+  flex: 0; /* Non occupa spazio di default */
+  width: 0; /* Larghezza iniziale 0 */
+  overflow: visible; /* Nasconde il contenuto quando non visibile */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+.skills-container.dropdown-visible {
+  width: 95%;
+}
+/* Quando il dropdown è visibile */
+.skills-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.skills-container.dropdown-visible .skill-search-dropdown {
+  flex: 0.3; /* Il dropdown occupa il 30% */
+  width: auto; /* Permette al dropdown di occupare spazio */
+}
+
+/* Dropdown list */
+.dropdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Dropdown item */
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* No results message */
+.dropdown-no-results {
+  padding: 10px;
+  text-align: center;
+  color: #999;
+}
+
+/* Contenitore degli utenti */
+.users-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Spaziatura tra la lista e i dropdown */
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento dei dropdown */
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista degli utenti */
+.users-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Contenitore dei dropdown */
+.users-container .dropdowns-container {
+  display: flex;
+  flex-direction: column; /* Dispone i dropdown uno sotto l'altro */
+  gap: 10px; /* Spaziatura tra i dropdown */
+  flex: 0.3; /* I dropdown occupano il 30% */
+  width: 100%; /* I dropdown occupano tutta la larghezza */
+  overflow: visible; /* Assicura che i dropdown non vengano tagliati */
+  position: relative; /* Rende il contenitore il riferimento per i dropdown */
+  z-index: 1000; /* Assicura che i dropdown siano sopra altri elementi */
+}
+
+.users-container.dropdown-visible {
+  width: 95%;
+}
+/* Dropdown degli utenti */
+.users-container .user-search-dropdown {
+  position: absolute; /* Posiziona i dropdown in modo assoluto */
+  top: 100%; /* Posiziona il dropdown sotto l'input */
+  left: 0;
+  width: 100%; /* Assicura che il dropdown occupi tutta la larghezza */
+  z-index: 1000; /* Assicura che il dropdown sia sopra gli altri elementi */
+  margin-top: 10px; /* Aggiunge spazio sotto il dropdown "Cerca utente" */
+}
+
+.users-container .role-search-dropdown {
+  position: relative; /* Posiziona i dropdown in modo assoluto */
+  top: 100%; /* Posiziona il dropdown sotto l'input */
+  left: 0;
+  width: 100%; /* Assicura che il dropdown occupi tutta la larghezza */
+  z-index: 1000; /* Assicura che il dropdown sia sopra gli altri elementi */
+}
+
+/* Quando i dropdown sono visibili */
+.users-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.users-container.dropdown-visible .dropdowns-container {
+  flex: 0.3; /* I dropdown occupano il 30% */
+  width: auto; /* Permette ai dropdown di occupare spazio */
+}
+
+/* Contenitore dei ruoli */
+.roles-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Spaziatura tra la lista e il dropdown */
+  width: 100%;
+  position: relative; /* Necessario per il posizionamento del dropdown */
+  overflow: visible; /* Assicura che il dropdown non venga tagliato */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Lista dei ruoli */
+.roles-container .list {
+  flex: 1; /* Occupa tutto lo spazio disponibile di default */
+  transition: flex 0.3s ease; /* Transizione fluida per la larghezza */
+}
+
+/* Dropdown dei ruoli */
+.roles-container .role-search-dropdown {
+  flex: 0; /* Non occupa spazio di default */
+  width: 0; /* Larghezza iniziale 0 */
+  overflow: hidden; /* Nasconde il contenuto quando non visibile */
+  transition: all 0.3s ease; /* Transizione fluida */
+}
+
+/* Quando il dropdown è visibile */
+.roles-container.dropdown-visible .list {
+  flex: 0.7; /* La lista occupa il 70% */
+}
+
+.roles-container.dropdown-visible .role-search-dropdown {
+  flex: 0.3; /* Il dropdown occupa il 30% */
+  width: auto; /* Permette al dropdown di occupare spazio */
+}
+
+/* Contenitore per la ricerca cliente e l'immagine */
+.client-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spaziatura tra gli elementi */
+}
+
+/* Stile per l'immagine del cliente */
+.client-logo-small {
+  width: 50px; /* Ridimensiona l'immagine */
+  height: 50px;
+  border-radius: 5px; /* Opzionale: angoli arrotondati */
+  object-fit: cover; /* Assicura che l'immagine mantenga le proporzioni */
+  margin-left: 40px;
+}
+
+/* Contenitore della tabella e del dropdown */
+.table-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.table-wrapper {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.evaluation-dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 200px;
+}
+
+.dropdown-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.evaluation-dropdown {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.user-profile-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user-profile-container > * {
+  box-sizing: border-box; /* Per includere padding e bordo nella larghezza */
+}
+
+/* Popup di eliminazione */
+.delete-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  height: 120px; /* Altezza fissa per il popup */
+  width: 400px; /* Larghezza fissa per il popup */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-button,
+.cancel-button {
+  background-color: #007bff; /* Colore di default per il pulsante di conferma */
+  color: white;
+  border: none;
+  padding: 5px 10px; /* Riduce l'altezza e larghezza */
+  font-size: 14px; /* Testo più piccolo */
+  cursor: pointer;
+  border-radius: 4px;
+  height: 32px; /* Altezza uniforme */
+  min-width: 80px; /* Larghezza minima per entrambi */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+  margin: 0 8px; /* Spaziatura orizzontale tra i pulsanti */
+}
+
+.confirm-button {
+  background-color: #007bff; /* Azzurro */
+}
+
+.confirm-button:hover {
+  background-color: #0056b3; /* Azzurro più scuro al passaggio del mouse */
+}
+
+.cancel-button {
+  background-color: gray; /* Grigio per il pulsante di annullamento */
+}
+
+.cancel-button:hover {
+  background-color: #555; /* Grigio più scuro al passaggio del mouse */
+}
+
+/* Popup di creazione valutazione */
+.create-evaluation-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  height: 100vh; /* Altezza del viewport */
+}
+
+.create-evaluation-popup .popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: auto;
+}
+
+.create-evaluation-popup .form-group {
+  margin-bottom: 15px;
+}
+
+.create-evaluation-popup .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.create-evaluation-popup .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-evaluation-popup .popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.create-evaluation-popup .confirm-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-evaluation-popup .cancel-button {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Bottone di creazione valutazione */
+.create-evaluation-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.create-evaluation-button:hover {
+  background-color: #0056b3;
+}
+
+.client-logo-small-lm {
+  width: 35px;
+  height: 35px;
+  margin-left: 30px;
+}
+
+/* Contenitore delle sezioni */
+.sections-container {
+  display: flex; /* Dispone le sezioni orizzontalmente */
+  gap: 20px; /* Spaziatura tra le sezioni */
+  width: 100%; /* Assicura che il contenitore occupi tutta la larghezza */
+}
+
+.skills-section,
+.users-section {
+  flex: 1; /* Le sezioni occupano lo stesso spazio */
+  border: 1px solid #ddd; /* Bordo opzionale per separare visivamente */
+  padding: 15px; /* Aggiunge padding interno */
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Sfondo opzionale */
+  display: flex;
+  flex-direction: column; /* Dispone gli elementi verticalmente */
+}
+
+.skills-section h3,
+.users-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.list {
+  max-height: 300px; /* Altezza massima per la lista */
+  overflow-y: auto; /* Scroll verticale se necessario */
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./PopupDetail.css";
 import { Project } from "../../Interfaces/Project";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-import { getClientLogoUrl } from "../../Service/ClientService";
+import UserProfile from "../UserProfile/UserProfile";
+import ClientLogo from "../ClientLogo/ClientLogo";
 
 interface PopupProps {
   isOpen: boolean;
@@ -25,14 +26,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
         <div className="header">
           <h2 className="title">{project.projectName}</h2>
           {project.client?.code && (
-            <img
-              src={getClientLogoUrl(project.client.code)} // Usa la funzione del service
-              alt="Client Logo"
-              className="client-logo"
-              onError={(e) =>
-                (e.currentTarget.src = "/images/default-client.png")
-              }
-            />
+            <ClientLogo clientCode={project.client.code} />
           )}
         </div>
 
@@ -49,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
             className={activeTab === "labels" ? "active" : ""}
             onClick={() => setActiveTab("labels")}
           >
-            Label Evaluations
+            Skills
           </button>
         </div>
 
@@ -68,7 +62,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
             <div className="list">
               {project.users.map((user, index) => (
                 <div key={index} className="list-item">
-                  <span className="user-name">{user.name}</span>
+                  <UserProfile username={user.username} clientId={user.code} />
                   {user.role && <RoleDisplay roleCode={user.role} />}
                 </div>
               ))}

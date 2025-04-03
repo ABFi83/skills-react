@@ -1,43 +1,45 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Login from "./Components/Login/Login";
-import UserApiService from "./Service/UserApiService";
-import { UserResponse } from "./Interfaces/User";
 import Main from "./Components/Main/Main";
+import ErrorBanner from "./Components/ErrorBanner/ErrorBanner";
+import { AuthProvider } from "./Context/AuthContext";
+import ProjectDetails from "./Components/ProjectDetails/ProjectDetails"; // Importa il componente dei dettagli del progetto
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import { ProjectProvider } from "./Context/ProjectContext";
+import ProjectDetailsLM from "./Components/ProjectDetailsLM/ProjectDetailsLM";
 
 function App() {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-  const [user, setUser] = useState<UserResponse | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showBanner, setShowBanner] = useState<boolean>(false);
 
-  const handleLogin = async (newToken: string) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-
-    try {
-      const user = await UserApiService.getUser();
-      setUser(user);
-    } catch (error) {
-      console.error("Errore durante il recupero dell'utente:", error);
-    }
+  const closeBanner = () => {
+    setShowBanner(false);
+    setErrorMessage(null);
   };
 
   return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          {!token ? (
-            <Route path="*" element={<Login onLogin={handleLogin} />} />
-          ) : (
-            <Route
-              path="*"
-              element={<Main userId={user?.id || ""} user={user} />}
-            />
-          )}
-        </Routes>
-      </div>
-    </Router>
+    <ProjectProvider>
+      <AuthProvider>
+        <Router>
+          <div className="app-container">
+            {showBanner && errorMessage && (
+              <ErrorBanner message={errorMessage} onClose={closeBanner} />
+            )}
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/main/*" element={<Main />} />
+                <Route path="/project/:id" element={<ProjectDetails />} />
+                <Route path="/project/:id/lm" element={<ProjectDetailsLM />} />
+                <Route path="/project/new" element={<ProjectDetailsLM />} />
+              </Route>
+              <Route path="*" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </AuthProvider>
+    </ProjectProvider>
   );
 }
 

@@ -9,7 +9,12 @@
 }
 
 .header-left {
-  flex: 1; /* La sezione a sinistra occupa spazio proporzionale */
+  display: flex;
+  flex-direction: column;
+}
+
+.breadcrumb-container {
+  margin-top: 5px; /* Aggiunge spazio tra il titolo e il breadcrumb */
 }
 
 .header-title {

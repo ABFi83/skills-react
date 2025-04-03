@@ -1,12 +1,11 @@
 import { useState } from "react";
-import UserApiService from "../../Service/UserApiService";
-import "./Login.css"; // Aggiungi il CSS per il mini-header
+import { useAuth } from "../../Context/AuthContext";
+import { useNavigate } from "react-router-dom"; // Aggiungi il hook useNavigate
+import "./Login.css";
 
-interface LoginProps {
-  onLogin: (token: string) => void;
-}
-
-const Login = ({ onLogin }: LoginProps) => {
+const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate(); // Usato per navigare dopo il login
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null); // Stato per l'errore
@@ -14,9 +13,9 @@ const Login = ({ onLogin }: LoginProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = await UserApiService.login(username, password);
-      onLogin(token);
+      await login(username, password); // Passa username e password alla funzione login
       setError(null); // Resetta l'errore se il login è riuscito
+      navigate("/main"); // Reindirizza all'interno della tua app dopo il login
     } catch (error) {
       setError("Errore nel login: username o password non corretti.");
       console.error("Errore nel login", error);
@@ -47,7 +46,7 @@ const Login = ({ onLogin }: LoginProps) => {
           placeholder="Password"
           className="input-field"
         />
-        {error && <p className="error-message">{error}</p>}{" "}
+        {error && <p className="error-message">{error}</p>}
         <button type="submit" className="login-button">
           Login
         </button>

@@ -5,12 +5,13 @@ export interface Project {
   id: string;
   projectName: string;
   description: string;
-  role: RoleResponse;
+  role?: RoleResponse;
   client?: ClientResponse;
   evaluations: Evaluation[];
   labelEvaluations: Label[];
   users: UserResponse[];
 }
+
 export interface Label {
   id: string;
   label: string;
@@ -35,4 +36,13 @@ export interface Value {
   skill: string;
   value: number;
   improve?: number;
+}
+
+export interface ProjectRequest {
+  projectName: string;
+  description: string;
+  clientCode: string;
+  clientName: string;
+  users: UserResponse[];
+  skills: Label[];
 }
