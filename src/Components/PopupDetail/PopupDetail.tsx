@@ -43,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
             className={activeTab === "labels" ? "active" : ""}
             onClick={() => setActiveTab("labels")}
           >
-            Label Evaluations
+            Skills
           </button>
         </div>
 

@@ -250,7 +250,7 @@ const ProjectDetails = () => {
                   <>
                     <FaVirus
                       data-tooltip-id="tooltip"
-                      data-tooltip-content={`Valutazione aperta dal ${formatDate(
+                      data-tooltip-content={`Evaluation opened by ${formatDate(
                         l.startDate
                       )} al ${formatDate(l.endDate)}`}
                       style={{
@@ -270,7 +270,7 @@ const ProjectDetails = () => {
                       size={15}
                       color="blue"
                       data-tooltip-id="tooltipSave"
-                      data-tooltip-content="Salva"
+                      data-tooltip-content="Save"
                       onClick={() => handleHeaderSaveClick(l)}
                       style={{ marginLeft: "10px", cursor: "pointer" }}
                     />

@@ -689,15 +689,15 @@ const ProjectDetailsLM = () => {
       {isDeletePopupVisible && (
         <div className="delete-popup">
           <div className="popup-content">
-            <p>Sei sicuro di voler eliminare questo progetto?</p>
+            <p>"Are you sure you want to delete this project?"</p>
             <button className="confirm-button" onClick={handleDeleteProject}>
-              Sì, elimina
+              Yes, delete
             </button>
             <button
               className="cancel-button"
               onClick={() => setIsDeletePopupVisible(false)}
             >
-              Annulla
+              Close
             </button>
           </div>
         </div>
