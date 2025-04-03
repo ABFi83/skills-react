@@ -510,9 +510,11 @@ const ProjectDetailsLM = () => {
           <div className="skills-section">
             <div className="table-header">
               <h3>Skills</h3>
-              <button className="add-button" onClick={() => handleAddSkill()}>
-                +
-              </button>
+              {id && (
+                <button className="add-button" onClick={() => handleAddSkill()}>
+                  +
+                </button>
+              )}
             </div>
             <div
               className={`skills-container ${
@@ -533,7 +535,6 @@ const ProjectDetailsLM = () => {
                 ))}
               </div>
 
-              {/* Mostra il componente SearchDropdown accanto alla lista */}
               {isSkillSearchVisible && (
                 <div className="skill-search-dropdown">
                   <SearchDropdown
@@ -550,21 +551,22 @@ const ProjectDetailsLM = () => {
           <div className="users-section">
             <div className="table-header">
               <h3>Users</h3>
-              <button
-                className="add-button"
-                onClick={() => {
-                  setIsUserSearchVisible(true);
-                }}
-              >
-                +
-              </button>
+              {id && (
+                <button
+                  className="add-button"
+                  onClick={() => {
+                    setIsUserSearchVisible(true);
+                  }}
+                >
+                  +
+                </button>
+              )}
             </div>
             <div
               className={`users-container ${
                 isUserSearchVisible ? "dropdown-visible" : ""
               }`}
             >
-              {/* Lista degli utenti */}
               <div className="list">
                 {editedProject.users.map((user, index) => (
                   <div key={index} className="list-item">
@@ -583,7 +585,6 @@ const ProjectDetailsLM = () => {
                 ))}
               </div>
 
-              {/* Dropdowns per utenti e ruoli */}
               {isUserSearchVisible && (
                 <div className="dropdowns-container">
                   <div className="user-search-dropdown">
