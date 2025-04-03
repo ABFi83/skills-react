@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./PopupDetail.css";
 import { Project } from "../../Interfaces/Project";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-import { getClientLogoUrl } from "../../Service/ClientService";
 import UserProfile from "../UserProfile/UserProfile";
+import ClientLogo from "../ClientLogo/ClientLogo";
 
 interface PopupProps {
   isOpen: boolean;
@@ -26,14 +26,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, project }) => {
         <div className="header">
           <h2 className="title">{project.projectName}</h2>
           {project.client?.code && (
-            <img
-              src={getClientLogoUrl(project.client.code)}
-              alt="Client Logo"
-              className="client-logo"
-              onError={(e) =>
-                (e.currentTarget.src = "/images/default-client.png")
-              }
-            />
+            <ClientLogo clientCode={project.client.code} />
           )}
         </div>
 

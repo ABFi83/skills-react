@@ -22,6 +22,7 @@ import {
   getEvaluationDates,
 } from "../../Service/EvaluationService"; // Import the updated service
 import { EvaluationLM, Evaluation } from "../../Interfaces/Evalutation";
+import ClientLogo from "../ClientLogo/ClientLogo";
 
 const ProjectDetailsLM = () => {
   const { id } = useParams();
@@ -359,13 +360,7 @@ const ProjectDetailsLM = () => {
               onItemSelect={(client) => handleClientSelect(client.code)}
               initialValue={editedProject.clientName}
             />
-            {clientLogoCode && (
-              <img
-                src={getClientLogoUrl(clientLogoCode)}
-                alt="Client Logo"
-                className="client-logo-small"
-              />
-            )}
+            {clientLogoCode && <ClientLogo clientCode={clientLogoCode} />}
             {id && (
               <button
                 className="create-evaluation-button"

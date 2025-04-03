@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { Label, Project, Value } from "../../Interfaces/Project";
+import { Project } from "../../Interfaces/Project";
 import "./ProjectCard.css";
-import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
 import { useProject } from "../../Context/ProjectContext";
-import { useCallback, useEffect, useState } from "react";
+import ClientLogo from "../ClientLogo/ClientLogo";
 
 interface ProjectInterface {
   project: Project;
@@ -34,7 +33,15 @@ const ProjectCard = ({ project }: ProjectInterface) => {
     >
       <div className="project-card">
         <div className="project-details">
-          <h3>{project.projectName}</h3>
+          <div className="project-header">
+            <h4>{project.projectName}</h4>
+            {project.client?.code && (
+              <ClientLogo
+                clientCode={project.client.code}
+                className="client-logo-small"
+              />
+            )}
+          </div>
           <p
             style={{
               display: "flex",

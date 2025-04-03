@@ -16,7 +16,6 @@ const Main = () => {
         setLoading(true);
         let data: Project[] = [];
         data = await ProjectApiService.getUserProjects();
-
         setProjects(data);
       } catch (err) {
         setError("Errore nel caricamento dei progetti.");

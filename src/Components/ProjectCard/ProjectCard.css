@@ -48,10 +48,24 @@
 .project-card a:hover {
   text-decoration: underline;
 }
+
 .polygon-container {
   width: 150px; /* Aumenta la dimensione del contenitore */
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.project-header {
+  display: flex;
+  align-items: center; /* Allinea verticalmente gli elementi */
+  gap: 8px; /* Spaziatura tra il titolo e il logo */
+}
+
+.client-logo-small {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px; /* Opzionale: aggiunge angoli arrotondati */
+  object-fit: cover; /* Assicura che l'immagine si adatti alle dimensioni */
 }
