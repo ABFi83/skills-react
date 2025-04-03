@@ -44,7 +44,7 @@ export default function Header() {
           <img src="/logo192.png" alt="Logo" />
           {menuOpen && (
             <div className="dropdown-menu">
-              <p>Benvenuto,</p>
+              <p>Welcome,</p>
               {user ? (
                 <UserProfile username={user.username} clientId={user.code} />
               ) : (
