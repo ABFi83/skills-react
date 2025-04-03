@@ -467,27 +467,22 @@ const ProjectDetailsLM = () => {
 
           {activeTab === "tab2" && !isEditing && (
             <div className="tab2-content">
-              <div className="skills-section">
-                <h3>Skills</h3>
-                <div className="list">
-                  {editedProject.skills.map((label, index) => (
-                    <div key={index} className="list-item">
-                      {label.label}
-                    </div>
-                  ))}
+              <div className="sections-container">
+                {/* Skills Section */}
+                <div className="skills-section">
+                  <h3>Skills</h3>
+                  <div className="list">
+                    {editedProject.skills.map((label, index) => (
+                      <div key={index} className="list-item">
+                        {label.label}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="users-section">
-                <div className="table-header">
+                {/* Users Section */}
+                <div className="users-section">
                   <h3>Users</h3>
-                </div>
-                <div
-                  className={`users-container ${
-                    isUserSearchVisible ? "dropdown-visible" : ""
-                  }`}
-                >
-                  {/* Lista degli utenti */}
                   <div className="list">
                     {editedProject.users.map((user, index) => (
                       <div key={index} className="list-item">

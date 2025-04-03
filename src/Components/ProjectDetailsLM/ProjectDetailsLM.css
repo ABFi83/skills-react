@@ -386,7 +386,9 @@ table-header {
   overflow: visible; /* Nasconde il contenuto quando non visibile */
   transition: all 0.3s ease; /* Transizione fluida */
 }
-
+.skills-container.dropdown-visible {
+  width: 95%;
+}
 /* Quando il dropdown è visibile */
 .skills-container.dropdown-visible .list {
   flex: 0.7; /* La lista occupa il 70% */
@@ -458,6 +460,9 @@ table-header {
   z-index: 1000; /* Assicura che i dropdown siano sopra altri elementi */
 }
 
+.users-container.dropdown-visible {
+  width: 95%;
+}
 /* Dropdown degli utenti */
 .users-container .user-search-dropdown {
   position: absolute; /* Posiziona i dropdown in modo assoluto */
@@ -723,4 +728,34 @@ table-header {
   width: 35px;
   height: 35px;
   margin-left: 30px;
+}
+
+/* Contenitore delle sezioni */
+.sections-container {
+  display: flex; /* Dispone le sezioni orizzontalmente */
+  gap: 20px; /* Spaziatura tra le sezioni */
+  width: 100%; /* Assicura che il contenitore occupi tutta la larghezza */
+}
+
+.skills-section,
+.users-section {
+  flex: 1; /* Le sezioni occupano lo stesso spazio */
+  border: 1px solid #ddd; /* Bordo opzionale per separare visivamente */
+  padding: 15px; /* Aggiunge padding interno */
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Sfondo opzionale */
+  display: flex;
+  flex-direction: column; /* Dispone gli elementi verticalmente */
+}
+
+.skills-section h3,
+.users-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.list {
+  max-height: 300px; /* Altezza massima per la lista */
+  overflow-y: auto; /* Scroll verticale se necessario */
 }
