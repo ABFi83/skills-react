@@ -62,9 +62,7 @@ const ProjectApiService = {
     try {
       const response = await api.post<Project>(
         `/projects/${projectId}/evaluation`,
-        {
-          obj,
-        }
+        obj
       );
       return response.data;
     } catch (error) {

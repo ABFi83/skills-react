@@ -59,6 +59,7 @@ const ProjectDetailsLM = () => {
   });
   const [skillError, setSkillError] = useState<string | null>(null); // Stato per il messaggio di errore
   const [userError, setUserError] = useState<string | null>(null); // Stato per il messaggio di errore utente
+  const [evaluationError, setEvaluationError] = useState<string | null>(null); // Stato per il messaggio di errore della valutazione
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -317,18 +318,44 @@ const ProjectDetailsLM = () => {
     setUserError(null);
   };
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // Aggiunge uno zero iniziale se necessario
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // I mesi partono da 0, quindi aggiungi 1
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const handleCreateEvaluation = async () => {
+    const { evaluationDate, startDate, endDate } = newEvaluation;
+
+    // Controllo che tutte le date siano obbligatorie
+    if (!evaluationDate || !startDate || !endDate) {
+      setEvaluationError("Tutte le date sono obbligatorie.");
+      return; // Interrompi l'esecuzione se c'è un errore
+    }
+
+    const formattedDate = formatDate(evaluationDate);
+    // Controllo che la evaluationDate non sia già presente
+    if (evaluationDates.includes(formattedDate)) {
+      setEvaluationError("La data di valutazione è già presente.");
+      return; // Interrompi l'esecuzione se c'è un errore
+    }
+
+    // Controllo che la endDate sia successiva alla startDate
+    if (new Date(endDate) <= new Date(startDate)) {
+      setEvaluationError(
+        "La data di fine deve essere successiva alla data di inizio."
+      );
+      return; // Interrompi l'esecuzione se c'è un errore
+    }
+
     try {
       await ProjectApiService.createEvaluation(id!, newEvaluation);
-
-      setEvaluationDates((prevDates) => [
-        ...prevDates,
-        newEvaluation.evaluationDate,
-      ]);
-
-      // Chiudi il popup e resetta i campi
+      setEvaluationDates((prevDates) => [...prevDates, formattedDate]);
       setIsCreateEvaluationPopupVisible(false);
       setNewEvaluation({ evaluationDate: "", startDate: "", endDate: "" });
+      setEvaluationError(null); // Resetta il messaggio di errore
     } catch (error) {
       console.error("Errore durante la creazione della valutazione:", error);
     }
@@ -410,7 +437,7 @@ const ProjectDetailsLM = () => {
                 className="create-evaluation-button"
                 onClick={() => setIsCreateEvaluationPopupVisible(true)}
               >
-                Crea Valutazione
+                Create Evaluation
               </button>
             )}
           </div>
@@ -679,7 +706,7 @@ const ProjectDetailsLM = () => {
       {isCreateEvaluationPopupVisible && id && (
         <div className="create-evaluation-popup">
           <div className="popup-content">
-            <h3>Crea Valutazione</h3>
+            <h3>Create Evaluation</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -687,7 +714,7 @@ const ProjectDetailsLM = () => {
               }}
             >
               <div className="form-group">
-                <label htmlFor="evaluationDate">Data Valutazione</label>
+                <label htmlFor="evaluationDate">Evaluation Date</label>
                 <input
                   type="date"
                   id="evaluationDate"
@@ -701,7 +728,7 @@ const ProjectDetailsLM = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="startDate">Data Inizio</label>
+                <label htmlFor="startDate">Start Date</label>
                 <input
                   type="date"
                   id="startDate"
@@ -715,7 +742,7 @@ const ProjectDetailsLM = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="endDate">Data Fine</label>
+                <label htmlFor="endDate">End Date</label>
                 <input
                   type="date"
                   id="endDate"
@@ -728,16 +755,19 @@ const ProjectDetailsLM = () => {
                   }
                 />
               </div>
+              {evaluationError && (
+                <p className="error-message">{evaluationError}</p>
+              )}
               <div className="popup-actions">
                 <button type="submit" className="confirm-button">
-                  Crea
+                  Create
                 </button>
                 <button
                   type="button"
                   className="cancel-button"
                   onClick={() => setIsCreateEvaluationPopupVisible(false)}
                 >
-                  Annulla
+                  Close
                 </button>
               </div>
             </form>
