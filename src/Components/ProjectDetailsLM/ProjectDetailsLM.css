@@ -299,10 +299,15 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s ease;
 }
 
 .add-button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
+}
+
+.add-button.active {
+  background-color: red; /* Cambia colore quando è attivo */
 }
 
 .delete-button {
@@ -470,7 +475,7 @@ table-header {
   left: 0;
   width: 100%; /* Assicura che il dropdown occupi tutta la larghezza */
   z-index: 1000; /* Assicura che il dropdown sia sopra gli altri elementi */
-  margin-bottom: 10px; /* Aggiunge spazio sotto il dropdown "Cerca utente" */
+  margin-top: 10px; /* Aggiunge spazio sotto il dropdown "Cerca utente" */
 }
 
 .users-container .role-search-dropdown {

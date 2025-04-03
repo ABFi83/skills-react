@@ -507,8 +507,13 @@ const ProjectDetailsLM = () => {
             <div className="table-header">
               <h3>Skills</h3>
               {id && (
-                <button className="add-button" onClick={() => handleAddSkill()}>
-                  +
+                <button
+                  className={`add-button ${
+                    isSkillSearchVisible ? "active" : ""
+                  }`}
+                  onClick={() => setIsSkillSearchVisible(!isSkillSearchVisible)}
+                >
+                  {isSkillSearchVisible ? "-" : "+"}
                 </button>
               )}
             </div>
@@ -549,12 +554,12 @@ const ProjectDetailsLM = () => {
               <h3>Users</h3>
               {id && (
                 <button
-                  className="add-button"
-                  onClick={() => {
-                    setIsUserSearchVisible(true);
-                  }}
+                  className={`add-button ${
+                    isUserSearchVisible ? "active" : ""
+                  }`}
+                  onClick={() => setIsUserSearchVisible(!isUserSearchVisible)}
                 >
-                  +
+                  {isUserSearchVisible ? "-" : "+"}
                 </button>
               )}
             </div>
