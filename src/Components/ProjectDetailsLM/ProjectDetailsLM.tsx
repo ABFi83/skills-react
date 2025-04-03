@@ -1,11 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaSave, FaTimes, FaTrash } from "react-icons/fa";
+import { FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import ProjectApiService from "../../Service/ProjectApiService";
-import { getClientLogoUrl, getClients } from "../../Service/ClientService";
+import { getClients } from "../../Service/ClientService";
 import "./ProjectDetailsLM.css";
 import {
-  Label,
   Project,
   RoleResponse,
   ProjectRequest,
@@ -21,7 +20,7 @@ import {
   getEvaluationsByDate,
   getEvaluationDates,
 } from "../../Service/EvaluationService"; // Import the updated service
-import { EvaluationLM, Evaluation } from "../../Interfaces/Evalutation";
+import { EvaluationLM } from "../../Interfaces/Evalutation";
 import ClientLogo from "../ClientLogo/ClientLogo";
 
 const ProjectDetailsLM = () => {
@@ -58,6 +57,8 @@ const ProjectDetailsLM = () => {
     startDate: "",
     endDate: "",
   });
+  const [skillError, setSkillError] = useState<string | null>(null); // Stato per il messaggio di errore
+  const [userError, setUserError] = useState<string | null>(null); // Stato per il messaggio di errore utente
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -149,7 +150,6 @@ const ProjectDetailsLM = () => {
         const updatedProject = { ...editedProject };
         let response;
         if (id) {
-          console.log("Aggiornamento progetto:", updatedProject);
           response = await ProjectApiService.updateProjectDetail(
             id,
             updatedProject
@@ -159,6 +159,8 @@ const ProjectDetailsLM = () => {
         }
         setProject(response);
         setIsEditing(false);
+        setSkillError(null);
+        setUserError(null);
         if (!id) navigate(`/project/${response.id}/LM`);
       }
     } catch (error) {
@@ -190,20 +192,30 @@ const ProjectDetailsLM = () => {
     setActiveTab(tab);
   };
 
-  const handleAddSkill = () => {
-    setIsSkillSearchVisible(true); // Mostra il componente SkillSearch
-  };
-
   const handleSkillSelect = (selectedSkill: any) => {
     const newSkill = {
       id: selectedSkill.id,
       label: selectedSkill.name,
       shortLabel: selectedSkill.shortLabel,
     };
+
+    // Controlla se la skill è già presente
+    const isDuplicate = editedProject.skills.some(
+      (skill) => skill.id === newSkill.id
+    );
+
+    if (isDuplicate) {
+      setSkillError("Elemento già presente"); // Imposta il messaggio di errore
+      return; // Non aggiungere la skill se è un duplicato
+    }
+
+    // Aggiungi la skill se non è un duplicato
     setEditedProject({
       ...editedProject,
       skills: [...editedProject.skills, newSkill],
     });
+
+    setSkillError(null); // Resetta il messaggio di errore
     setIsSkillSearchVisible(false); // Nascondi il componente SkillSearch dopo la selezione
   };
 
@@ -215,10 +227,10 @@ const ProjectDetailsLM = () => {
       ...editedProject,
       skills: updatedSkills,
     });
-    console.log("Skill eliminata:", updatedSkills);
   };
 
   const handleUserSelect = (user: any) => {
+    setUserError(null); // Resetta il messaggio di errore
     setSelectedUser(user); // Memorizza l'utente selezionato
     if (selectedRole) {
       // Aggiungi l'utente solo se il ruolo è già stato selezionato
@@ -242,11 +254,24 @@ const ProjectDetailsLM = () => {
       code: user.code,
       role: role,
     };
+
+    // Controlla se l'utente è già presente
+    const isDuplicate = editedProject.users.some(
+      (existingUser) => existingUser.id === newUser.id
+    );
+
+    if (isDuplicate) {
+      setUserError("Utente già presente"); // Imposta il messaggio di errore
+      return; // Non aggiungere l'utente se è un duplicato
+    }
+
+    // Aggiungi l'utente se non è un duplicato
     setEditedProject({
       ...editedProject,
       users: [...editedProject.users, newUser],
     });
-    // Resetta gli stati temporanei
+
+    setUserError(null); // Resetta il messaggio di errore
     setSelectedUser(null);
     setSelectedRole(null);
     setIsUserSearchVisible(false); // Nascondi il dropdown
@@ -256,10 +281,21 @@ const ProjectDetailsLM = () => {
     const updatedUsers = editedProject.users.filter(
       (_, userIndex) => userIndex !== index
     );
+
+    // Verifica che almeno un utente con ruolo "LM" rimanga
+    const hasLMUser = updatedUsers.some((user) => user.role?.code === "LM");
+
+    if (!hasLMUser) {
+      setUserError("Deve essere presente almeno un utente con ruolo LM"); // Imposta il messaggio di errore
+      return; // Non eliminare l'utente
+    }
+
     setEditedProject({
       ...editedProject,
       users: updatedUsers,
     });
+
+    setUserError(null); // Resetta il messaggio di errore
   };
 
   const fetchUsers = async (query: string): Promise<any[]> => {
@@ -277,6 +313,8 @@ const ProjectDetailsLM = () => {
     setIsEditing(false);
     setIsUserSearchVisible(false);
     setIsSkillSearchVisible(false);
+    setSkillError(null);
+    setUserError(null);
   };
 
   const handleCreateEvaluation = async () => {
@@ -511,7 +549,10 @@ const ProjectDetailsLM = () => {
                   className={`add-button ${
                     isSkillSearchVisible ? "active" : ""
                   }`}
-                  onClick={() => setIsSkillSearchVisible(!isSkillSearchVisible)}
+                  onClick={() => {
+                    setSkillError(null);
+                    setIsSkillSearchVisible(!isSkillSearchVisible);
+                  }}
                 >
                   {isSkillSearchVisible ? "-" : "+"}
                 </button>
@@ -544,6 +585,7 @@ const ProjectDetailsLM = () => {
                     onItemSelect={handleSkillSelect}
                     initialValue=""
                   />
+                  {skillError && <p className="error-message">{skillError}</p>}
                 </div>
               )}
             </div>
@@ -557,11 +599,17 @@ const ProjectDetailsLM = () => {
                   className={`add-button ${
                     isUserSearchVisible ? "active" : ""
                   }`}
-                  onClick={() => setIsUserSearchVisible(!isUserSearchVisible)}
+                  onClick={() => {
+                    setUserError(null);
+                    setIsUserSearchVisible(!isUserSearchVisible);
+                  }}
                 >
                   {isUserSearchVisible ? "-" : "+"}
                 </button>
               )}
+            </div>
+            <div>
+              {userError && <p className="error-message">{userError}</p>}
             </div>
             <div
               className={`users-container ${

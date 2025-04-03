@@ -764,3 +764,9 @@ table-header {
   max-height: 300px; /* Altezza massima per la lista */
   overflow-y: auto; /* Scroll verticale se necessario */
 }
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
