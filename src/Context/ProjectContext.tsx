@@ -8,10 +8,8 @@ interface ProjectContextType {
   getProjectById: (id: string) => Project | undefined;
 }
 
-// Creazione del contesto
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
-// Hook personalizzato per utilizzare il contesto
 export const useProject = () => {
   const context = useContext(ProjectContext);
   if (!context) {

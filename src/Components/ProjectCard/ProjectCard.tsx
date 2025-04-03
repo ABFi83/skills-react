@@ -1,23 +1,18 @@
 import { Link } from "react-router-dom";
-import { Project } from "../../Interfaces/Project";
+import { Label, Project, Value } from "../../Interfaces/Project";
 import "./ProjectCard.css";
 import PolygonalLevelIndicator from "../PoligonLevel/PoligonLevel";
-import DataExtractorService from "../../Service/DataExtractorService";
 import RatingIndicator from "../RatingIndicator/RatingIndicator";
 import RoleDisplay from "../RoleDispayProps/RoleDisplayProps";
-import { useProject } from "../../Context/ProjectContext"; // Importa il contesto
+import { useProject } from "../../Context/ProjectContext";
+import { useCallback, useEffect, useState } from "react";
 
 interface ProjectInterface {
   project: Project;
 }
 
 const ProjectCard = ({ project }: ProjectInterface) => {
-  const { setProjects } = useProject(); // Usa il contesto per aggiornare il progetto selezionato
-
-  const { labels, values } = DataExtractorService({
-    labelsData: project.labelEvaluations,
-    valuesData: project.evaluations ? project.evaluations[0].values : [],
-  });
+  const { setProjects } = useProject();
 
   const handleProjectClick = () => {
     setProjects((prevProjects) => {
@@ -50,15 +45,10 @@ const ProjectCard = ({ project }: ProjectInterface) => {
             }}
           >
             <RoleDisplay roleCode={project.role} />
-            <RatingIndicator value={project.evaluations[0].ratingAverage} />
+            {project.evaluations && project.evaluations.length > 0 && (
+              <RatingIndicator value={project.evaluations[0].ratingAverage} />
+            )}
           </p>
-        </div>
-        <div className="polygon-container">
-          <PolygonalLevelIndicator
-            levels={values}
-            labels={labels}
-            label={undefined}
-          />
         </div>
       </div>
     </Link>

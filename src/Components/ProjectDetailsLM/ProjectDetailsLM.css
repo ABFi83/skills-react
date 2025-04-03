@@ -525,7 +525,7 @@ table-header {
 .client-search-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Spaziatura tra il campo di ricerca e l'immagine */
+  gap: 10px; /* Spaziatura tra gli elementi */
 }
 
 /* Stile per l'immagine del cliente */
@@ -637,4 +637,84 @@ table-header {
 
 .cancel-button:hover {
   background-color: #555; /* Grigio più scuro al passaggio del mouse */
+}
+
+/* Popup di creazione valutazione */
+.create-evaluation-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  height: 100vh; /* Altezza del viewport */
+}
+
+.create-evaluation-popup .popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: auto;
+}
+
+.create-evaluation-popup .form-group {
+  margin-bottom: 15px;
+}
+
+.create-evaluation-popup .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.create-evaluation-popup .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.create-evaluation-popup .popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.create-evaluation-popup .confirm-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-evaluation-popup .cancel-button {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Bottone di creazione valutazione */
+.create-evaluation-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.create-evaluation-button:hover {
+  background-color: #0056b3;
 }

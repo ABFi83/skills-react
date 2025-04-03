@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Login from "./Components/Login/Login";
 import Main from "./Components/Main/Main";
 import ErrorBanner from "./Components/ErrorBanner/ErrorBanner";
@@ -12,11 +12,6 @@ import ProjectDetailsLM from "./Components/ProjectDetailsLM/ProjectDetailsLM";
 function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showBanner, setShowBanner] = useState<boolean>(false);
-
-  const updateErrorState = (message: string) => {
-    setErrorMessage(message);
-    setShowBanner(true);
-  };
 
   const closeBanner = () => {
     setShowBanner(false);
@@ -33,17 +28,12 @@ function App() {
             )}
             <Routes>
               <Route path="/login" element={<Login />} />
-
-              {/* Proteggi la rotta principale e la rotta del progetto */}
               <Route element={<PrivateRoute />}>
-                {/* Aggiungi Header fuori dalla rotta */}
                 <Route path="/main/*" element={<Main />} />
                 <Route path="/project/:id" element={<ProjectDetails />} />
                 <Route path="/project/:id/lm" element={<ProjectDetailsLM />} />
                 <Route path="/project/new" element={<ProjectDetailsLM />} />
               </Route>
-
-              {/* Rotta di fallback per gli utenti non autenticati */}
               <Route path="*" element={<Login />} />
             </Routes>
           </div>

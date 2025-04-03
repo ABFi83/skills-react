@@ -50,6 +50,13 @@ const ProjectDetailsLM = () => {
   ); // Evaluations for the table
   const [evaluationDates, setEvaluationDates] = useState<string[]>([]); // State for evaluation dates
   const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false);
+  const [isCreateEvaluationPopupVisible, setIsCreateEvaluationPopupVisible] =
+    useState(false);
+  const [newEvaluation, setNewEvaluation] = useState({
+    evaluationDate: "",
+    startDate: "",
+    endDate: "",
+  });
 
   // Caricamento del progetto quando l'ID è presente
   useEffect(() => {
@@ -266,6 +273,27 @@ const ProjectDetailsLM = () => {
     setIsSkillSearchVisible(false);
   };
 
+  const handleCreateEvaluation = async () => {
+    try {
+      const response = await ProjectApiService.createEvaluation(
+        id!,
+        newEvaluation
+      );
+      console.log("Valutazione creata:", response);
+
+      setEvaluationDates((prevDates) => [
+        ...prevDates,
+        newEvaluation.evaluationDate,
+      ]);
+
+      // Chiudi il popup e resetta i campi
+      setIsCreateEvaluationPopupVisible(false);
+      setNewEvaluation({ evaluationDate: "", startDate: "", endDate: "" });
+    } catch (error) {
+      console.error("Errore durante la creazione della valutazione:", error);
+    }
+  };
+
   return (
     <div className="project-details">
       <div className="top-right">
@@ -337,6 +365,14 @@ const ProjectDetailsLM = () => {
                 alt="Client Logo"
                 className="client-logo-small"
               />
+            )}
+            {id && (
+              <button
+                className="create-evaluation-button"
+                onClick={() => setIsCreateEvaluationPopupVisible(true)}
+              >
+                Crea Valutazione
+              </button>
             )}
           </div>
         </div>
@@ -473,7 +509,7 @@ const ProjectDetailsLM = () => {
         <div className="tab2-content">
           <div className="skills-section">
             <div className="table-header">
-              <h3>LSkills</h3>
+              <h3>Skills</h3>
               <button className="add-button" onClick={() => handleAddSkill()}>
                 +
               </button>
@@ -586,6 +622,75 @@ const ProjectDetailsLM = () => {
             >
               Annulla
             </button>
+          </div>
+        </div>
+      )}
+
+      {isCreateEvaluationPopupVisible && id && (
+        <div className="create-evaluation-popup">
+          <div className="popup-content">
+            <h3>Crea Valutazione</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCreateEvaluation();
+              }}
+            >
+              <div className="form-group">
+                <label htmlFor="evaluationDate">Data Valutazione</label>
+                <input
+                  type="date"
+                  id="evaluationDate"
+                  value={newEvaluation.evaluationDate}
+                  onChange={(e) =>
+                    setNewEvaluation({
+                      ...newEvaluation,
+                      evaluationDate: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="startDate">Data Inizio</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  value={newEvaluation.startDate}
+                  onChange={(e) =>
+                    setNewEvaluation({
+                      ...newEvaluation,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="endDate">Data Fine</label>
+                <input
+                  type="date"
+                  id="endDate"
+                  value={newEvaluation.endDate}
+                  onChange={(e) =>
+                    setNewEvaluation({
+                      ...newEvaluation,
+                      endDate: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="popup-actions">
+                <button type="submit" className="confirm-button">
+                  Crea
+                </button>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => setIsCreateEvaluationPopupVisible(false)}
+                >
+                  Annulla
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

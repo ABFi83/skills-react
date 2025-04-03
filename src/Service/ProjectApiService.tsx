@@ -58,6 +58,21 @@ const ProjectApiService = {
     }
   },
 
+  createEvaluation: async (projectId: string, obj: any): Promise<Project> => {
+    try {
+      const response = await api.post<Project>(
+        `/projects/${projectId}/evaluation`,
+        {
+          obj,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Errore nella chiamata API:", error);
+      throw error;
+    }
+  },
+
   // Funzione per caricare un file
   uploadProjectFile: async (id: string, file: File) => {
     const formData = new FormData();
