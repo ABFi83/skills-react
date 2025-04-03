@@ -50,10 +50,68 @@
 .project-card a:hover {
   text-decoration: underline;
 }
+
 .polygon-container {
   width: 150px; /* Aumenta la dimensione del contenitore */
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.project-card-lm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card-lm:hover {
+  border-color: #008000;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.3);
+  transform: scale(1.02);
+}
+
+.project-card-lm .project-details {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.project-card-lm .project-details h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.project-card-lm .project-details p {
+  margin: 15px 0;
+}
+
+.project-card-lm .polygon-container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card-lm .project-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-card-lm .client-logo-small {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  object-fit: cover;
 }

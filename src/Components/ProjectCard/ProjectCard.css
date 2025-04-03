@@ -1,6 +1,6 @@
 .project-card-link {
   text-decoration: none;
-  color: inherit; /* Mantiene il colore del testo */
+  color: inherit;
 }
 
 .project-card {
@@ -8,8 +8,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px;
-  border: 2px solid #ddd; /* Bordo iniziale sottile */
-  border-radius: 12px; /* Angoli arrotondati */
+  border: 2px solid #ddd;
+  border-radius: 12px;
   background-color: #fff;
   width: 100%;
   max-width: 400px;
@@ -20,22 +20,22 @@
 }
 
 .project-card:hover {
-  border-color: #004080; /* Blu scuro */
-  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.3); /* Ombra più evidente */
-  transform: scale(1.02); /* Effetto leggero di ingrandimento */
+  border-color: #004080;
+  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.3);
+  transform: scale(1.02);
 }
 
-.project-details {
+.project-card .project-details {
   flex-grow: 1;
-  min-width: 200px; /* Evita che il testo diventi troppo stretto */
+  min-width: 200px;
 }
 
-.project-details h3 {
+.project-card .project-details h3 {
   margin: 0;
   font-size: 1.2rem;
 }
 
-.project-details p {
+.project-card .project-details p {
   margin: 15px 0;
 }
 
@@ -49,23 +49,23 @@
   text-decoration: underline;
 }
 
-.polygon-container {
-  width: 150px; /* Aumenta la dimensione del contenitore */
+.project-card .polygon-container {
+  width: 150px;
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.project-header {
+.project-card .project-header {
   display: flex;
-  align-items: center; /* Allinea verticalmente gli elementi */
-  gap: 8px; /* Spaziatura tra il titolo e il logo */
+  align-items: center;
+  gap: 8px;
 }
 
-.client-logo-small {
+.project-card .client-logo-small {
   width: 25px;
   height: 25px;
-  border-radius: 4px; /* Opzionale: aggiunge angoli arrotondati */
-  object-fit: cover; /* Assicura che l'immagine si adatti alle dimensioni */
+  border-radius: 4px;
+  object-fit: cover;
 }

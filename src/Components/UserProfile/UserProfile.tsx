@@ -1,5 +1,5 @@
 import ClientLogo from "../ClientLogo/ClientLogo";
-
+import "./UserProfile.css";
 interface UserProfileProps {
   username: string;
   clientId: string;
@@ -16,7 +16,9 @@ export default function UserProfile({
       className="user-profile"
       style={{ display: "flex", alignItems: "center", gap: "10px" }}
     >
-      {clientId && <ClientLogo clientCode={clientId} />}
+      {clientId && (
+        <ClientLogo clientCode={clientId} className="client-logo-small-user" />
+      )}
       {viewName ? <span>{username}</span> : ""}
     </div>
   );

@@ -1,4 +1,4 @@
-.project-details {
+.project-details-lm {
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Allinea tutto a sinistra */
@@ -43,7 +43,7 @@
   color: #0056b3; /* Blu più scuro al passaggio del mouse */
 }
 
-.container {
+.project-details-lm .container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -717,4 +717,10 @@ table-header {
 
 .create-evaluation-button:hover {
   background-color: #0056b3;
+}
+
+.client-logo-small-lm {
+  width: 35px;
+  height: 35px;
+  margin-left: 30px;
 }

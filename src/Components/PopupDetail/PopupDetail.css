@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.popup-content {
+.popup .popup-content {
   padding: 20px;
   border-radius: 8px;
   width: 500px;

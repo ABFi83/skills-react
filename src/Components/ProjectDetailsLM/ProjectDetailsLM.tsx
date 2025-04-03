@@ -296,7 +296,7 @@ const ProjectDetailsLM = () => {
   };
 
   return (
-    <div className="project-details">
+    <div className="project-details-lm">
       <div className="top-right">
         {isEditing ? (
           <>
@@ -360,7 +360,12 @@ const ProjectDetailsLM = () => {
               onItemSelect={(client) => handleClientSelect(client.code)}
               initialValue={editedProject.clientName}
             />
-            {clientLogoCode && <ClientLogo clientCode={clientLogoCode} />}
+            {clientLogoCode && (
+              <ClientLogo
+                className="client-logo-small-lm"
+                clientCode={clientLogoCode}
+              />
+            )}
             {id && (
               <button
                 className="create-evaluation-button"
