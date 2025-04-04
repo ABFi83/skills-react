@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copia i file necessari e installa le dipendenze
 COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile
+RUN npm install --legacy-peer-deps
 
 # Copia il codice sorgente e builda l'app
 COPY . .
