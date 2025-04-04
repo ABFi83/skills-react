@@ -1,20 +1,27 @@
-# Usa l'immagine ufficiale di Node.js
-FROM node:18
+FROM node:18 AS build
 
-# Imposta la cartella di lavoro
+# Imposta la working directory
 WORKDIR /app
 
-# Copia i file package.json e package-lock.json
-COPY package*.json ./
+# Copia i file necessari e installa le dipendenze
+COPY package.json package-lock.json ./
+RUN npm install --frozen-lockfile
 
-# Installa le dipendenze
-RUN  npm install --legacy-peer-deps
-
-# Copia il resto del codice
+# Copia il codice sorgente e builda l'app
 COPY . .
+RUN npm run build
 
-# Esporta la porta dell'app
-EXPOSE 3000
+# Usa un'immagine leggera per servire l'app
+FROM nginx:alpine
 
-# Comando per avviare l'app
-CMD ["node", "server.js"]
+# Copia il build output nella directory di Nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copia la configurazione personalizzata di Nginx (opzionale)
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Espone la porta 80
+EXPOSE 80
+
+# Avvia Nginx
+CMD ["nginx", "-g", "daemon off;"]
