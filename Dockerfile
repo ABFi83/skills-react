@@ -7,6 +7,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
+npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
 # Copia il codice sorgente e builda l'app
 COPY . .
 RUN npm run build
