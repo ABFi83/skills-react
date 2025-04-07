@@ -29,4 +29,4 @@ jobs:
             git pull origin main
             docker build -t skills-react .
             docker stop skills-react || true && docker rm skills-react || true
-            docker run -d -p 80:80 skill-fe
+            docker run -d -p 80:80 skills-react
