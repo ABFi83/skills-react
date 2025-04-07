@@ -20,7 +20,11 @@ jobs:
           username: ec2-user  # o ubuntu, a seconda dell'AMI
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
-          script: |
+          script: 
+            sudo fallocate -l 2G /swapfile
+            sudo chmod 600 /swapfile
+            sudo mkswap /swapfile
+            sudo swapon /swapfile|
             cd /home/ec2-user/skills-react
             git pull origin main
             docker build -t skills-react .
