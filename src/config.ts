@@ -1,1 +1,1 @@
-export const API_BASE_URL = "http://13.49.145.241:3000";
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL!;
