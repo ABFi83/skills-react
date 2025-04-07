@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # o master o develop...
+      - main
 
 jobs:
   deploy:
@@ -17,16 +17,17 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user  # o ubuntu, a seconda dell'AMI
+          username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
-          script: 
+          script: |
             sudo fallocate -l 2G /swapfile
             sudo chmod 600 /swapfile
             sudo mkswap /swapfile
-            sudo swapon /swapfile|
+            sudo swapon /swapfile
             cd /home/ec2-user/skills-react
             git pull origin main
             docker build -t skills-react .
-            docker stop skills-react || true && docker rm skills-react || true
-            docker run -d -p 80:80 skills-react
+            docker stop skills-react || true
+            docker rm skills-react || true
+            docker run -d -p 80:80 --name skills-react skills-react
