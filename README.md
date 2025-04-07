@@ -23,7 +23,7 @@
 
 3. Install the project dependencies with npm:
    ```bash
-   npm install
+    npm install --legacy-peer-deps
    ```
 
 ## Running the Project
@@ -50,6 +50,7 @@ You can log in using the following predefined users:
 
 - **Username**: `Zoro` / **Password**: `Zoro`
 - **Username**: `Sanji` / **Password**: `Sanji`
+- **Username**: `Nami` / **Password**: `Nami` (LM)
 
 ## Project Structure
 
