@@ -5,13 +5,13 @@ export const handleError = (error: any) => {
     // Gestione degli errori HTTP
     switch (error.response.status) {
       case 401:
-        console.error("Errore 401: Token non valido. Effettuo il logout...");
+        console.error("Error 401: Invalid token. Please log out...");
         localStorage.removeItem("token");
         window.location.href = "/";
         break;
       case 500:
         console.error("Errore 500: Errore interno del server.");
-        toast.error("Errore interno del server. Riprova più tardi.");
+        toast.error("Internal Error. Please try again later.");
         break;
       default:
         console.error(
@@ -23,11 +23,11 @@ export const handleError = (error: any) => {
   } else if (error.request) {
     // Nessuna risposta dal server
     console.error("Errore di rete o nessuna risposta dal server.");
-    toast.error("Errore di rete. Controlla la tua connessione.");
+    toast.error("Network Error. Check your connection.");
   } else {
     // Errore generico
     console.error("Errore:", error.message);
-    toast.error("Si è verificato un errore. Riprova.");
+    toast.error("Error.");
   }
 
   // Rilancia l'errore per consentire ulteriori gestioni, se necessario
