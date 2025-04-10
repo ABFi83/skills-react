@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../config";
-import { handleError } from "./errorHandler";
+import { handleError } from "./ErrorHandler";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -18,12 +18,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.error("Errore 401: Token non valido. Effettuo il logout...");
-      localStorage.removeItem("token");
-      window.location.href = "/";
-    }
-    handleError(error); // Chiamata alla gestione centralizzata degli errori
+    handleError(error); // Gestione centralizzata degli errori
     return Promise.reject(error);
   }
 );
